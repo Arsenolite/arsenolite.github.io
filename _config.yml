@@ -7,9 +7,10 @@ title: Mother Ship的笔记
 subtitle:
 description:
 keywords:
-author: John Doe
-language:
-timezone:
+author: Mother Ship
+language: zh-CN
+timezone: Asia/Shanghai
+favicon: https://assets-cdn.github.com/favicon.ico
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -73,7 +74,7 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: replica
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -81,3 +82,16 @@ deploy:
   type: git
   repository: https://github.com/Mother-Ship/Mother-Ship.github.io.git
   branch: master
+  
+location: 杭州
+email: quhansheng@gmail.com
+avatar: https://a.ppy.sh/2545898_.png
+social:
+  github: https://github.com/Mother-Ship
+  weibo: 
+  linkedin:
+  
+menu:
+ archives: true
+ tags: true
+ categories: true
