@@ -164,7 +164,7 @@
 <p>我寻思统一下单都成功了你在说你吗呢，会报错你就多报几句，是不是把你妈杀了你也只会说缺少total_fee？真的憨批一样</p>
 <p>package传的也带了<code>prepay_id=</code>，后端生成随机数+签名用的是微信JavaSDK的工具类，签名字段大小写也没问题</p>
 <p>发现后端生成签名时，工具类会自动拼上key=AppSecret，而我手动在map里加了一个key……也就是现在的签名内容有问题。。</p>
-<p>改掉之后还是报错，看到微信开放社区里一个帖子说即使报错也受到了微信支付的成功通知，又看到segmentfault里的(一个帖子)[<a href="https://segmentfault.com/q/1010000014709128]说沙箱就是这样。。" target="_blank" rel="noopener">https://segmentfault.com/q/1010000014709128]说沙箱就是这样。。</a></p>
+<p>改掉之后还是报错，看到微信开放社区里一个帖子说即使报错也受到了微信支付的成功通知，又看到segmentfault里的<a href="https://segmentfault.com/q/1010000014709128" target="_blank" rel="noopener">一个帖子</a> 说沙箱就是这样。。</p>
 <p>我真是艹了</p>
 <h3 id="接受回调"><a href="#接受回调" class="headerlink" title="接受回调"></a>接受回调</h3>
   </article>

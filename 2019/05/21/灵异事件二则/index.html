@@ -131,7 +131,7 @@
   <article class="post-content">
     <h1>灵异事件二则</h1>
     <p>……调微信支付的时候碰到两个灵异事件</p>
-<p>首先是按(Spring文档)[<a href="https://docs.spring.io/spring-boot/docs/2.1.4.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor]添加了如下依赖：" target="_blank" rel="noopener">https://docs.spring.io/spring-boot/docs/2.1.4.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor]添加了如下依赖：</a><br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">	annotationProcessor <span class="string">"org.springframework.boot:spring-boot-configuration-processor"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>首先是按<a href="https://docs.spring.io/spring-boot/docs/2.1.4.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor" target="_blank" rel="noopener">Spring文档</a> 添加了如下依赖：<br><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dependencies &#123;</span><br><span class="line">	annotationProcessor <span class="string">"org.springframework.boot:spring-boot-configuration-processor"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>然后写了一个微信支付AppID的配置类</p>
 <p>结果代码里跑起来死活为null</p>
 <p>想了一下，把wxpay相关的配置拿到了spring相关配置下方（按理应该没影响）</p>
