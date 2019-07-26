@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    简要回顾各垃圾回收器的核心思想 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,面经读后感,垃圾回收
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1542875897000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1542875897000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>简要回顾各垃圾回收器的核心思想</h1>
+    <p>人一老 就容易忘事</p>
+<hr>
+<p><strong>Serial</strong> 新生代单线程 复制到老年代</p>
+<p><strong>ParNew</strong> 新生代多线程 复制到老年代</p>
+<p><strong>Parallel Scavenge</strong> 新生代多线程 复制到老年代<br>关注点在 <strong>停顿时间</strong> ，因此可以设置最大回收停顿时间，自动调节各代大小<br>和G1都没有用传统的GC框架，因此无法和老年代CMS共用</p>
+<hr>
+<p><strong>Serial Old</strong> 老年代单线程 标记整理</p>
+<p><strong>Parallel Old</strong>  Parallel Scavenge的老年版，标记整理<br>配合Parallel Scavenge 可以只关注吞吐量</p>
+<p><strong>CMS</strong> 老年代并发 标记清除 1.4.1<br>初始标记，标记GC Root（初始标记的root并不包括年轻代，结合并发标记阶段看实际上年轻代也是GC Root的一部分）直达对象，阻塞<br>并发标记，从初始标记的结果开始爬可达性树，非阻塞<br>重新标记，并发标记完成后，修正在并发标记期间而变化的记录，阻塞<br>并发清除</p>
+<p>缺点：<br>需要多核环境<br>并发清除时产生的垃圾只能留到下次，如果并发清除时内存不足只能Full GC<br>标记清除带来空间碎片，可以设置在Full GC前整理（默认开启）</p>
+<hr>
+<p><strong>G1</strong> 管理整个GC堆 但是依然有分代概念 6u14面世 7u4正式推出<br>准备替代CMS<br>G1暂停时需要复制对象，CMS暂停时只需要扫描对象，因此6G以下CMS不一定比G1差。推荐6G以上堆，可达到0.5s以下GC时间。</p>
+<p>可用对象占用50%以上堆时<br>对象分配/变老速率显著变化时（CMS并发标记时，如果依然在高速分配内存，会导致很久的remark），<br>较长时间的GC/压缩发生时（0.5-1s以上）<br>建议切到G1，可以获得收益</p>
+<p>设计理念：<br>停顿可预测：可以避免收集整个堆，而是跟踪每个Region中的垃圾大小和回收所需时间（也就是价值），优先回收价值高的Region，也是名字的来由<br>无碎片：内存分为等大的Region，整体为标记整理，实际是复制Region。<br>并行：扫描对象和复制对象分开运行，并且扫描对象的【初始标记】会借用复制对象的【年轻代复制】步骤。<br>空间换时间：使用Remembered Set记录老年代指向年轻代的指针，以及使用Collection Set记录需要收集的Region。</p>
+<h4 id="收集器部分"><a href="#收集器部分" class="headerlink" title="收集器部分"></a>收集器部分</h4><p>复制对象的两种运行模式：<br>Young gc：新生代满时运行，扫描所有年轻代的Region，找出半死的和全死的Region构成Collection Set。<br>并行的干掉死透的，并且把半死的Region中活对象复制到别的Region中。通过控制年轻代个数来控制开销</p>
+<p>Mixed gc：扫描所有年轻代Region，和 <strong>全局并发标记</strong> 得出的高价值老年代Region构成Collection Set<br>。根据用户指定开销来调节价值范围，当mixed gc也清不出足够内存，老年代填满，就会用Searial Old <strong>的核心代码</strong> 来Full GC。System.gc()也是Full GC，XX:+ExplicitGCInvokesConcurrent 会改为强行启动一次全局并发标记。</p>
+<p>每个Region有对应的Remembered Set，只记录老年代到年轻代的  别的Region对本Region对象的引用，在写引用的时候阻塞，如果Region改变就把引用信息改到新Region的RSet中</p>
+<p>全局并发标记的步骤：<br>初始标记，同CMS只扫描GC Root直达对象，压入扫描栈，阻塞</p>
+<p>并发标记，弹栈，递归扫描对象图，还会扫描Write Barrier记录的引用（这些引用是每次改变引用时的老引用），非阻塞</p>
+<p>重新标记，标记每个线程各自的Write Barrier（这个Barrier满了之后会丢到全局的去，而每个线程还有一个没满的Barrier），顺带处理弱引用，阻塞。只扫描SATB Buffer，而不是和CMS一样重新扫描整个GC Root，整个年轻代都会被扫描，可能会很慢</p>
+<p>清理，类似于标记清理的清理阶段，但是不清理实际对象，而是计算每个Region的价值，根据用户要求的性能水平（ -XX:MaxGCPauseMillis）优先清理价值高的，阻塞，所以如果要求的性能太高，反而容易造成垃圾堆积进而Full GC。</p>
+<p>CSet永远包括年轻代，因此G1不维护年轻代出发的引用涉及的RSet更新</p>
+<h4 id="记录引用变化的部分"><a href="#记录引用变化的部分" class="headerlink" title="记录引用变化的部分"></a>记录引用变化的部分</h4><p><strong>SATB Barrier</strong><br>G1的设计思路是，一次GC开始时 活的对象认为是活的，并且记录为SATB（理解成快照） ，GC过程中新分配的都当做活对象。</p>
+<p>GC中新分配的对象容易找，每个Region会记录两个TAMS指针（top-at-mark-start），此后的对象视为新分配的。</p>
+<p>但是全局并发标记的并发标记过程中，由于和其他线程并行执行，会出现这种情况：</p>
+<p>首先假设有一个对象的引用没有被标记过，记为A（其实就是白色状态）<br>前提1：给一个已经标记过、并且所有字段被标记完（黑色状态）的对象的字段赋值为A<br>前提2：并且所有 字段没有被标记完的引用（灰色状态） 到A的引用被删除了</p>
+<p>这时候会出现A明明活着 却没有被标记到的情况，因此G1引入了两个WriteBarrier，在改变引用 <strong>前后</strong> 都会把老引用记下来，哪怕发生了前提2的事，A也会被标记下来。</p>
+<p><strong>Logging Barrier</strong> </p>
+<p>G1为了尽量避免降低改变引用的性能，改变引用时 <strong>前</strong> 其实是将老引用加入一个队列，满了之后会被移到一个全局的SATB队列集合，然后换一个新的空队列。</p>
+<p>而并发标记会定期检查全局SATB队列集合，当超过一定量时就把它们全部标记上，并且把它们压到标记栈上等后面进一步标记。</p>
+<p><strong>Remember Set</strong></p>
+<p>传统GC的<br>G1给每个Region维护一个Remembered Set，它记录<strong>别的Region指向本体</strong>的指针，并且这些指针分别在哪些Card Table的范围内。</p>
+<p>维护Remembered Set的逻辑在改变引用 <strong>后</strong> 做，过滤掉从年轻代出发的引用 涉及的RSet维护。</p>
+<p>维护RSet时也会采用Logging Barrier的设计思路，在全局队列集合超过一定量时，会取出若干个队列，并且更新RSet。</p>
+<hr>
+<p><strong>ZGC</strong><br>并不是新货，而是Azul很久之前的Pauseless GC，而不如Zing VM的C4。<br>所有阶段都可以并发，很容易最大暂停控制在1ms内。</p>
+<p>不标记对象，而是标记引用，访问引用时有Read Barrier，消耗读取引用时的性能，而干掉了STW。<br>Region有多种尺寸，根据对象大小分配<br>每次清理整个Region，因此没有RSet<br>支持NUMA，提高整体效率<br>没有分代（暂不完善，还在考虑是分代还是Thread Local GC作为前端），因此只有PGC的水平，遇到高速分配对象只能调大堆内存来喘息</p>
+<p>初始扫描：只扫描全局变量和线程栈的指针，不扫描GC堆的指针<br>并发标记：递归对象图<br>移动对象：在移动过程中有forward table记录移动，并且活的对象移走后可以立即被释放，可以被其他扫描过程用来复制<br>修正指针：在修正时同时进行标记</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

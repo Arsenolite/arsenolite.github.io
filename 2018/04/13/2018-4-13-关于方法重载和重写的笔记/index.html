@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于方法重载和覆盖的笔记 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1523607903000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1523607903000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于方法重载和覆盖的笔记</h1>
+    <p>最近做笔试题总是遇到覆盖重写，总是记不住，干脆写个笔记辅助记忆。<br>（不知是我太菜了还是黑皮书的翻译太拗口，本来想着Java语言规范这本书即使看不下去，拿来做工具书查也是好的，结果当工具书也看不懂x）</p>
+<p>@Override<br>方法覆盖存在于子类和父类（接口）之间，遵循以下原则：<br>方法名字：必须相同<br>参数列表：必须相同</p>
+<p>抛出异常：子类必须&lt;=父类（子类抛出的异常类，必须与父类相同，或者是父类抛出的异常类的子类）<br>返回类型：子类必须&lt;=父类（子类的返回类型，必须与父类相同，必须是父类的返回类型的子类）</p>
+<p>访问权限：子类必须&gt;=父类（例如public不能覆盖为protected）</p>
+<p>俗称两同两小一大原则</p>
+<p>Overload<br>方法重写：在一个类中定义多个重名的方法，遵循以下原则：<br>方法名字：必须相同<br>参数列表：必须不同，如果参数个数相同，必须保证参数的类型或者顺序不同。<br>返回类型、访问权限、没有要求。</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于finalize()，System.gc()和C#、C++的析构函数的一点笔记 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,垃圾回收,C#
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1517887056000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1517887056000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于finalize()，System.gc()和C#、C++的析构函数的一点笔记</h1>
+    <h3 id="2018-4-2-补充："><a href="#2018-4-2-补充：" class="headerlink" title="2018-4-2 补充："></a>2018-4-2 补充：</h3><p>在阅读了深入理解JVM后，作者的这一段话彻底理清了这一块：<br>“需要说明的是，上面关于对象死亡时finalize()方法的描述（前文描述了在finalize()方法中让对象重新被引用，从而可以避免一次垃圾回收）可能带有悲情的艺术色彩，…笔者建议大家避免使用它，…而是Java刚诞生时为了使C/C++程序员更容易接受它做出的妥协。它运行代价高昂，不确定性太大，无法保证各个对象的调用顺序，有些教材描述它适合用来关闭外部资源，这完全是对这个方法用途的一种自我安慰，finalize()能做的，finally块等其他方式能做的更好、更及时，所以笔者建议大家完全可以忘掉Java中有这个方法的存在。”</p>
+<p>这个方法实质是一种妥协，缺点见下文。</p>
+<h3 id="先说finalize。"><a href="#先说finalize。" class="headerlink" title="先说finalize。"></a>先说finalize。</h3><p>在我之前的个人理解里，finalize方法并不会直接导致该对象被释放/回收；因此它不是C++意义上的析构函数。<br>（事实上析构函数的作用是定义对象被释放时候的行为，是对析构函数的调用，而不是析构函数本身导致对象被释放）<br>它用于 标记在对象被回收时应该做一些事情；例如释放其他资源，关闭连接等。</p>
+<h4 id="以下说明摘抄自1-6的API文档："><a href="#以下说明摘抄自1-6的API文档：" class="headerlink" title="以下说明摘抄自1.6的API文档："></a>以下说明摘抄自1.6的API文档：</h4><p>  当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。子类重写 finalize 方法，以配置系统资源或执行其他清除。<br>  finalize 的常规协定是：当 Java虚拟机已确定尚未终止的任何线程无法再通过<strong>任何方法</strong>访问此对象时，<strong>将调用此方法</strong>，除非由于准备终止的其他某个对象或类的终结操作执行了某个操作。finalize 方法可以采取任何操作，其中包括再次使此对象对其他线程可用；不过，finalize 的主要目的是<strong>在不可撤消地丢弃对象之前执行清除操作</strong>。例如，表示输入/输出连接的对象的 finalize 方法可执行显式 I/O 事务，以便在永久丢弃对象之前中断连接。<br>  Object 类的 finalize 方法执行非特殊性操作；它仅执行一些常规返回。Object 的子类可以重写此定义。<br>Java 编程语言不保证哪个线程将调用某个给定对象的 finalize 方法。但可以保证在调用 finalize 时，调用 finalize 的线程将不会持有任何用户可见的同步锁定。如果 finalize 方法抛出未捕获的异常，那么该异常将被忽略，并且该对象的终结操作将终止。<br>在启用某个对象的 finalize 方法后，将不会执行进一步操作，直到 Java 虚拟机再次确定尚未终止的任何线程无法再通过任何方法访问此对象，其中包括由准备终止的其他对象或类执行的可能操作，在执行该操作时，对象可能被丢弃。<br>对于任何给定对象，Java 虚拟机最多只调用一次 finalize 方法。<br>finalize 方法抛出的任何异常都会导致此对象的终结操作停止，但可以通过其他方法忽略它。</p>
+<hr>
+<h4 id="在JDK9的API中，该方法已经被废弃："><a href="#在JDK9的API中，该方法已经被废弃：" class="headerlink" title="在JDK9的API中，该方法已经被废弃："></a>在<a href="https://docs.oracle.com/javase/9/docs/api/java/lang/Object.html#finalize--" target="_blank" rel="noopener">JDK9的API</a>中，该方法已经被废弃：</h4><p><strong>已过时</strong>。 finalize机制本质上是有问题的。finalize可能导致性能问题，死锁和挂起。<br>finalize方法中的错误可能导致资源泄漏; 如果 finalization不再需要，无法取消 ; 并且在不同对象的finalize方法的调用中没有指定排序。 此外，finalization的时间并不能得到保证。finalize方法可能只能在无限期的延迟之后，才调用到可终结的对象上。<br>如果一个类的实例持有<strong>非堆资源</strong>，那么它应提供一种方法，来实现这些资源的显式释放，如果适用，它们还应实现AutoCloseable 。<br>Cleaner和PhantomReference在对象变得不可达时提供更灵活和更有效的方式来释放资源。 </p>
+<p>API Note:<br>嵌入非堆资源的类，具有许多清除这些资源的选项。 该类必须确保<strong>每个</strong>实例的生命周期 比其嵌入的<strong>任何</strong>资源的寿命都要长。<br>当嵌入在对象中的资源正在使用时，可以使用Reference.reachabilityFence(java.lang.Object)来确保对象保持可访问。 </p>
+<p>一个子类应该避免覆盖finalize方法，除非子类嵌入在收集实例之前必须清理的非堆资源。<br>与构造函数不同，调用子类的finalize()不会自动调用父类的finalize()方法。如果一个子类覆盖了finalize，必须明确地调用超类终结器。<br>为了防止异常提前终止终结链，子类应该使用一个try-finally块来确保总是调用super.finalize() 。 例如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span> </span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">finalize</span><span class="params">()</span> <span class="keyword">throws</span> Throwable </span>&#123; </span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">	... <span class="comment">// cleanup subclass state</span></span><br><span class="line">	&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">		<span class="keyword">super</span>.finalize();</span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结论：在1.9之后，我们不应该用这个方法来实现 <strong>让一个类被回收时做某些事</strong> 的功能。如果需要做某些事，应当显式的提供做这些事的方法，例如实现AutoCloseable接口，用虚引用和Cleaner等新版的功能。</p>
+<h3 id="再说System-gc-。"><a href="#再说System-gc-。" class="headerlink" title="再说System.gc()。"></a>再说System.gc()。</h3><p>从入门开始，我便被各种书籍告知，不要手动调用System.gc()。那么这个方法到底做了什么呢？是立即发起垃圾回收，还是催促虚拟机进行一次垃圾回收呢？<br>看看API文档：</p>
+<p>调用gc方法表明，Java虚拟机花费了回收未使用对象的努力，以使其当前占用的内存可用于快速重用。<br>当控件从方法调用返回时，Java虚拟机已经尽力从所有丢弃的对象中回收空间。 </p>
+<p>不知道具体JVM的实现是什么，至少这段话我的理解就是 立即发起一次垃圾回收……<br>由于垃圾回收会停止主程序活动，而且的确实际开发中也没有理由手动发起垃圾回收，总之还是不要用的比较好（</p>
+<h3 id="联动：C-的析构函数"><a href="#联动：C-的析构函数" class="headerlink" title="联动：C#的析构函数"></a>联动：C#的<a href="https://docs.microsoft.com/zh-cn/dotnet/csharp/programming-guide/classes-and-structs/destructors" target="_blank" rel="noopener">析构函数</a></h3><p>学习finalize的时候，往往会同时提起析构函数这一C系语言的产物。<br>但是在C#中，析构函数和finalize的作用，在我的理解中是一致的：即 让这个类在被回收前做一些事情。</p>
+<p>不过C#的析构函数并没有被废弃，微软同时建议使用IDispose接口，实现Dispose()方法。<br>不过和Java的AutoCloseable不同，Dispose方法需要被重载两次，第一次是表示该对象不执行析构函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void Dispose()</span><br><span class="line">&#123;</span><br><span class="line">   // Dispose of unmanaged resources.</span><br><span class="line">   Dispose(true);</span><br><span class="line">   // Suppress finalization.</span><br><span class="line">   GC.SuppressFinalize(this);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第二次才是真正的执行逻辑，此时的重载是<code>Dispose(bool)</code>，如果对它方法的调用是来自<code>Dispose()</code>，则参数为true；如果来自析构函数，则参数为false。因此需要对参数进行判断：当调用来自<code>Dispose()</code>时，释放非托管资源。</p>
+<h3 id="联动：C-的析构函数-1"><a href="#联动：C-的析构函数-1" class="headerlink" title="联动：C++的析构函数"></a>联动：C++的<a href="https://msdn.microsoft.com/zh-cn/library/6t4fe76c.aspx" target="_blank" rel="noopener">析构函数</a></h3><p>水平有限，不做拓展.<br>大致可以看出也是在对象生命周期结束时被自动调用，但是由于没有自动内存管理，C++的析构函数会在如下几种情况被调用：</p>
+<ul>
+<li>使用 delete 运算符 <strong>显式解除</strong> 分配了使用 new 运算符分配的对象。 使用 delete 运算符解除分配对象时，将为“大多数派生对象” 或 “属于完整对象，但不是表示基类的子对象的对象”释放内存。 此“大多数派生对象”解除分配一定仅对虚拟析构函数有效。 在类型信息与实际对象的基础类型不匹配的多重继承情况下，取消分配可能失败。</li>
+<li>具有块范围的本地（自动）对象超出范围。</li>
+<li>临时对象的生存期结束。</li>
+<li><strong>程序结束</strong>，并且存在全局或静态对象。</li>
+<li>使用析构函数的完全限定名<strong>显式调用</strong>了析构函数。 </li>
+</ul>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

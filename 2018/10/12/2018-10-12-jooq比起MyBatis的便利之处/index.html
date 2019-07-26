@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    jOOQ比起MyBatis的便利之处 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,MyBatis,jOOQ
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1539328384000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1539328384000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>jOOQ比起MyBatis的便利之处</h1>
+    <p>单位新项目用了新的持久化框架，叫<a href="https://www.jooq.org/" target="_blank" rel="noopener">jOOQ</a>。</p>
+<p>用惯MyBatis的我一开始有些不适应，但是写过新项目之后，回去维护老项目，确实感觉基于XML的MyBatis编码效率低下。</p>
+<p>首先，两边同样有自动生成代码的工具。<br>MyBatis生成的有Dao层和pojo，需要配置生成哪张表的pojo，（随口一提，公司的生成器配置可能有bug，生成XML时并不会清空之前的XML内容，需要手动清空/删除一次。）</p>
+<p>生成的dao提供的方法有：</p>
+<ul>
+<li>根据主键获取</li>
+<li>插入</li>
+<li>可选插入（pojo对应字段不是null的时候才设值）</li>
+<li>更新</li>
+<li>可选更新（不是null的时候才更新值）</li>
+<li>逻辑删除</li>
+</ul>
+<p>pojo则是数据库的各字段以及get/set方法，值得一提的是每个字段上会有DDL里的列备注，但是会充斥大量空行，阅读起来较为困难。</p>
+<p>而jOOQ的代码生成器一次性生成所有表的dao层和pojo。dao层全部继承了一个叫DAOImpl的抽象类，提供了以下方法：</p>
+<ul>
+<li>新增单个pojo</li>
+<li>新增多个pojo（可变参数）</li>
+<li>新增多个pojo（集合）</li>
+<li>用以上三种方式更新、<strong>物理删除</strong>pojo</li>
+<li>根据主键判断是否存在 </li>
+<li>获取表中记录总数</li>
+<li>获取整张表</li>
+<li>利用Java8的Optional来获取（大概是允许参数为null？）</li>
+<li>获取主键</li>
+</ul>
+<p>还有一些看不太懂的方法：</p>
+<ul>
+<li><code>private /* non-final */ Condition equal(Field&lt;?&gt;[] pk, Collection&lt;T&gt; ids)</code> </li>
+<li><code>private /* non-final */ List&lt;R&gt; records(Collection&lt;P&gt; objects, boolean forUpdate)</code></li>
+<li><code>private /* non-final */ RecordListenerProvider[] providers(final RecordListenerProvider[] providers, final Object object)</code></li>
+</ul>
+<p>而每个表不同的dao实现类也有各自的方法：</p>
+<ul>
+<li>根据主键（项目里就是id）获取</li>
+<li>根据多个id获取多个记录（可变参数）</li>
+<li>根据每个唯一索引获取记录</li>
+<li>根据每个列获取多条记录，也支持可变参数</li>
+</ul>
+<p>比MyBatis丰富很多，唯一的缺陷是没有自动生成的逻辑删除方法，初次维护项目很容易根据直觉使用delete方法，需要自动生成Service层代码进行封装。</p>
+<p>生成的pojo则兼容了JPA的注解（目前没有在项目里用上），这方面有点hibernate的画风？ 较MyBatis生成的pojo要紧凑很多，少了很多无谓的空行。<br>当业务变化，建立新表，jOOQ生成的代码可以快速满足大部分业务。</p>
+<p>说完自动生成的代码，接下来谈谈编写业务代码的复杂度。<br>贴一段使用MyBatis的传统项目里的单表分页查询代码：</p>
+<p>首先需要编写XML：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8" ?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" &gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">mapper</span> <span class="attr">namespace</span>=<span class="string">"对应的dao接口类名"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"selectByPageQuery"</span></span></span><br><span class="line"><span class="tag">            <span class="attr">resultMap</span>=<span class="string">"自动生成的Mapper里的ResultMap"</span>&gt;</span></span><br><span class="line">        select * from 表</span><br><span class="line">        where is_deleted = 0</span><br><span class="line">        order by id desc</span><br><span class="line">        LIMIT #&#123;itemIndex&#125;, #&#123;pageSize&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">"countByPageQuery"</span> <span class="attr">resultType</span>=<span class="string">"java.lang.Integer"</span>&gt;</span></span><br><span class="line">        select count(*) from 表</span><br><span class="line">        where is_deleted = 0</span><br><span class="line">        LIMIT #&#123;itemIndex&#125;, #&#123;pageSize&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mapper</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>由于多个Mapper需要公用<code>LIMIT #{itemIndex}, #{pageSize}</code> 这段语句（还有一些权限控制的语句），事实上代码是这样的：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">include</span> <span class="attr">refid</span>=<span class="string">"com.***.dao.mapper.fragment.PageMapper.pageLimit"</span>/&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>所以无法使用注解方式的SQL。<br>接下来是接口：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> 表<span class="title">SimpleSelectDao</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">countByPageQuery</span><span class="params">(PageQuery query)</span></span>;</span><br><span class="line">    List&lt;自动生成的实体类&gt; selectByPageQuery(PageQuery query);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中<code>PageQuery</code>是公司封装的分页类，不贴代码了，可以从SQL里看出用到的字段。<br>然后再在Service层使用：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">int</span> count = parcelTransferRecordSimpleSelectDao.countByPageQuery(query);</span><br><span class="line">query.setItemTotal(count);</span><br><span class="line">List&lt;TxParcelTransferRecord&gt; records = parcelTransferRecordSimpleSelectDao.selectByPageQuery(query);</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>相对于基于XML的MyBatis，jOOQ在业务变动时编写代码的效率更高，同样是分页获取代码，只需要7行：</p>
+<p>说明：<br><code>Pageable</code>是Spring 5的分页相关类，专门解决从前端传参到数据库查询的分页问题，不需要自己实现分页框架了。<br><code>Tuple2</code>是公司内部实现的数据结构，用来返回两个不同类型的数据。<br><code>SelectConditionStep</code>和<code>dsl</code>是jOOQ提供的类和对象，其中dsl的类是<code>DSLContext</code>，用于执行SQL，改写生成器后可以使用Spring注入。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Tuple2&lt;List&lt;表实体类&gt;, Integer&gt; pageVoById(Pageable pageable) &#123;</span><br><span class="line">    SelectConditionStep&lt;表Record类&gt; step = dsl.selectFrom(表的枚举)</span><br><span class="line">            .where(表的枚举.IS_DELETED.eq(<span class="keyword">false</span>));</span><br><span class="line">    List&lt;表实体类&gt; list = step.orderBy(表的枚举.ID.desc())</span><br><span class="line">            .limit((<span class="keyword">int</span>) pageable.getOffset(), pageable.getPageSize())</span><br><span class="line">            .fetchInto(表实体类.class);</span><br><span class="line">    <span class="keyword">int</span> count = dsl.fetchCount(step);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> Tuple2&lt;&gt;(list, count);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码出现在Service层，用惯之后很符合人类直觉，发挥了SQL人类可读性好的优势。</p>
+<p>jOOQ封装了sql，将所有的字段和SQL语句化为Java代码，当然也可以传入完整或者部分的sql执行，自由度很高，同时有Java强类型的优势加持，屏蔽掉了MyBatis的<code>ResultMapper</code>环节，每一步SQL执行虽然要使用一些复杂的类和对象（例如<code>SelectConditionStep</code>），对习惯使用强类型语言的java码狗来说很有“安全感”。</p>
+<p>相比jOOQ，基于XML的MyBatis代码编写繁琐，手写SQL经常漏掉<code>order by id desc</code>（页面上刚刚新增的记录在最前面）和<code>is_deleted = 0</code>（其实这是低级失误），查找SQL需要跳转两次（这还是装了IDE插件的情况），在多表查询时还要编写复杂的ResultMap，体验确实差很多。</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

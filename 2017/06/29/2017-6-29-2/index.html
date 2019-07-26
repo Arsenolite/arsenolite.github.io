@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    记一次在CentOS 7上部署Java测试环境的过程 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,MySQL,Linux,CentOS
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1498715135000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1498715135000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>记一次在CentOS 7上部署Java测试环境的过程</h1>
+    <p>将之前配置LNMJ测试环境的过程归个档，方便日后查阅。</p>
+<h4 id="1）-JDK环境"><a href="#1）-JDK环境" class="headerlink" title="1） JDK环境"></a>1） JDK环境</h4><h5 id="下载并安装"><a href="#下载并安装" class="headerlink" title="下载并安装"></a>下载并安装</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd usr</span><br><span class="line">mkdir java</span><br></pre></td></tr></table></figure>
+<p>当时不小心下到了JDKDemo的包，直接下JDK包时发现下载下来的是网页，于是只好手动下载再上传。<br><img src="http://upload-images.jianshu.io/upload_images/6184025-f4b899a078bdb590.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd java</span><br><span class="line">rpm -ivh jdk-8u131-linux-x64.rpm</span><br></pre></td></tr></table></figure></p>
+<h5 id="配置环境"><a href="#配置环境" class="headerlink" title="配置环境"></a>配置环境</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure>
+<p>按I进入编辑模式，将如下内容加入profile中：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/java/jdk1.8.0_131</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib/rt.jar:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</span><br></pre></td></tr></table></figure></p>
+<p>输入<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>命令，让配置生效。<br>最后和Windows平台一样，输入java -version来验证安装。</p>
+<h4 id="2）Tomcat的配置"><a href="#2）Tomcat的配置" class="headerlink" title="2）Tomcat的配置"></a>2）Tomcat的配置</h4><h5 id="下载并安装-1"><a href="#下载并安装-1" class="headerlink" title="下载并安装"></a>下载并安装</h5><p>wget下载安装包，并且解压。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf apache-tomcat-x.x.xx.tar.gz</span><br></pre></td></tr></table></figure></p>
+<p>修改文件夹名字方便后续使用。</p>
+<h5 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h5><p>编辑/etc/profile，在末尾加上：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export CATALINA_HOME=/usr/apache-tomcat</span><br><span class="line">export CATALINA_BASE=/usr/apache-tomcat</span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin</span><br></pre></td></tr></table></figure></p>
+<p>刷新并运行Tomcat进行测试：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br><span class="line">/usr/apache-tomcat/bin/startup.sh</span><br></pre></td></tr></table></figure></p>
+<h5 id="将Tomcat配置为系统服务，方便用systemctrl管理："><a href="#将Tomcat配置为系统服务，方便用systemctrl管理：" class="headerlink" title="将Tomcat配置为系统服务，方便用systemctrl管理："></a>将Tomcat配置为系统服务，方便用systemctrl管理：</h5><ul>
+<li><p>在Tomcat的bin目录下，新建setenv.sh脚本。Tomcat启动时会自动运行这个脚本。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CATALINA_PID="$CATALINA_BASE/tomcat.pid"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用vi编辑/usr/lib/systemd/system/tomcat.service文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Tomcat</span><br><span class="line">After=syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">PIDFile=/usr/apache-tomcat/tomcat.pid</span><br><span class="line">ExecStart=/usr/apache-tomcat/bin/startup.sh</span><br><span class="line">ExecReload=/bin/kill -s HUP $MAINPID</span><br><span class="line">ExecStop=/bin/kill -s QUIT $MAINPID</span><br><span class="line">PrivateTmp=true</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>然后就可以用systemctrl命令来管理Tomcat的开机启动等问题了。</p>
+<p>当时出了一个很奇怪的bug，我本地运行没有问题的war包，上传到服务器上就是404，在Tomcat管理页面里也能看到这个WebAPP在运行。<br>最后我直接删掉了服务器Tomcat，将本地Tomcat直接上传上去，并把权限改为0777，最终解决问题。</p>
+<h4 id="3）MySQL"><a href="#3）MySQL" class="headerlink" title="3）MySQL"></a>3）MySQL</h4><p>MySQL这事比较复杂，Oracle收购了MySQL之后，准备在MySQL6.x收费，然后社区开发了一个叫MariaDB的分支，采用GPL授权，以此应对。<br>当然我还是不准备采用这个分支，能求稳就别浪……</p>
+<h5 id="下载并安装-2"><a href="#下载并安装-2" class="headerlink" title="下载并安装"></a>下载并安装</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm</span><br><span class="line">rpm -ivh mysql-community-release-el7-5.noarch.rpm</span><br><span class="line">yum install mysql-community-server</span><br></pre></td></tr></table></figure>
+<h5 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h5><p>运行mysql -u root启动。<br>（值得注意的是，只有root账户没有密码的时候才能这么启动，否则返回Access denied，不会提示你输入密码。在有密码的时候需要加上-p参数。）<br>进入mysql命令行之后，运行SQL语句设置密码：<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">password</span> <span class="keyword">for</span> <span class="string">'root'</span>@<span class="string">'localhost'</span> =<span class="keyword">password</span>(<span class="string">'密码'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>当时配置完成后死活连不上，最后发现CentOS不是用IPTABLE作为防火墙，而是使用了firewall。<br>更换为IPTABLE，并且开放端口后问题解决。</p>
+<h5 id="一些配置："><a href="#一些配置：" class="headerlink" title="一些配置："></a>一些配置：</h5><ul>
+<li><p>更改编码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure>
+<p>在文件末尾添加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line">default-character-set =utf8</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置其他IP可以连接：<br>在MySQL命令行中执行：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">privileges</span> <span class="keyword">on</span> *.* <span class="keyword">to</span> root@<span class="string">'%'</span><span class="keyword">identified</span> <span class="keyword">by</span> <span class="string">'你的密码'</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4）nginx"><a href="#4）nginx" class="headerlink" title="4）nginx"></a>4）nginx</h4><p>nginx的安装给我一种印象，下载的似乎是源代码，还要下一个gcc的编译器，现场编译现场用。<br>（不知道是不是真的，如有谬误请指正）</p>
+<h5 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc-c++  </span><br><span class="line">yum install pcre pcre-devel  </span><br><span class="line">yum install zlib zlib-devel  </span><br><span class="line">yum install openssl openssl--devel</span><br></pre></td></tr></table></figure>
+<h5 id="安装nginx本体"><a href="#安装nginx本体" class="headerlink" title="安装nginx本体"></a>安装nginx本体</h5><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http://nginx.org/download/nginx-1.7.12.tar.gz</span><br><span class="line">tar -zxvf nginx-1.7.12.tar.gz</span><br></pre></td></tr></table></figure>
+<p>并重命名目录，去掉版本号，方便后续使用。<br>当时安装完后，因为firewall的问题（我看错，认为80端口是打开的）以为配置出了错，最后一怒之下关了防火墙一切正常了。<br>决定换回熟悉的iptable。</p>
+<p>#####配置nginx代理Tomcat<br>编辑nginx.conf文件，在http-server-location-proxy_pass段中填入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080</span><br><span class="line">#此处8080为Tomcat默认端口号</span><br></pre></td></tr></table></figure></p>
+<h5 id="将nginx配置为服务"><a href="#将nginx配置为服务" class="headerlink" title="将nginx配置为服务"></a>将nginx配置为服务</h5><ul>
+<li><p>先编辑nginx.conf文件：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/local/ngnix/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>将里面的pid段后面的路径复制出来。</p>
+</li>
+<li>使用vi编辑/usr/lib/systemd/system/nginx.service<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=nginx - high performance web server</span><br><span class="line">Documentation=http://nginx.org/en/docs/</span><br><span class="line">After=network.target remote-fs.target nss-lookup.target</span><br><span class="line">[Service]</span><br><span class="line">Type=forking</span><br><span class="line">#与nginx.conf一致</span><br><span class="line">PIDFile=/usr/local/nginx/logs/nginx.pid</span><br><span class="line">#启动前检测配置文件 是否正确</span><br><span class="line">ExecStartPre=/usr/sbin/nginx -t -c /usr/local/nginx/conf/nginx.conf</span><br><span class="line">#启动</span><br><span class="line">ExecStart=/usr/sbin/nginx -c /usr/local/nginx/conf/nginx.conf</span><br><span class="line">#重启</span><br><span class="line">ExecReload=/bin/kill -s HUP $MAINPID</span><br><span class="line">#关闭</span><br><span class="line">ExecStop=/bin/kill -s QUIT $MAINPID</span><br><span class="line">PrivateTmp=true</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p> 至此，JDK Tomcat Nginx MySQL全部配置完成。<br> 可以将war包上传到Tomcat的webapp目录下，Tomcat会自动部署。</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

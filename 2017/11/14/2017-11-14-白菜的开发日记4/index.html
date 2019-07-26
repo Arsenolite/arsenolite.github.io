@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    白菜的开发日记4 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,白菜
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1510637722000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1510637722000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>白菜的开发日记4</h1>
+    <p>为了节省费用，我尝试将白菜移植到一台必须有Linux环境的机子上运行（为了和节点共存）。<br>一开始打算使用WSL，无奈这东西在桌面Win10已经普及了，但是Server系统下只有一个Insider Preview。</p>
+<p>Preview到什么程度呢，那个系统没有Explorer，甚至没办法移植（comctl32.dll还是哪个系统文件是定制的，没法覆盖也没法兼容，毕竟VPS可没有PE和安全模式）。</p>
+<p>在一番挣扎之后我们彻底放弃了它，改为Ubuntu，于是我的灾难来了……</p>
+<p>在此之前我也曾经在CentOS等系统下配过Java+MySQL的环境，但是酷Q是用易语言写的，于是就涉及到一个Docker的使用问题。</p>
+<p>在坑了一天之后（其实是我耐不下心去啃文档，只能自己瞎几把试），大概了解了这点：<br>docker pull是下载一个镜像，类似于创建一个类<br>docker run是创造一个容器，类似于实例化对象<br>而docker start和stop是操作这个容器，docker rm是删除容器（对象），docker rmi是删除镜像（类）。</p>
+<p>大概遇到的坑有：<br>在docker内运行的酷Q，虽然能提供5700的HTTP Server，但是同一台机子上运行的Tomcat开放的8080端口它却无法作为客户端使用，<br>指定localhost:8080和127.0.0.1:8080都无效，必须把酷Q的消息上报地址改为服务器的公网IP（我实际上是改为了域名）</p>
+<p>我的代码里需要处理ppy给的类似于 1970-01-01 00:00:00的日期格式，<br>在Win下面，Gson默认转换没有问题，但是Ubuntu下就不行（似乎和时区无关，我本地的WSL也是这样），必须硬编码一个日期格式才能起作用。</p>
+<p>这次重构，把CQService里具体的处理拆出来一个CmdUtil，实体类、util全部分包处理，<br>为了避免Win/Ubuntu的路径不一致将所有素材以二进制形式存到了数据库……四个语音base64编码之后直接硬编码到程序里（</p>
+<p>同时还发现，我之前给ImgUtil加了一个static的Map，然后写了个静态方法去用NIO爬目录，把图片塞到那个Image里，最后在构造器里调用这个方法……<br>但是我ImgUtil是用prototype模式注入，每次有HTTP连接都会实例化一个新的ImgUtil，重新爬一次，压根没起到缓存的作用<em>(:з」∠)</em></p>
+<p>还把oppai换成了Java实现，那作者自称不喜欢Java，也别问他要更多Java程序或者支持，虽然oppai的功能全部搬了过去。<br>用了一下，我发现他用了一大堆静态内部类，而且要使用它 必须把它和调用它的类放在同一个包里（有个关键东西的构造函数是包访问权限的）。<br>本来想自己改造，但是想到万一PP算法一改，作者一更新那我不就歇逼了？于是老老实实按他规定的方法来<em>(:з」∠)</em></p>
+<p>一开始没掌握正确的使用方法，于是昨晚上漏掉了HR和DT（我把MOD应用之前的star穿进去了，柑橘妖怪作者不提供详细的example）。</p>
+<p>再一次体会到了“你以为你写的代码是这样跑的，其实根本不是”的心情。</p>
+<p>接下来就是写网站部分，然后还有一个准备咕很久的东西……还有白菜的邀请入群机制也要改改，自动清理文件的机制也要改，不过这两天我有点心力憔悴，先咕着吧……</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

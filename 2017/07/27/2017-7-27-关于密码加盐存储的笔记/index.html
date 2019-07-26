@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于密码加盐存储的笔记 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  密码,加密,加盐
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1501127232000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1501127232000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于密码加盐存储的笔记</h1>
+    <ul>
+<li><p>黑客入侵后，期望达到的目的：拿到原文去撞其他库。</p>
+</li>
+<li><p>密码学的理论安全：就算你知道了整个具体算法，整个加解密的协议，以及密文保存的方法，所有源代码和数据库，只要不知道密钥是什么，就无法从密文破解出明文。（散列算法已经能做到知道密文拿不到原文。）</p>
+</li>
+<li><p>密码学的应用安全：让破解成本超过获得的利益。</p>
+</li>
+</ul>
+<h4 id="一开始的情况：MD5-原文-密文"><a href="#一开始的情况：MD5-原文-密文" class="headerlink" title="一开始的情况：MD5(原文)=密文"></a>一开始的情况：MD5(原文)=密文</h4><h5 id="黑客拿到源码、密文之后："><a href="#黑客拿到源码、密文之后：" class="headerlink" title="黑客拿到源码、密文之后："></a>黑客拿到源码、密文之后：</h5><p>使用记载大量原文+密文的彩虹表，加上可碰撞的特性（MD5（n原文）=1密文），获取大量弱口令用户的密码原文。</p>
+<h4 id="加盐：MD5（加盐-原文-盐-）-密文"><a href="#加盐：MD5（加盐-原文-盐-）-密文" class="headerlink" title="加盐：MD5（加盐(原文,盐)）=密文"></a>加盐：MD5（加盐(原文,盐)）=密文</h4><h5 id="黑客拿到源码、数据库之后："><a href="#黑客拿到源码、数据库之后：" class="headerlink" title="黑客拿到源码、数据库之后："></a>黑客拿到源码、数据库之后：</h5><ul>
+<li><p>没加盐的彩虹表失效了。足够长的盐，可以让加盐(原文,盐)的长度加长，不会出现在简单彩虹表里。</p>
+</li>
+<li><p>每个用户的密文都不一样，无法通过出现频率高的密文猜出弱密码。</p>
+</li>
+</ul>
+<p>注意：如果盐值固定，那只需要对彩虹表进行修改，所有原文重新计算一次。<strong>相当于没有加盐</strong>。</p>
+<h5 id="于是情况成了这样："><a href="#于是情况成了这样：" class="headerlink" title="于是情况成了这样："></a>于是情况成了这样：</h5><p>就算黑客拿到了密文、盐值、甚至加盐、加密算法，针对每个用户，都需要做一个加了这个用户专属的盐的彩虹表，去撞出原文，破解难度几何级增长。</p>
+<h4 id="疑惑："><a href="#疑惑：" class="headerlink" title="疑惑："></a>疑惑：</h4><p>在用户表中新增盐字段用来存盐，和直接用邮箱（邮箱是用户的唯一识别标识）做盐，在提高破解难度的角度上是否有区别？</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

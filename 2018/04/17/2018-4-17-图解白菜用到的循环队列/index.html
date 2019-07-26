@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    图解白菜用到的循环队列 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,白菜,数据结构
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1523932954000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1523932954000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>图解白菜用到的循环队列</h1>
+    <p>实现了用循环队列存QQ消息后，就七八个月没有管（能用的代码才是好代码），以至于写上简历被问到之后支支吾吾说不出……</p>
+<p>这个队列比较特殊，只有入队和遍历，没有写出队（业务用不到）。<br>代码如下（CqMsg为反序列化出来的实体类，记载着QQ号、消息体、发送时间等信息）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MsgQueue</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> start = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> end = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> N=<span class="number">100</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> CqMsg[] msgs = <span class="keyword">new</span> CqMsg[N];</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MsgQueue</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MsgQueue</span><span class="params">(<span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.N=N;</span><br><span class="line">        msgs = <span class="keyword">new</span> CqMsg[N];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addMsg</span><span class="params">(CqMsg msg)</span> </span>&#123;</span><br><span class="line">        len++;</span><br><span class="line">        <span class="keyword">if</span> (len &gt;= N) &#123;</span><br><span class="line">            len = N;</span><br><span class="line">            start++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (end == N) &#123;</span><br><span class="line">            end = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (start == N) &#123;</span><br><span class="line">            start = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        msgs[end] = msg;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">        end++;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">      </span><br><span class="line">     <span class="function"><span class="keyword">public</span> ArrayList&lt;CqMsg&gt; <span class="title">getMsgsByQQ</span><span class="params">(Long QQ)</span> </span>&#123;</span><br><span class="line">        ArrayList&lt;CqMsg&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span> (start &lt; end) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; end; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (QQ.equals(msgs[i].getQQ())) &#123;</span><br><span class="line">                    result.add(msgs[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = end; i &lt; msgs.length; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (QQ.equals(msgs[i].getQQ())) &#123;</span><br><span class="line">                    result.add(msgs[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; start - <span class="number">1</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (QQ.equals(msgs[i].getQQ())) &#123;</span><br><span class="line">                    result.add(msgs[i]);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一开始我创建了一个数组（容量由构造器指定），同时定义两个整数作为坐标变量，再加一个表示队列当前长度的变量，大概是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length = 0</span><br></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th>null</th>
+<th>null</th>
+<th>null</th>
+<th>null</th>
+<th>null</th>
+<th>null</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>End</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>之后每当收到新消息，都将消息插入到end坐标上，之后将end++，同时length++，直到数组装满。</p>
+<p>在数组装满后，队列是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length = 5</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>消息1</th>
+<th>消息2</th>
+<th>消息3</th>
+<th>消息4</th>
+<th>消息5</th>
+<th>消息6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>End</td>
+</tr>
+</tbody>
+</table>
+<p>当有下一条消息进入队列时，尝试将队列长度增加：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length++</span><br></pre></td></tr></table></figure>
+<p>随即满足下方if语句块的判定，将length重置为数组长度，并且将起始点右移：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (len &gt;= N) &#123;</span><br><span class="line">    len = N;</span><br><span class="line">    start++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">length = 5</span><br></pre></td></tr></table></figure>
+<p>进入下一个if块：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (end == N) &#123;</span><br><span class="line">    end = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后把结果插入到end上，之后end++：</p>
+<table>
+<thead>
+<tr>
+<th>消息7</th>
+<th>消息2</th>
+<th>消息3</th>
+<th>消息4</th>
+<th>消息5</th>
+<th>消息6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>Start</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>End</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>不断的插入消息后，Start也会达到数组最右端，此时的队列如图：</p>
+<table>
+<thead>
+<tr>
+<th>消息7</th>
+<th>消息8</th>
+<th>消息9</th>
+<th>消息10</th>
+<th>消息11</th>
+<th>消息6</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>Start</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>End</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>此时插入消息的逻辑如下：</p>
+<p>首先依旧将length重置为当前数组长度；</p>
+<p>但是不会进第二个if块，直接进第三个：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (start == N) &#123;</span><br><span class="line">    start = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这之后执行end++，会回到数组第一次装满时候队列的样子：</p>
+<table>
+<thead>
+<tr>
+<th>消息7</th>
+<th>消息8</th>
+<th>消息9</th>
+<th>消息10</th>
+<th>消息11</th>
+<th>消息12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>End</td>
+</tr>
+</tbody>
+</table>
+<p>每次遍历时，只需要从end→length，再从0→start就行，是一次O(n)的操作。</p>
+<p>而插入时，则只需要O(1)（判断几个数字的大小、给数组某个位置赋值）。</p>
+<p>如改用纯数组实现，在数组满后，插入消息需要O(n)的时间。</p>
+<p>若改用链表，则可以使用迭代器达到与循环队列相同的复杂度：</p>
+<p>有新消息时，丢弃头部消息，在尾部追加消息，也是O(1)的操作。</p>
+<p>遍历时， <strong>并不使用</strong>传统的for+get方法（每次获取链表的某个位置的值代价都是O(n)），而是使用迭代器，可以达到O(n)的时间复杂度。</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

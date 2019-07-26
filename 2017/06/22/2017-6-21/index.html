@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    面试题——强引用和Spring的模块 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  面试题
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1498140795000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1498140795000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>面试题——强引用和Spring的模块</h1>
+    <p>2018-10-19更新：关于Spring模块的理解</p>
+<p><code>spring-expression</code>是一套内置的EL表达式语言，<a href="https://www.jianshu.com/p/6a0a1fa453c8" target="_blank" rel="noopener">参考文章</a><br><code>spring-instrument</code>是早期版本Spring对老版本Tomcat等Web容器的支持，<a href="https://stackoverflow.com/questions/30556391/the-role-of-spring-instrument-tomcat-module" target="_blank" rel="noopener">参考文章</a>;<br><code>spring-tx</code>事务相关也有用过了，@Transaction注解等<br><code>spring-messaging</code>这块则是用于消息交互，现代似乎更倾向于REST，目前还没有用过</p>
+<h3 id="关于强引用："><a href="#关于强引用：" class="headerlink" title="关于强引用："></a>关于强引用：</h3><hr>
+<h4 id="强引用："><a href="#强引用：" class="headerlink" title="强引用："></a>强引用：</h4><p>个人理解：<strong>强引用指向的对象，会霸占堆空间不走</strong><br>学术解释：只要强引用还在，GC永远不会回收掉被引用的对象（via 深入理解JVM），如果内存不足就OOM。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object o=<span class="keyword">new</span> Object();</span><br></pre></td></tr></table></figure></p>
+<h4 id="软引用："><a href="#软引用：" class="headerlink" title="软引用："></a>软引用：</h4><p>个人理解：<strong>设置了软引用的对象，会在内存里苟且偷生到内存不足的时候，被用作缓存。</strong><br>学术解释：用于描述非必需对象，在系统发生内存溢出异常之前，将会把软引用列入回收对象进行第二次回收，如果还是没有足够的内存才会抛出内存溢出。（via 深入理解JVM）<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SoftReference&lt;String&gt; softRef=<span class="keyword">new</span> SoftReference&lt;String&gt;(str);</span><br></pre></td></tr></table></figure></p>
+<h4 id="弱引用："><a href="#弱引用：" class="headerlink" title="弱引用："></a>弱引用：</h4><p>个人理解：<strong>与软引用类似，但是它只能活到下一次GC</strong><br>学术解释：软引用、弱引用可以和一个引用队列联合使用，如果弱引用所引用的对象被垃圾回收，Java虚拟机就会把这个弱引用加入到与之关联的引用队列中。<br>（关于引用队列暂时理解不了，先死记下来）</p>
+<h4 id="虚引用："><a href="#虚引用：" class="headerlink" title="虚引用："></a>虚引用：</h4><p>个人理解：<strong>唯一的作用是，虚引用关联的对象被回收时会收到一个通知，用于细粒度的内存控制。</strong><br>学术解释：有虚引用的对象必须联合引用队列使用，被回收时会将这个引用加入到关联的队列里。</p>
+<h3 id="Spring的模块"><a href="#Spring的模块" class="headerlink" title="Spring的模块"></a>Spring的模块</h3><hr>
+<p>(稍微扯几句，是不是只有我一个人觉得java是同人逼死官方，Mybatis逼死了JPA，Spring逼死了EJB)</p>
+<h4 id="核心容器"><a href="#核心容器" class="headerlink" title="核心容器"></a>核心容器</h4><ul>
+<li><p><strong>spring-core</strong>提供了框架的基本组成部分，包括 IoC 和DI功能。（见名知义，核心）</p>
+</li>
+<li><p><strong>spring-beans</strong>提供BeanFactory，它是一个工厂模式的复杂实现。（管理beans）</p>
+</li>
+<li><p><strong>spring-context</strong>是访问定义和配置的任何对象的媒介。ApplicationContext 接口是上下文模块的重点。(用来处理XML配置文件)</p>
+</li>
+<li><p><strong>spring-expression</strong>（Spring Expression Language ，SpEL）在运行时提供了查询和操作一个对象图的强大的表达式语言。（暂时没有用到过。）</p>
+</li>
+</ul>
+<h4 id="数据访问-集成"><a href="#数据访问-集成" class="headerlink" title="数据访问/集成"></a>数据访问/集成</h4><ul>
+<li><p><strong>spring-jdbc</strong>提供了删除冗余的 JDBC 相关编码的 JDBC 抽象层。（让jdbc简洁化，然而现在主流用Mybatis、Hibernate的多，一般还整合了连接池，这个似乎用不到）</p>
+</li>
+<li><p><strong>spring-orm</strong>(Spring Object/Relational Mapping)为流行的对象关系映射 API，包括 JPA，JDO，Hibernate 和 iBatis，提供了集成层。(将数据库虚拟化为对象，)</p>
+</li>
+<li><p><strong>spring-oxm</strong>(Spring Object/XML Marshalling)提供了抽象层，它支持对 JAXB，Castor，XMLBeans，JiBX 和 XStream 的对象/XML 映射实现。</p>
+</li>
+<li><p><strong>spring-jms</strong>包含生产和消费的信息的功能。(之前尝试配置远程Tomcat时遇到过这块的错误，但是我没有去解决，目前是我的知识盲区，有待<a href="http://www.cnblogs.com/chenpi/p/5559349.html" title="学习" target="_blank" rel="noopener">学习</a>)</p>
+</li>
+<li><p><strong>spring-tx</strong>模块为实现特殊接口的类及所有的 POJO 支持编程式和声明式事务管理。（暂时没用过Spring的事务管理……）</p>
+</li>
+</ul>
+<h4 id="Web-层"><a href="#Web-层" class="headerlink" title="Web 层"></a>Web 层</h4><ul>
+<li><p><strong>spring-web</strong>提供了基本的面向 web 的集成功能，例如多个文件上传的功能和使用 servlet 监听器和面向 web 应用程序的上下文来初始化 IoC 容器。(就是把自己做成一个servlet，容器一启动Spring也就启动了)</p>
+</li>
+<li><p><strong>spring-webmvc</strong>包含 Spring 的模型-视图-控制器（MVC），实现了 web 应用程序。（就是现在著名的SpringMVC）</p>
+</li>
+<li><p><strong>spring-websocket</strong>为 WebSocket-based 提供了支持，而且在 web 应用程序中提供了客户端和服务器端之间通信的两种方式。（知识盲区，并没有用过<em>(:з」∠)</em>）</p>
+</li>
+<li><p><strong>spring-webmvc-portlet</strong>提供了在 portlet 环境中实现 MVC，并且反映了 Web-Servlet 模块的功能。（知识盲区，并没有用过<em>(:з」∠)</em>）</p>
+</li>
+</ul>
+<h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><ul>
+<li><p><strong>spring-aop</strong>提供了面向切面的编程实现，允许你定义方法拦截器和切入点对代码进行干净地解耦，它实现了应该分离的功能。（另一种解耦方式，单独开发，需要的时候插入）</p>
+</li>
+<li><p><strong>spring-aspects</strong>提供了与 AspectJ 的集成，这是一个功能强大且成熟的面向切面编程（AOP）框架。（结合aop使用，实现织入）</p>
+</li>
+<li><p><strong>spring-instrument</strong>在一定的应用服务器中提供了类 instrumentation的支持和类加载器的实现。（？？？？？）</p>
+</li>
+<li><p><strong>spring-messaging</strong>为 STOMP 提供了支持作为在应用程序中 WebSocket 子协议的使用。它也支持一个注解编程模型，它是为了选路和处理来自 WebSocket 客户端的 STOMP 信息。（？？？？？）</p>
+</li>
+<li><p><strong>spring-test</strong>支持对具有 JUnit 或 TestNG 框架的 Spring 组件的测试。（@Runwith注解，支持Test类中运行Spring框架，而不用启动web容器）</p>
+</li>
+</ul>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

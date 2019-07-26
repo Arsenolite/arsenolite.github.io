@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于hexo标题问题 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  hexo
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1501131404000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1501131404000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于hexo标题问题</h1>
+    <p>今天出于让hexo更优雅的目的，修改了一下配置，给默认模板加上了categories属性。</p>
+<p>之前的新建文章，是用<code>hexo new 2017-7-27</code>这样的命令。由于默认情况下文件名=标题，因此会出现用日期命名的.md文件，再进行编辑。</p>
+<p>本想直接在hexo的_config.yml中，把文件名改为用时间命名，这样就能用<code>hexo new 标题</code>的命令，简化流程。</p>
+<p>然而在本地调试的时候出现了错误：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">ValidationError: `slug` is required!</span><br><span class="line">    at ValidationError.WarehouseError (e:\hexo\blog\node_modules\warehouse\lib\error.js:17:11)</span><br><span class="line">    at new ValidationError (e:\hexo\blog\node_modules\warehouse\lib\error\validation.js:14:18)</span><br><span class="line">    at SchemaTypeString.SchemaType.validate (e:\hexo\blog\node_modules\warehouse\lib\schematype.js:107:11)</span><br><span class="line">    at SchemaTypeString.validate (e:\hexo\blog\node_modules\warehouse\lib\types\string.js:45:45)</span><br><span class="line">    at Array.&lt;anonymous&gt; (e:\hexo\blog\node_modules\warehouse\lib\schema.js:161:23)</span><br><span class="line">    at Schema._applySetters (e:\hexo\blog\node_modules\warehouse\lib\schema.js:305:13)</span><br><span class="line">    at Model._insertOne (e:\hexo\blog\node_modules\warehouse\lib\model.js:190:10)</span><br><span class="line">    at e:\hexo\blog\node_modules\warehouse\lib\model.js:214:17</span><br><span class="line">    at tryCatcher (e:\hexo\blog\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at e:\hexo\blog\node_modules\bluebird\js\release\using.js:185:26</span><br><span class="line">    at tryCatcher (e:\hexo\blog\node_modules\bluebird\js\release\util.js:16:23)</span><br><span class="line">    at Promise._settlePromiseFromHandler (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:512:31)</span><br><span class="line">    at Promise._settlePromise (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:569:18)</span><br><span class="line">    at Promise._settlePromise0 (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:614:10)</span><br><span class="line">    at Promise._settlePromises (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:693:18)</span><br><span class="line">    at Promise._fulfill (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:638:18)</span><br><span class="line">    at PromiseArray._resolve (e:\hexo\blog\node_modules\bluebird\js\release\promise_array.js:126:19)</span><br><span class="line">    at PromiseArray._promiseFulfilled (e:\hexo\blog\node_modules\bluebird\js\release\promise_array.js:144:14)</span><br><span class="line">    at Promise._settlePromise (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:574:26)</span><br><span class="line">    at Promise._settlePromise0 (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:614:10)</span><br><span class="line">    at Promise._settlePromises (e:\hexo\blog\node_modules\bluebird\js\release\promise.js:693:18)</span><br><span class="line">    at Async._drainQueue (e:\hexo\blog\node_modules\bluebird\js\release\async.js:133:16)</span><br></pre></td></tr></table></figure></p>
+<p>这就很尴尬了……最后把_config.yml中<code>new_post_name</code>的值改为<code>:year-:i_month-:day-:title.md # File name of new posts</code>，问题解决。</p>
+<p>应该是hexo不允许这样做（不会自动处理重复命名。）</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

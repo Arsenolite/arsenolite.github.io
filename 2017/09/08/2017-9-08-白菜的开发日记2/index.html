@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    白菜的开发日记2 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,白菜,MySQL
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1504835037000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1504835037000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>白菜的开发日记2</h1>
+    <p>白菜之前的代码基本已经稳定运行了，于是我准备把它改成一个Web项目，采用HTTP API来收发消息，同时将来可能扩展出网页什么的……</p>
+<p>在重构的时候遇到一个问题：之前我在绘图类，用nio扫出结算界面需要的所有图片，然后用static代码块包裹：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">       <span class="keyword">final</span> Path resultPath = Paths.get(rb.getString(<span class="string">"path"</span>) + <span class="string">"\\data\\image\\resource\\result"</span>);</span><br><span class="line">       <span class="comment">//使用NIO扫描文件夹</span></span><br><span class="line">       <span class="keyword">final</span> List&lt;File&gt; resultFiles = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       Images = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       Nums = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       Mods = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">       SimpleFileVisitor&lt;Path&gt; resultFinder = <span class="keyword">new</span> SimpleFileVisitor&lt;Path&gt;() &#123;</span><br><span class="line">           <span class="meta">@Override</span></span><br><span class="line">           <span class="function"><span class="keyword">public</span> FileVisitResult <span class="title">visitFile</span><span class="params">(Path file, BasicFileAttributes attrs)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">               resultFiles.add(file.toFile());</span><br><span class="line">               <span class="keyword">return</span> <span class="keyword">super</span>.visitFile(file, attrs);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="comment">//将所有文件分为三个List</span></span><br><span class="line">           java.nio.file.Files.walkFileTree(resultPath, resultFinder);</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">23</span>; i++) &#123;</span><br><span class="line">               Images.add(ImageIO.read(resultFiles.get(i)));</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">23</span>; i &lt; <span class="number">37</span>; i++) &#123;</span><br><span class="line">               Nums.add(ImageIO.read(resultFiles.get(i)));</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">37</span>; i &lt; <span class="number">48</span>; i++) &#123;</span><br><span class="line">               Mods.add(ImageIO.read(resultFiles.get(i)));</span><br><span class="line">           &#125;</span><br><span class="line">           zPP = ImageIO.read(resultFiles.get(<span class="number">48</span>));</span><br><span class="line">           zPPTrick = ImageIO.read(resultFiles.get(<span class="number">49</span>));</span><br><span class="line">       &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">           logger.error(<span class="string">"读取result相关资源失败"</span>);</span><br><span class="line">           logger.error(e.getMessage());</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>这样这些对象只会在这个类第一次被加载的时候生成，避免了每次绘图重复扫描文件夹，降低效率的问题。</p>
+<p>然后后面画图的时候，我只需要调用List中的BufferedImage对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//右下角两个FPS</span></span><br><span class="line">       g2.drawImage(Images.get(<span class="number">1</span>), <span class="number">1300</span>, <span class="number">699</span>, <span class="keyword">null</span>);</span><br><span class="line">       g2.drawImage(Images.get(<span class="number">2</span>), <span class="number">1300</span>, <span class="number">723</span>, <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+<p>但是如果我要新加功能就会显得不便：我只能添加z开头的文件名，否则我得把所有的<code>Images.get()</code>后面的数字调一下。。</p>
+<p>看了一眼它们的文件名，我觉得ppy应该是在osu启动的时候把皮肤全部加载到内存，然后根据文件名绘制……</p>
+<p>看了一下nio，好像能生成文件名，那我把List换成Map好了……</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

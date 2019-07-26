@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    走进Java并发编程02 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,走进Java并发编程,多线程
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1522662229000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1522662229000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>走进Java并发编程02</h1>
+    <h3 id="第二节：多线程编程的基本需求。"><a href="#第二节：多线程编程的基本需求。" class="headerlink" title="第二节：多线程编程的基本需求。"></a>第二节：多线程编程的基本需求。</h3><p>JUC满足了多线程编程的各种需求，但是丰富的需求也是从简单需求开始的。</p>
+<hr>
+<h4 id="1-复习：创建线程"><a href="#1-复习：创建线程" class="headerlink" title="1.复习：创建线程"></a>1.复习：创建线程</h4><p>我还记得，当年培训班的SE部分结课作业是实现一个Socket客户端/服务端。<br>其实从这个角度上来说，某鸟的排课水平并不差；这个作业同时要求掌握Socket库的基本用法，还要求理解和实现BIO模型，也就是“服务端监听客户端连接，每个连接创建一个新线程”。</p>
+<p>大致的代码如下（节省篇幅，我省略了继承/实现接口的部分，直接使用lambda表达式）：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//略去主类、主方法</span></span><br><span class="line"><span class="comment">//监听10086端口</span></span><br><span class="line">ServerSocket sc = <span class="keyword">new</span> ServerSocket(<span class="number">10086</span>);</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="comment">//循环监听</span></span><br><span class="line">        Socket socket = serverSocket.accept();</span><br><span class="line">        <span class="comment">//为每个连接创建新线程</span></span><br><span class="line">        <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">            <span class="comment">//具体的操作，相当于重写run()方法</span></span><br><span class="line">        &#125;).start();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p> 这样的代码可能大家都很熟悉（如果觉得陌生的话，也可以改写成一个MyThread类，实现Runnable接口并重写Run方法），而且肯定会有人让我用线程池；还请暂且忍耐一下，看完这些“原始”的代码。</p>
+<hr>
+<h4 id="基本需求1：同步与线程安全（synchronized）"><a href="#基本需求1：同步与线程安全（synchronized）" class="headerlink" title="基本需求1：同步与线程安全（synchronized）"></a>基本需求1：同步与线程安全（synchronized）</h4><p> 问题来了，假设我们要在业务逻辑里对某个东西进行操作，例如……购买商品？</p>
+<p> 我们设计一个商店类，剩余库存为2，当库存为0时显示已售空，同时让线程睡眠1秒以模拟数据库读写等操作：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shop</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">2</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sell</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        System.out.println(name+<span class="string">"开始购买商品"</span>);</span><br><span class="line">        <span class="keyword">if</span>(count&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">            System.out.println(name+<span class="string">"发现商品已售空"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            count--;</span><br><span class="line">            System.out.println(name+<span class="string">"购买商品完成，剩余库存："</span>+count);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 看起来是不是很合理？</p>
+<p> 对主方法进行修改，专注于线程而不是Socket：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Shop s = <span class="keyword">new</span> Shop();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line"><span class="comment">//lambda表达式要求表达式中只有静态变量</span></span><br><span class="line">    <span class="keyword">int</span> finalI = i;</span><br><span class="line">    <span class="keyword">new</span> Thread(() -&gt; s.sell(<span class="string">"顾客"</span> + finalI)).start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们同时建立5个连接，观察一下控制台，结果是什么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">线程0开始购买商品</span><br><span class="line">线程3开始购买商品</span><br><span class="line">线程1开始购买商品</span><br><span class="line">线程2开始购买商品</span><br><span class="line">线程4开始购买商品</span><br><span class="line">线程0购买商品完成，剩余库存：0</span><br><span class="line">线程3购买商品完成，剩余库存：0</span><br><span class="line">线程2购买商品完成，剩余库存：-3</span><br><span class="line">线程1购买商品完成，剩余库存：-3</span><br><span class="line">线程4购买商品完成，剩余库存：-3</span><br></pre></td></tr></table></figure>
+<p>这……这是一场灾难！5个买家全都购买成功，而库存变成了-3！</p>
+<p>（题外话：在高并发秒杀环境中， <code>count</code> 不再是简单的成员变量，而是缓存/数据库的某个值。万一并发处理错误，导致 <code>count</code> 瞬间变成了负数，这时候如果以 <code>count==0</code> 作为判断条件，会导致秒杀无法停止，所以一定要将判断条件改为小于区间。）</p>
+<p>这就是一个典型的线程不安全的类。 </p>
+<p><strong>定义：线程安全：在单个/多个线程环境下都能得到预期运行结果。</strong></p>
+<p>究其原因，是由于线程受到操作系统的调度，我们无法直接控制线程何时运行，即使是调节优先级，得到的也只是影响，而不是保证（可以试试把五个线程的优先级排一下看看结果）！</p>
+<p>幸运的是，Java语言提供了同步关键字 <code>synchronized</code> ，它是Java对多种锁的封装，根据使用情况不同有不同的表现。</p>
+<p>我们把它加到 <code>sell</code> 方法上……</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">线程0开始购买商品</span><br><span class="line">线程0购买商品完成，剩余库存：1</span><br><span class="line">线程3开始购买商品</span><br><span class="line">线程3购买商品完成，剩余库存：0</span><br><span class="line">线程4开始购买商品</span><br><span class="line">线程4发现商品已售空</span><br><span class="line">线程2开始购买商品</span><br><span class="line">线程2发现商品已售空</span><br><span class="line">线程1开始购买商品</span><br><span class="line">线程1发现商品已售空</span><br></pre></td></tr></table></figure>
+<p>结论：在将 <code>synchronize</code> 关键字加到某个方法上后，我们可以确保在一个线程进入 <strong>这个对象</strong> 的这个方法之后，就不会有另一个线程也进入，避免了超售的情况。</p>
+<p>这背后实际是线程获取了 <strong>这个对象</strong> 的锁，在执行完方法后，自动释放了 <strong>这个对象</strong> 的锁，是不是很智能？</p>
+<p> 与此相同的用法还有：<br> <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sell</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="keyword">this</span>)&#123;</span><br><span class="line">        System.out.println(name+<span class="string">"开始购买商品"</span>);</span><br><span class="line">        <span class="keyword">if</span>(count&lt;=<span class="number">0</span>)&#123;</span><br><span class="line">            System.out.println(name+<span class="string">"发现商品已售空"</span>);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            count--;</span><br><span class="line">            System.out.println(name+<span class="string">"购买商品完成，剩余库存："</span>+count);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在这段代码里， <code>this</code> 关键字指向了当前的对象，与在方法上加 <code>synchronize</code> 关键字作用是一样的。</p>
+<p>所以明确一个概念： <code>synchronize</code> 代码块锁住的不是代码块，而是 <code>synchronize</code> 后面圆括号中的对象！</p>
+<p><strong>定义：对象锁： 让同一个对象的某个方法无法被多个线程并发执行的机制。</strong></p>
+<hr>
+<p>题外话：</p>
+<p>为什么我要强调同一对象呢？</p>
+<p>让我修改一下代码，每次创建线程都创建一个 <code>Shop</code> 对象……<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//主方法、主类</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">        <span class="comment">//lambda表达式要求表达式中只有静态变量</span></span><br><span class="line">            <span class="keyword">int</span> finalI = i;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; <span class="keyword">new</span> Shop().sell(<span class="string">"顾客"</span> + finalI)).start();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后把Shop对象的库存属性改为静态变量，以使所有Shop对象可以共享它。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shop</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> count = <span class="number">2</span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> 点击运行，灾难又出现了！</p>
+<p>现在的编码需求，变成了让 <strong>所有Shop类的对象</strong>的 <code>sell()</code> 方法都无法被同时执行。</p>
+<p>继续修改 <code>sell()</code> 方法，既然 <code>count</code> 已经是静态变量，那么我们为什么不把 <code>sell()</code> 方法也改成静态方法呢？</p>
+<p>这时候IDE报了一个错，原来在静态方法中不能用 <code>this</code> 关键字（对象都不一定有， <code>this</code> 指定谁去？），那么把它改为 <code>Shop.Class</code> ，类对象就不是对象了？</p>
+<p>现在的 <code>sell()</code> 方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sell</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (Shop.class)&#123;</span><br><span class="line">            ....</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>当然，我们也可以直接把 <code>synchronize</code> 关键字丢回到静态方法上：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sell</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>定义：类锁： 让同一个类 多个实例对象 的某个方法，都 无法被多个线程并发执行的机制。</strong></p>
+<hr>
+<h4 id="基本需求2：线程间通信（Object-wait-Object-notify-）"><a href="#基本需求2：线程间通信（Object-wait-Object-notify-）" class="headerlink" title="基本需求2：线程间通信（Object.wait()/Object.notify()）"></a>基本需求2：线程间通信（Object.wait()/Object.notify()）</h4><p>刚刚我们实现了一家有序出售物品的商店，但是一家商店不能只能出售物品，卖光了怎么办呢？进货。</p>
+<p>大致的过程是，当某个顾客线程发现 <code>count&lt;=0</code> 时，挂起所有“顾客”线程，并且通知一个线程去进货，等待进货完成后给所有挂起的“顾客”线程发送通知。 </p>
+<p>首先我们要在主方法中，单独开启一个进货线程（这个写法是lambda表达式中的方法引用，由于该线程的run方法只执行这一个无参方法，被IDE检测到了提示替换）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> Thread(s::purchase).start();</span><br></pre></td></tr></table></figure>
+<p>仅仅 <code>synchronized</code> 关键字已经不够用，我们给 <code>Shop</code> 类增加一个字段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Object myLock = <span class="keyword">new</span> Object();</span><br></pre></td></tr></table></figure>
+<p>这个字段没有其他意义，仅仅作为一把被别人持有的对象锁而存在。</p>
+<p>和上一章不同， <strong>这把对象锁的目的，不再是让这个对象的方法无法被并发执行，而是让其他线程持有它，以便唤醒或挂起这些线程。</strong></p>
+<p>注意：</p>
+<p>虽然我这里用了 “唤醒”和“挂起”，但我指的并不是 <code>Thread.suspend()</code> 和 <code>Thread.resume()</code> 。</p>
+<p>这一对被废弃了十几年的方法，是属于 <code>Thread</code> 类的，调用 <code>suspend()</code> 在挂起时并不释放这个线程持有的锁，因此极其容易引发死锁；</p>
+<p>而 <code>Object.wait()</code> 会让所有持有这个对象的对象锁的线程阻塞，同时也停止持有这个对象的对象锁。</p>
+<p>当调用 <code>Object.notify()</code> 时，会随机取出一个因为 <code>wait()</code> 方法阻塞的线程，让它继续运行的同时重新持有对象锁；</p>
+<p>而调用 <code>Object.notifyAll()</code> 时，会让所有之前因为 <code>wait()</code> 方法阻塞的线程解除阻塞，但是注意：只有那个重新持有对象锁的线程才能继续运行。</p>
+<p>明白了 <code>wait()</code> 和 <code>notify()</code> 这一对方法后，我们来着手改写 <code>sell()</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">        <span class="keyword">while</span> (count &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(LocalTime.now() + name + <span class="string">"要求了进货"</span>);</span><br><span class="line">                <span class="keyword">synchronized</span> (myLock) &#123;</span><br><span class="line">                    myLock.notify();</span><br><span class="line">                &#125;</span><br><span class="line">                System.out.println(LocalTime.now() + name + <span class="string">"进货等待中"</span>);</span><br><span class="line">                <span class="keyword">this</span>.wait();</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>在现在的 <code>sell()</code> 方法中，首先把库存不足的判断由 <code>if</code> 改为 <code>while</code> ，这样每个顾客在收到进货完成的通知后，都会重复检查一次库存。</p>
+<p>接下来改写条件块的内容：</p>
+<ul>
+<li><p>尝试获取myLock的对象锁；</p>
+</li>
+<li><p>在其他获取了myLock对象锁，并且被阻塞的线程中，选一个恢复运行（在主方法中实际我们只创建了一个这样的线程，因此这里 <code>notify()</code> 和 <code>notifyAll()</code> 没有什么区别 ）；</p>
+</li>
+<li><p>将所有持有当前对象的对象锁的线程阻塞。</p>
+</li>
+</ul>
+<p>接下来是进货方法：</p>
+<ul>
+<li><p>当然进货方法要写死循环，一旦被 <code>sell()</code> 方法恢复运行后，能再次阻塞，等待下一次需要进货的时候；</p>
+</li>
+<li><p>获取myLock的对象锁，并且开始阻塞；</p>
+</li>
+<li><p>在被 <code>sell()</code> 方法恢复运行后，将库存+5，然后将所有获取了当前对象的对象锁，并且被阻塞的线程恢复运行（招呼其他顾客继续购物）。</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">purchase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (myLock) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(LocalTime.now()+<span class="string">"店家等待进货通知"</span>);</span><br><span class="line">                myLock.wait();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(LocalTime.now()+<span class="string">"店家开始进货"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        count += <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">synchronized</span> (<span class="keyword">this</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.notifyAll();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(LocalTime.now()+<span class="string">"店家进货完成"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">17:12:32.563顾客0开始购买商品</span><br><span class="line">17:12:32.563店家等待进货通知</span><br><span class="line">17:12:33.564顾客0购买商品完成，剩余库存：1</span><br><span class="line">17:12:33.564顾客4开始购买商品</span><br><span class="line">17:12:34.564顾客4购买商品完成，剩余库存：0</span><br><span class="line">17:12:34.564顾客3开始购买商品</span><br><span class="line">17:12:34.564顾客3要求了进货</span><br><span class="line">17:12:34.564顾客3进货等待中</span><br><span class="line">17:12:34.564店家开始进货</span><br><span class="line">17:12:34.565顾客2开始购买商品</span><br><span class="line">17:12:34.565顾客2要求了进货</span><br><span class="line">17:12:34.565顾客2进货等待中</span><br><span class="line">17:12:34.565顾客1开始购买商品</span><br><span class="line">17:12:34.565顾客1要求了进货</span><br><span class="line">17:12:34.565顾客1进货等待中</span><br><span class="line">17:12:36.565店家进货完成</span><br><span class="line">17:12:36.565店家等待进货通知</span><br><span class="line">17:12:37.566顾客1购买商品完成，剩余库存：4</span><br><span class="line">17:12:38.566顾客2购买商品完成，剩余库存：3</span><br><span class="line">17:12:39.567顾客3购买商品完成，剩余库存：2</span><br></pre></td></tr></table></figure></p>
+<p>我们圆满的完成了需求，尽管这个程序会有一个一直等待是否去进货的店家，所以不会直接结束。</p>
+<h4 id="基本需求3：线程间通信2（Thread-join-）"><a href="#基本需求3：线程间通信2（Thread-join-）" class="headerlink" title="基本需求3：线程间通信2（Thread.join()）"></a>基本需求3：线程间通信2（Thread.join()）</h4><p>还是刚才的问题，我们让店家去进货，但是我们不希望多加一个对象，然后折腾当前对象/myLock这两个对象的锁。</p>
+<p>我们把在主方法中创建进货线程、并且循环阻塞等待通知，改成在 <code>sell()</code> 方法中创建进货线程、并调用 <code>join()</code> 方法。</p>
+<p>顾名思义， <code>join()</code> 方法表示立即阻塞当前线程，并且让被调用 <code>join()</code> 方法的线程“参与”到程序执行中，在被调用 <code>join()</code> 方法的线程执行完后，才恢复之前阻塞的当前进程的运行。</p>
+<p>注意， <code>join()</code> 方法必须在 <code>start()</code> 方法调用后调用；如果 <code>join()</code> 方法和 <code>start()</code> 方法中有其他代码， <code>join()</code> 方法会优先执行。</p>
+<p>同时我们去掉 <code>purchase()</code> 方法中关于对象锁的语句：</p>
+<p> <code>sell()</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (count &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(LocalTime.now() + name + <span class="string">"要求了进货"</span>);</span><br><span class="line">                Thread a = <span class="keyword">new</span> Thread(<span class="keyword">this</span>::purchase);</span><br><span class="line">                a.start();</span><br><span class="line">                a.join();</span><br><span class="line">                System.out.println(LocalTime.now() + name + <span class="string">"进货等待中"</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p> <code>purchase()</code> 方法现在只剩下了操作 <code>count</code> 以及一些提示：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">purchase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       System.out.println(LocalTime.now() + <span class="string">"店家开始进货"</span>);</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       count += <span class="number">5</span>;</span><br><span class="line">       System.out.println(LocalTime.now() + <span class="string">"店家进货完成"</span>);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>运行，这次程序执行完自动结束了，因为不再有一个后台持续阻塞的线程了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">17:54:09.025顾客1开始购买商品</span><br><span class="line">17:54:10.027顾客1购买商品完成，剩余库存：1</span><br><span class="line">17:54:10.027顾客4开始购买商品</span><br><span class="line">17:54:11.027顾客4购买商品完成，剩余库存：0</span><br><span class="line">17:54:11.027顾客3开始购买商品</span><br><span class="line">17:54:11.028顾客3要求了进货</span><br><span class="line">17:54:11.031店家开始进货</span><br><span class="line">17:54:13.032店家进货完成</span><br><span class="line">17:54:13.032顾客3进货等待中</span><br><span class="line">17:54:14.033顾客3购买商品完成，剩余库存：4</span><br><span class="line">17:54:14.033顾客2开始购买商品</span><br><span class="line">17:54:15.033顾客2购买商品完成，剩余库存：3</span><br><span class="line">17:54:15.034顾客0开始购买商品</span><br><span class="line">17:54:16.034顾客0购买商品完成，剩余库存：2</span><br></pre></td></tr></table></figure>
+<p>对Java库源码有过分析的可能会知道， <code>join()</code> 方法内部其实是由 <code>Object.wait()/Object.notifyAll()</code> 实现的！</p>
+<h4 id="附：本章完整代码："><a href="#附：本章完整代码：" class="headerlink" title="附：本章完整代码："></a>附：本章完整代码：</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> top.mothership;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalTime;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Shop s = <span class="keyword">new</span> Shop();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> finalI = i;</span><br><span class="line">            <span class="keyword">new</span> Thread(() -&gt; s.sell(<span class="string">"顾客"</span> + finalI)).start();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Shop</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> count = <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">sell</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        System.out.println(LocalTime.now() + name + <span class="string">"开始购买商品"</span>);</span><br><span class="line">        <span class="keyword">if</span> (name.contains(<span class="string">"2"</span>) || name.contains(<span class="string">"0"</span>)) &#123;</span><br><span class="line">            Thread.yield();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (count &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                System.out.println(LocalTime.now() + name + <span class="string">"要求了进货"</span>);</span><br><span class="line">                Thread a = <span class="keyword">new</span> Thread(<span class="keyword">this</span>::purchase);</span><br><span class="line">                a.start();</span><br><span class="line">                a.join();</span><br><span class="line">                System.out.println(LocalTime.now() + name + <span class="string">"进货等待中"</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        count--;</span><br><span class="line">        System.out.println(LocalTime.now() + name + <span class="string">"购买商品完成，剩余库存："</span> + count);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">purchase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(LocalTime.now() + <span class="string">"店家开始进货"</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Thread.sleep(<span class="number">2000</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        count += <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line">        System.out.println(LocalTime.now() + <span class="string">"店家进货完成"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

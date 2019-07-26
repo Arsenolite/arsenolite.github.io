@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  
+
+<div class="container-lg">
+  
+
+<div class="blog-intro">
+  <div class="blog-intro-user">
+    <img class="avatar" src="https://a.ppy.sh/2545898_.png">
+    <div class="user-name">
+      <div class="blog-title">Mother Ship的笔记</div>
+      <div class="blog-author">Mother Ship</div>
+        <ul class="user-detail mobile-only">
+    
+    <li>
+      <i class="fa fa-map-marker"></i>
+      杭州
+    </li>
+    
+    <li>
+      <i class="fa fa-envelope-o"></i>
+      <a href="mailto:quhansheng@gmail.com">quhansheng@gmail.com</a>
+    </li>
+    
+    <li>
+      <i class="fa fa-link"></i>
+      <a href="http://blog.mothership.top">http://blog.mothership.top</a>
+    </li>
+  </ul>
+    </div>
+    <div class="blog-description">
+      
+    </div>
+  </div>
+
+  <ul class="user-detail desktop-only">
+    
+    <li>
+      <i class="fa fa-map-marker"></i>
+      杭州
+    </li>
+    
+    <li>
+      <i class="fa fa-envelope-o"></i>
+      <a href="mailto:quhansheng@gmail.com">quhansheng@gmail.com</a>
+    </li>
+    
+    <li>
+      <i class="fa fa-link"></i>
+      <a href="http://blog.mothership.top">http://blog.mothership.top</a>
+    </li>
+  </ul>
+
+  <div class="social-media desktop-only">
+    <h4>Social Media</h4>
+    <ul>
+      
+      <li class="social-media-item"><a href="https://github.com/Mother-Ship" target="_blank"><i class="fa fa-github"></i></a></li>
+      
+    </ul>
+  </div>
+</div>
+
+
+  <div class="blog-detail">
+    
+<nav class="blog-detail-nav desktop-only">
+  <ul class="clearfix">
+    <li class>
+      <a href="/">Overview</a></li>
+    <li class="selected">
+      <a href="/archives">Posts <span class="counter">47</span></a>
+    </li>
+    <li class>
+      <a href="/categories">Categories <span class="counter">13</span></a></li>
+    <li class>
+      <a href="/tags">Tags <span class="counter">40</span></a></li>
+  </ul>
+</nav>
+
+    <div class="body-secondary">
+      <ul class="archive-list">
+        
+        <li class="archive-list-item">
+          <h2><a href="/2018/11/22/2018-11-22-简要回顾各垃圾回收器的核心思想/">简要回顾各垃圾回收器的核心思想</a></h2>
+          <p>
+             人一老 就容易忘事 
+ 
+  Serial  新生代单线程 复制到老年代 
+  ParNew  新生代多线程 复制到老年代 
+  Parallel Scavenge  新生代多线程 复制到老年代 关注点在  停顿时间  ，因此可以设置最大回收停顿时间，自动调节各代大小 和G1都没有用传统的GC框架...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/垃圾回收/">垃圾回收</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2018-11/"><i class="fa fa-folder-open"></i> 2018-11</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 3 </span>
+            <span>Published {{moment(1542875897000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2018/11/19/2018-11-19-面经读后感-双亲委派模型和ClassLoader部分源码阅读/">面经读后感-双亲委派模型和ClassLoader部分源码阅读</a></h2>
+          <p>
+             发现很多看似艰深的面试题 原来在以前看不懂的书里有讲解 代码写多了，以前看不懂的东西慢慢的能理解了 
+ 
+ 原题：谈谈双亲委派模型，以及怎么被破坏的 扩展：能否自己写一个 java.lang.System  
+ 
+ 双亲委派模型： 
+ 每个类加载器 应该有一个成员变量 作为父加载器，在加载时先让父...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/类加载器/">类加载器</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/双亲委派/">双亲委派</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2018-11/"><i class="fa fa-folder-open"></i> 2018-11</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 4 </span>
+            <span>Published {{moment(1542599924000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2018/11/15/2018-11-15-双重检查笔记/">面经读后感-双重检查笔记</a></h2>
+          <p>
+             感觉看面经是个提高自己的好方式…… 代码：       1   2   3   4   5   6   7   8   9   10        public   static  Singleton instance;     public   static  Singleton  getIns...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/单例模式/">单例模式</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/volatile/">volatile</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2018-11/"><i class="fa fa-folder-open"></i> 2018-11</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 4 </span>
+            <span>Published {{moment(1542275727000).fromNow()}}</span>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

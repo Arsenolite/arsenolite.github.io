@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    走进Java并发编程01 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java,走进Java并发编程,多线程
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 40 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 13 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1522642879000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1522642879000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>走进Java并发编程01</h1>
+    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本系列文章作为学习笔记，记录了博主向并发包进攻的过程。</p>
+<p>在此，我假设本文读者已经掌握了Java的基本编码，如果是大学生，至少Java的课程要通过；如果是培训学员，至少需要学完SE部分。虽然影响不大，但是如果对Spring，或者至少Java Web有一定了解和编码经验，应该会对阅读有所帮助（我可能会举一些网站相关的例子）。</p>
+<p>本文夹杂大量个人理解，错误不可避免，非常欢迎评论指正。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="第一章-：假如没有juc……"><a href="#第一章-：假如没有juc……" class="headerlink" title="第一章 ：假如没有juc……"></a>第一章 ：假如没有juc……</h2><p>2004年9月30日18:00PM，J2SE1.5发布，成为Java语言发展史上的又一里程碑。为了表示该版本的重要性，J2SE1.5更名为Java SE 5.0。——via 维基百科</p>
+<p><code>前置知识：JSR——Java Specification Requests的缩写，意思是Java 规范提案。是指向JCP(Java Community Process)提出新增一个标准化技术规范的正式请求。</code></p>
+<p><a href="https://jcp.org/ja/jsr/detail?id=166" target="_blank" rel="noopener">JSR166</a>完成（同样也是J2SE1.5发布）之后，Java程序员发现，除了Thread类、Runnable接口外，Java引入了大量的API，极大的丰富了Java在多线程编程的能力。</p>
+<p>让我们从已掌握的知识开始，先忘掉java.util.concurrent，复习一下基础的概念：线程/进程/并发/并行，还有我们的老朋友Thread/Runnable/synchronized/volatile。</p>
+<hr>
+<h3 id="第一节：进程与线程。"><a href="#第一节：进程与线程。" class="headerlink" title="第一节：进程与线程。"></a>第一节：进程与线程。</h3><p>在提到线程和进程之前，推荐一篇有趣的文章：<br><a href="http://blog.51cto.com/13188467/2065321" target="_blank" rel="noopener">《我是一个CPU：这个世界慢！死！了！    》</a><br>（阅读前需要对计算机的基本组成有一定了解，至少要明白SSD、CPU的L1L2缓存是什么。）</p>
+<p>如果将一颗2.6GHz频率，一个逻辑核心的CPU（这个性能在现在可以说是很低了，主流的i7-8700K有6个物理核心，通过Intel的超线程技术让系统认为有12个逻辑核心，最高睿频4.7GHz）执行每个指令的时间放大到一秒，那么从内存中读取1MB 需要7.5天，从SSD上的随机读取需要用4.5天，从SSD读取1MB需要一个月，而HDD的磁盘寻址需要10个月，连续读取1MB需要20个月！</p>
+<p>我们设想一个场景。你打开一台一个逻辑核心的电脑，登录QQ，同时打开IDEA开始编写代码，在你眼里QQ和IDEA是同时运行着的程序。但是在CPU的眼里，QQ和IDEA需要CPU来执行的操作其实是轮流着来的，只是它切换的速度太快，你感受不到！</p>
+<p>CPU其实一直不断的在加载QQ的上下文（内存、显卡、硬盘等资源）→执行QQ→保存QQ的上下文→加载IDEA的上下文…</p>
+<p>好，我们引申出概念：</p>
+<h4 id="1-什么是进程？"><a href="#1-什么是进程？" class="headerlink" title="1.什么是进程？"></a>1.什么是进程？</h4><p>“计算机中已运行程序的实体，分配资源的基本单位。”</p>
+<p>我们编写的程序，只是<strong>指令</strong>（比如做加法）、<strong>数据</strong>（比如一个整数1）和<strong>组织形式</strong>（比如某个数组，是按顺序排的一系列元素）的描述，当我们下达运行它的命令时，才会产生进程。操作系统按进程为<strong>单位</strong>分配资源，这些资源包括一片内存、操作系统描述符（所谓文件句柄/文件描述符），安全特性以及CPU状态（视是否在运行存储在寄存器/内存中）等。</p>
+<p>总结：进程是一个单位，我们下达运行程序命令时，就可以向操作系统申请领取“一个进程的”大礼包，包含了<strong>一段时间内</strong>的一部分计算机资源。</p>
+<h4 id="2-什么是线程？"><a href="#2-什么是线程？" class="headerlink" title="2.什么是线程？"></a>2.什么是线程？</h4><p>“操作系统调度的最小单位”。<br>在此不对OS这门课做展开，不讨论内核态用户态线程。</p>
+<p>我们再设想一个场景。你从操作系统领取了大礼包，它包含了一部分的时间（我感觉生命在流逝）和一部分的计算机资源。但是现在你的代码里需要打开硬盘上的某个文件，或者更过分的是等待某个网络请求（还记得150ms在CPU的眼里是12.5年吗？）……</p>
+<p>这是一种严重的浪费！在这个礼包、甚至之后的好多礼包给的时间内，你创建的进程什么都没有做，白白的浪费了系统资源，时间一到CPU就切换到了别的程序，这极大的影响了程序的执行效率。</p>
+<p>这时候如果我能把进程拆分为<strong>一个个部分</strong>，由它们<strong>共享</strong>这些资源；当第一个部分需要等待某个耗时较长的操作时，其他部分也可以在这份时间里利用这份资源，岂不美哉？</p>
+<p>总结：线程是一个更小的单位，“一个进程”的资源，可以由多个“线程”共享，免得出现资源浪费。</p>
+<h4 id="3-什么是并发，什么是并行？"><a href="#3-什么是并发，什么是并行？" class="headerlink" title="3.什么是并发，什么是并行？"></a>3.什么是并发，什么是并行？</h4><p>Erlang之父简单的介绍了它们的区别：</p>
+<p><img src="https://pic1.zhimg.com/v2-674f0d37fca4fac1bd2df28a2b78e633_r.jpg" alt></p>
+<p><code>串行</code>是一个队列一台咖啡机，如果有人匹到了一把Dota，过了一个小时打完回来接咖啡，后面的人都得必须等着；<br><code>并发</code>是两个队列用一台咖啡机，咖啡机在处理两个队列的人的状态中不断切换，在<strong>逻辑</strong>上这台咖啡机可以同时处理两个队列；<br><code>并行</code>则是两个队列用两台咖啡机，有两台咖啡机在同一个时间点处理两个队列，注意，是真正意义上、物理上的同时，这也是多逻辑核心CPU的模型！</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
