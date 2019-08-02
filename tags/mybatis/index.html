@@ -160,69 +160,47 @@
       <ul class="archive-list">
         
         <li class="archive-list-item">
-          <h2><a href="/2018/10/12/2018-10-12-jooq比起MyBatis的便利之处/">jOOQ比起MyBatis的便利之处</a></h2>
+          <h2><a href="/2017/08/03/2017-8-03-记一次代码重构/">记一次代码重构</a></h2>
           <p>
-             单位新项目用了新的持久化框架，叫 jOOQ 。 
- 用惯MyBatis的我一开始有些不适应，但是写过新项目之后，回去维护老项目，确实感觉基于XML的MyBatis编码效率低下。 
- 首先，两边同样有自动生成代码的工具。 MyBatis生成的有Dao层和pojo，需要配置生成哪张表的pojo，（随口...
+             最近在编写Service层的时候，出现了这样的问题： 
+ 由于对数据合法性的要求比较高，光靠外键显然不能胜任，因此我全面抛弃外键，在Service层用大量代码校验数据的合法性。 
+ 于是就出现了这样的代码：       1   2   3   4   5   6   7   8   9   10 ...
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            <li class="tag-list-item"><a href="/tags/java/">java</a></li>
             
-            <li class="tag-list-item"><a href="/tags/MyBatis/">MyBatis</a></li>
+            <li class="tag-list-item"><a href="/tags/spring/">spring</a></li>
             
-            <li class="tag-list-item"><a href="/tags/jOOQ/">jOOQ</a></li>
+            <li class="tag-list-item"><a href="/tags/springmvc/">springmvc</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/mybatis/">mybatis</a></li>
             
           </ul>
           <div class="post-info">
             <span>
               
-              <a class="category-link" href="/categories/2018-10/"><i class="fa fa-folder-open"></i> 2018-10</a>
+              <a class="category-link" href="/categories/2017-08/"><i class="fa fa-folder-open"></i> 2017-08</a>
               
             </span>
-            <span><i class="fa fa-tag"></i> 3 </span>
-            <span>Published {{moment(1539328384000).fromNow()}}</span>
+            <span><i class="fa fa-tag"></i> 4 </span>
+            <span>Published {{moment(1501725045000).fromNow()}}</span>
           </div>
         </li>
         
-      </ul>
-    </div>
-  </div>
-</div>
-
-</div>
-
-<div class="footer-wrapper container">
-  <footer class="footer clearfix">
-    <div class="clearfix">
-    <a href="http://blog.mothership.top" class="footer-logo">
-      <i class="fa fa-github"></i>
-    </a>
-    <ul class="footer-social-link">
-      <li>© 2019 Mother Ship</li>
-      <li><a href="http://blog.mothership.top">Home</a></li>
-      
-      <li><a href="https://github.com/Mother-Ship">Github</a></li>
-      
-    </ul>
-    <div class="footer-theme-info">
-      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
-      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
-    </div>
-    </div>
-    
-  </footer>
-</div>
-
-
-
-
-<script src="/js/main.js"></script>
-
-</body>
-</html>
-           <li class="tag-list-item"><a href="/tags/spring/">spring</a></li>
+        <li class="archive-list-item">
+          <h2><a href="/2017/07/25/2017-7-25/">关于shiro在SSM环境下的整合(2)</a></h2>
+          <p>
+               接上文  （题外话：好像hexo对Markdown里Java的渲染不是很好，注解会嵌到其他行去？） 
+   编写Controller  做用户认证，首先得有一个Controller，生成一个User对象。由于研究对象是shiro，先不写实际页面，用一个简单的表单向Controller提交对象。...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/shiro/">shiro</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/java/">java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/spring/">spring</a></li>
             
             <li class="tag-list-item"><a href="/tags/springmvc/">springmvc</a></li>
             
