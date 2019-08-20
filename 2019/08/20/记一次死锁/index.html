@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>
-    关于密码加盐存储的笔记 | Mother Ship的笔记
+    记一次死锁 | Mother Ship的笔记
   </title>
   <meta name="description" content>
   
   <meta name="keywords" content="
-  密码,加密,加盐
+  
   ">
   
   <meta name="author" content="Mother Ship">
@@ -122,32 +122,24 @@
     <i class="fa fa-user-o"></i>
     Mother Ship
 
-    <span class="post-date float-right" title="{{moment(1501127232000).format('MMM DD, YYYY, h:mm:ss A')}}">
+    <span class="post-date float-right" title="{{moment(1566292701000).format('MMM DD, YYYY, h:mm:ss A')}}">
       <i class="fa fa-pencil-square-o"></i>
-      {{moment(1501127232000).fromNow()}}
+      {{moment(1566292701000).fromNow()}}
     </span>
   </h3>
 
   <article class="post-content">
-    <h1>关于密码加盐存储的笔记</h1>
-    <ul>
-<li><p>黑客入侵后，期望达到的目的：拿到原文去撞其他库。</p>
-</li>
-<li><p>密码学的理论安全：就算你知道了整个具体算法，整个加解密的协议，以及密文保存的方法，所有源代码和数据库，只要不知道密钥是什么，就无法从密文破解出明文。（散列算法已经能做到知道密文拿不到原文。）</p>
-</li>
-<li><p>密码学的应用安全：让破解成本超过获得的利益。</p>
-</li>
-</ul>
-<h4 id="一开始的情况：MD5-原文-密文"><a href="#一开始的情况：MD5-原文-密文" class="headerlink" title="一开始的情况：MD5(原文)=密文"></a>一开始的情况：MD5(原文)=密文</h4><h5 id="黑客拿到源码、密文之后："><a href="#黑客拿到源码、密文之后：" class="headerlink" title="黑客拿到源码、密文之后："></a>黑客拿到源码、密文之后：</h5><p>使用记载大量原文+密文的彩虹表，加上可碰撞的特性（MD5（n原文）=1密文），获取大量弱口令用户的密码原文。</p>
-<h4 id="加盐：MD5（加盐-原文-盐-）-密文"><a href="#加盐：MD5（加盐-原文-盐-）-密文" class="headerlink" title="加盐：MD5（加盐(原文,盐)）=密文"></a>加盐：MD5（加盐(原文,盐)）=密文</h4><h5 id="黑客拿到源码、数据库之后："><a href="#黑客拿到源码、数据库之后：" class="headerlink" title="黑客拿到源码、数据库之后："></a>黑客拿到源码、数据库之后：</h5><ul>
-<li><p>没加盐的彩虹表失效了。足够长的盐，可以让加盐(原文,盐)的长度加长，不会出现在简单彩虹表里。</p>
-</li>
-<li><p>每个用户的密文都不一样，无法通过出现频率高的密文猜出弱密码。</p>
-</li>
-</ul>
-<p>注意：如果盐值固定，那只需要对彩虹表进行修改，所有原文重新计算一次。<strong>相当于没有加盐</strong>。</p>
-<h5 id="于是情况成了这样："><a href="#于是情况成了这样：" class="headerlink" title="于是情况成了这样："></a>于是情况成了这样：</h5><p>就算黑客拿到了密文、盐值、甚至加盐、加密算法，针对每个用户，都需要做一个加了这个用户专属的盐的彩虹表，去撞出原文，破解难度几何级增长。</p>
-<h4 id="疑惑："><a href="#疑惑：" class="headerlink" title="疑惑："></a>疑惑：</h4><p>在用户表中新增盐字段用来存盐，和直接用邮箱（邮箱是用户的唯一识别标识）做盐，在提高破解难度的角度上是否有区别？</p>
+    <h1>记一次死锁</h1>
+    <p>业务场景：微信支付模块，每一次请求都会在pay_log表里插入订单号等记录，支付回调时会更新pay_log表的记录</p>
+<p>同时还有一个定时任务用来定时将所有1小时前的订单标记为交易超时</p>
+<p>编写单元测试，模拟支付回调通知，结果出了异常，更新记录时出现死锁</p>
+<p>大致SQL如下：</p>
+<p>事务A<br>Update pay_log SET tradeState = 2 WHERE tradeState=0 AND createTime &lt; ‘2019-08-20 15:23:04.167’</p>
+<p>事务B<br>INSERT pay_log VALUES(NULL,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?)<br>Update pay_log SET tradeState =? WHERE outTradeNo = ? AND tradeState = ? AND payType = ? </p>
+<p>然后事务B被回滚了</p>
+<p>解决方案：要么禁用定时任务，要么去掉单元测试的事务手动回滚，要么单元测试不要打断点调试（定时任务设置了项目启动后10秒后启动）</p>
+<p>附上MySQL死锁日志，其实这玩意只能大致的定位故障，因为可以看出事务2的SQL只有最后执行的那一条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">2019-08-20 16:23:07 0x7ff1b2039700</span><br><span class="line">*** (1) TRANSACTION:</span><br><span class="line">TRANSACTION 43869195, ACTIVE 3 sec fetching rows</span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line">LOCK WAIT 6 lock struct(s), heap size 1136, 269 row lock(s)</span><br><span class="line">MySQL thread id 746830, OS thread handle 140676071700224, query id 184518127 192.168.3.108 root updating</span><br><span class="line">Update pay_log SET tradeState = 2 WHERE tradeState=0 AND createTime &lt; &apos;2019-08-20 15:23:04.167&apos;</span><br><span class="line"></span><br><span class="line">*** (1) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 3179 page no 7 n bits 104 index PRIMARY of table `pay`.`pay_log` trx id 43869195 lock_mode X waiting</span><br><span class="line">Record lock, heap no 37 PHYSICAL RECORD: n_fields 17; compact format; info bits 0</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">*** (2) TRANSACTION:</span><br><span class="line">TRANSACTION 43869181, ACTIVE 7 sec starting index read</span><br><span class="line">mysql tables in use 1, locked 1</span><br><span class="line">4 lock struct(s), heap size 1136, 2 row lock(s), undo log entries 2</span><br><span class="line">MySQL thread id 747008, OS thread handle 140676050425600, query id 184518193 192.168.3.49 root updating</span><br><span class="line">Update pay_log SET tradeState =1 WHERE outTradeNo = &apos;T9744695806&apos; AND tradeState = 0 AND payType = 0</span><br><span class="line"></span><br><span class="line">*** (2) HOLDS THE LOCK(S):</span><br><span class="line">RECORD LOCKS space id 3179 page no 7 n bits 104 index PRIMARY of table `pay`.`pay_log` trx id 43869181 lock_mode X locks rec but not gap</span><br><span class="line">Record lock, heap no 37 PHYSICAL RECORD: n_fields 17; compact format; info bits 0</span><br><span class="line"></span><br><span class="line">*** (2) WAITING FOR THIS LOCK TO BE GRANTED:</span><br><span class="line">RECORD LOCKS space id 3179 page no 4 n bits 168 index PRIMARY of table `pay`.`pay_log` trx id 43869181 lock_mode X waiting</span><br><span class="line">Record lock, heap no 2 PHYSICAL RECORD: n_fields 17; compact format; info bits 0</span><br><span class="line"> </span><br><span class="line">*** WE ROLL BACK TRANSACTION (2)</span><br></pre></td></tr></table></figure>
 
   </article>
 </div>

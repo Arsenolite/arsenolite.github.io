@@ -86,7 +86,7 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 45 </a>
+        <a href="/archives" class="header-toolbar-right"> 46 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
@@ -181,6 +181,7 @@
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">return_code</span>&gt;</span>FAIL&gt;<span class="tag">&lt;/<span class="name">return_code</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">retmsg</span>&gt;</span><span class="tag">&lt;<span class="name">urlopen</span> <span class="attr">error</span> <span class="attr">timed</span> <span class="attr">out</span>&gt;</span>&gt;<span class="tag">&lt;/<span class="name">retmsg</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">retcode</span>&gt;</span>1&gt;<span class="tag">&lt;/<span class="name">retcode</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>连不上沙箱干脆直接切正式吧，结果开始报<code>支付验证签名失败</code>……</p>
 <p>查了一下，切正式的时候，prepay_id的签名方式需要和统一下单的一致，也就是必须改成”HMAC-SHA256”……</p>
+<p>2019-8-20更新<br>试着给NATIVE支付写测试用例<br>想不起当时为什么说是强制<code>HMAC-SHA256</code>了……<br>总之就是，我尝试校验签名的时候从小程序支付复制了代码，默认是<code>HMAC-SHA256</code>，然后之前的统一下单签名方式用的是MD5，导致校验不通过。。</p>
 
   </article>
 </div>
