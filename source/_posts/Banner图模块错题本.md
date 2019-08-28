@@ -21,3 +21,20 @@ tags: ["错题本"]
 ```
 重点在于`and (i.is_deleted is NULL or i.is_deleted = 0)`
 
+2 根据类型筛选Banner图，前端应该这么传值：
+
+```http
+GET {{adminHost}}/microManage/pcBanner?type=0&type=3&type=4&type=5
+Content-Type: application/json
+Authorization: {{adminToken}}
+```
+后端应该这么接受：
+```java
+@GetMapping("/pcBanner")
+public JsonResult pcBanner(@RequestParam(required = false) Integer[] type) {
+    //...
+}
+```
+前端直接用[0,3,4,5]这样的后端是接收不到的。。后端也不能用List<Integer>来接受。。感觉这个设计有一点丑，但又不想额外写代码转换。。
+
+剩下的是一些业务上的问题，没记清楚需求之类的。。这模块应该就这些问题
