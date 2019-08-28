@@ -147,17 +147,94 @@
     <li class>
       <a href="/">Overview</a></li>
     <li class="selected">
-      <a href="/archives">Posts <span class="counter">40</span></a>
+      <a href="/archives">Posts <span class="counter">47</span></a>
     </li>
     <li class>
-      <a href="/categories">Categories <span class="counter">13</span></a></li>
+      <a href="/categories">Categories <span class="counter">16</span></a></li>
     <li class>
-      <a href="/tags">Tags <span class="counter">40</span></a></li>
+      <a href="/tags">Tags <span class="counter">44</span></a></li>
   </ul>
 </nav>
 
     <div class="body-secondary">
       <ul class="archive-list">
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/08/28/Banner图模块错题本/">Banner图模块错题本</a></h2>
+          <p>
+             ……尝试治一下自己的毛病 
+ 大致就是，写代码的时候做出许多假设，测试的时候发现假设并不总是成立。。 
+ 很多都是非常细小的问题，交付一个模块的时候记一下，不要再犯就是了 
+ 1 关联查询时，由于习惯Mybatis Plus的自动过滤逻辑删除特性，自己撰写SQL时没有过滤关联查询表的已经逻辑删除的...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/错题本/">错题本</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-08/"><i class="fa fa-folder-open"></i> 2019-08</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 1 </span>
+            <span>Published {{moment(1566962286000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/08/20/记一次死锁/">记一次死锁</a></h2>
+          <p>
+             业务场景：微信支付模块，每一次请求都会在pay_log表里插入订单号等记录，支付回调时会更新pay_log表的记录 
+ 同时还有一个定时任务用来定时将所有1小时前的订单标记为交易超时 
+ 编写单元测试，模拟支付回调通知，结果出了异常，更新记录时出现死锁 
+ 大致SQL如下： 
+ 事务A Updat...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/MySQL/">MySQL</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/数据库/">数据库</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/死锁/">死锁</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-08/"><i class="fa fa-folder-open"></i> 2019-08</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 3 </span>
+            <span>Published {{moment(1566292701000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/07/18/记一次本人代码提交丢失事故/">记一次本人代码提交丢失事故</a></h2>
+          <p>
+             前情提要： 公司代码提交规范是Merge Request，平时push在自己fork的远程仓库，开发完成后用Merge Request合并到上游仓库。 
+ 之前我负责的功能是在 wsc 分支上工作的，push到了自己的远程仓库，并且发起Merge Request，然后被后续可能切换分支为理由打回。...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Git/">Git</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-07/"><i class="fa fa-folder-open"></i> 2019-07</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 2 </span>
+            <span>Published {{moment(1563416743000).fromNow()}}</span>
+          </div>
+        </li>
         
         <li class="archive-list-item">
           <h2><a href="/2019/06/26/网文书评/">【置顶】网文书评</a></h2>
@@ -185,13 +262,106 @@
         </li>
         
         <li class="archive-list-item">
+          <h2><a href="/2019/05/29/关于单测目的的学习/">关于单测的笔记</a></h2>
+          <p>
+             之前没有写单元测试的意识，把测试框架看成不用启动项目的带Spring框架的类。。 
+ 后来项目有了单元测试覆盖率要求，于是开始根据数据库的现有数据写用例 
+ 然后被教育了，单元测试应该是和外部环境无关的对现有逻辑的测试，所有数据要在 @Before 方法构建，并且测试完之后所有操作都要回滚。。 
+...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-05/"><i class="fa fa-folder-open"></i> 2019-05</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 1 </span>
+            <span>Published {{moment(1559116593000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/05/21/灵异事件二则/">灵异事件二则</a></h2>
+          <p>
+             ……调微信支付的时候碰到两个灵异事件 
+ 首先是按 Spring文档  添加了如下依赖：       1   2   3       dependencies &amp;#123;   	annotationProcessor  &#34;org.springframework.boot:spring-boot-...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-05/"><i class="fa fa-folder-open"></i> 2019-05</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 1 </span>
+            <span>Published {{moment(1558429442000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/05/20/微信小程序支付对接开发笔记/">微信小程序支付对接开发笔记</a></h2>
+          <p>
+             新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。 
+   下载微信SDK，编写后端代码  ……随便吐槽一下，微信SDK被人挖出来漏洞之后就不放github了，只能从微信官网下载，然后阿里规约扫描报了一大堆错……也没法改，万一后续SDK更新了呢 
+ 2019-8...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-05/"><i class="fa fa-folder-open"></i> 2019-05</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 1 </span>
+            <span>Published {{moment(1558322343000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/05/15/Spring-Boot项目公用模块单元测试踩坑/">Spring Boot项目公用模块单元测试踩坑</a></h2>
+          <p>
+             现在手头的项目分为几个子模块，前台一个，后台一个，计划任务一个，Service、bo、dao等放在common模块里，而common模块作为其他几个模块的依赖存在。 
+ 在加入Spring环境的单元测试时报了错：       1       java.lang.IllegalStateExcept...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/单元测试/">单元测试</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-05/"><i class="fa fa-folder-open"></i> 2019-05</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 2 </span>
+            <span>Published {{moment(1557891075000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
           <h2><a href="/2018/12/12/2018-12-12-面经读后感-动态代理笔记/">动态代理笔记</a></h2>
           <p>
              以前我眼里动态代理一直是个很神秘的东西，面试一旦问到必然摇头回答不知道 
  想办法理一下，目前动态代理有使用JDK类库 和使用CGLIB 两种方式 
  JDK类库的大概用法是这样的： 
- 写一个类 写一个接口 叫MyClass和MyClassImpl 
- 写一个Handler类，实现Invocat...
+ 写一个类 写一个接口 叫 MyClass 和 MyClassImpl  
+ 写一个 Handler 类，实现 ...
           </p>
           <ul class="tag-list clearfix">
             
@@ -435,9 +605,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
             <li class="tag-list-item"><a href="/tags/数据结构/">数据结构</a></li>
             
@@ -609,9 +779,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
           </ul>
           <div class="post-info">
@@ -680,9 +850,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
           </ul>
           <div class="post-info">
@@ -704,9 +874,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
           </ul>
           <div class="post-info">
@@ -730,9 +900,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
             <li class="tag-list-item"><a href="/tags/MySQL/">MySQL</a></li>
             
@@ -781,9 +951,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
             <li class="tag-list-item"><a href="/tags/MySQL/">MySQL</a></li>
             
@@ -808,9 +978,9 @@
           </p>
           <ul class="tag-list clearfix">
             
-            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
-            
             <li class="tag-list-item"><a href="/tags/白菜/">白菜</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
             <li class="tag-list-item"><a href="/tags/MySQL/">MySQL</a></li>
             

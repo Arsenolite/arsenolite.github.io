@@ -147,17 +147,46 @@
     <li class>
       <a href="/">Overview</a></li>
     <li class>
-      <a href="/archives">Posts <span class="counter">40</span></a>
+      <a href="/archives">Posts <span class="counter">47</span></a>
     </li>
     <li class>
-      <a href="/categories">Categories <span class="counter">13</span></a></li>
+      <a href="/categories">Categories <span class="counter">16</span></a></li>
     <li class="selected">
-      <a href="/tags">Tags <span class="counter">40</span></a></li>
+      <a href="/tags">Tags <span class="counter">44</span></a></li>
   </ul>
 </nav>
 
     <div class="body-secondary">
       <ul class="archive-list">
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/08/20/记一次死锁/">记一次死锁</a></h2>
+          <p>
+             业务场景：微信支付模块，每一次请求都会在pay_log表里插入订单号等记录，支付回调时会更新pay_log表的记录 
+ 同时还有一个定时任务用来定时将所有1小时前的订单标记为交易超时 
+ 编写单元测试，模拟支付回调通知，结果出了异常，更新记录时出现死锁 
+ 大致SQL如下： 
+ 事务A Updat...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/MySQL/">MySQL</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/数据库/">数据库</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/死锁/">死锁</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-08/"><i class="fa fa-folder-open"></i> 2019-08</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 3 </span>
+            <span>Published {{moment(1566292701000).fromNow()}}</span>
+          </div>
+        </li>
         
         <li class="archive-list-item">
           <h2><a href="/2017/07/19/2017-7-19/">关于数据库删除数据的同时保持完整性的个人做法。</a></h2>

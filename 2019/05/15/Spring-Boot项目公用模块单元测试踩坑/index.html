@@ -12,7 +12,7 @@
   <meta name="description" content>
   
   <meta name="keywords" content="
-  
+  Java,单元测试
   ">
   
   <meta name="author" content="Mother Ship">
@@ -86,15 +86,15 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 46 </a>
+        <a href="/archives" class="header-toolbar-right"> 47 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
-        <a href="/tags" class="header-toolbar-right"> 40 </a>
+        <a href="/tags" class="header-toolbar-right"> 44 </a>
       </li>
       <li>
         <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
-        <a href="/categories" class="header-toolbar-right"> 13 </a>
+        <a href="/categories" class="header-toolbar-right"> 16 </a>
       </li>
     </ul>
     <h2 class="header-title">
@@ -144,6 +144,8 @@
 <p>原来是忘记把Jackson的ObjectMapper纳入Spring 管理了：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ObjectMapper <span class="title">objectMapper</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> ObjectMapper();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接下来依然是Mapper接口报错找不到Bean……无奈先用Root.class顶过去，日后再说）</p>
+<p>2019-8-28更新</p>
+<p>最后的解决方案是不在Common模块里写测试用例……</p>
 
   </article>
 </div>
