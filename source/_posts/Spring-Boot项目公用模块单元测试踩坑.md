@@ -1,7 +1,8 @@
 ---
 title: Spring Boot项目公用模块单元测试踩坑
 date: 2019-05-15 11:31:15
-tags: 
+categories: ["2019-05"]
+tags:["Java","单元测试"]
 ---
 现在手头的项目分为几个子模块，前台一个，后台一个，计划任务一个，Service、bo、dao等放在common模块里，而common模块作为其他几个模块的依赖存在。
 
@@ -45,3 +46,7 @@ Parameter 0 of method setObjectMapper in com.XXX.common.service.impl.XXXServiceI
 ```
 
 接下来依然是Mapper接口报错找不到Bean……无奈先用Root.class顶过去，日后再说）
+
+2019-8-28更新
+
+最后的解决方案是不在Common模块里写测试用例……
