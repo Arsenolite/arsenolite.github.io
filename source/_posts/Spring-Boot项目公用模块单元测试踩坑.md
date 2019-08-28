@@ -2,7 +2,7 @@
 title: Spring Boot项目公用模块单元测试踩坑
 date: 2019-05-15 11:31:15
 categories: ["2019-05"]
-tags:["Java","单元测试"]
+tags: ["Java","单元测试"]
 ---
 现在手头的项目分为几个子模块，前台一个，后台一个，计划任务一个，Service、bo、dao等放在common模块里，而common模块作为其他几个模块的依赖存在。
 
