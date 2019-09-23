@@ -155,7 +155,7 @@
 <p>小程序支付交付需要在沙箱模拟过一遍之后向微信提交验收通过申请，当然如果已经有通过微信支付验收的小程序就不必走一遍沙箱流程了。</p>
 <p>写完代码自己测试时，一般还是直接用一个能用的小程序支付参数，而不是沙箱，理由后面讲。。</p>
 <h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><h4 id="AppId"><a href="#AppId" class="headerlink" title="AppId"></a>AppId</h4><p>小程序所属的公司账号将开发者的微信号加入小程序开发者后，开发者使用微信扫码登录微信小程序后台即可看到。</p>
-<h4 id="AppSecret"><a href="#AppSecret" class="headerlink" title="AppSecret"></a>AppSecret</h4><p>需要超级管理员在小程序后台开发设置生成。</p>
+<h4 id="AppSecret"><a href="#AppSecret" class="headerlink" title="AppSecret"></a>AppSecret</h4><p>需要超级管理员在小程序后台开发设置生成，用于小程序Code换OpenId用。。</p>
 <h4 id="MchId"><a href="#MchId" class="headerlink" title="MchId"></a>MchId</h4><p>在商户后台将开发者账号加入商户的员工账号后，员工账号会收到包含MchId的通知。</p>
 <h4 id="Key"><a href="#Key" class="headerlink" title="Key"></a>Key</h4><p>商户后台API安全处填写，需要超级管理员验证，需要商户账号开通操作密码<br>其中沙箱开发要用到SignKey，使用Key请求微信的API生成。</p>
 <p>解析退款信息时使用。</p>
@@ -172,11 +172,12 @@
 <h3 id="调起支付"><a href="#调起支付" class="headerlink" title="调起支付"></a>调起支付</h3><p>果↓然↑啊，扫描开发者工具给的二维码时提示错误：<strong>调用支付JSAPI缺少参数:total_fee</strong></p>
 <p>我寻思统一下单都成功了你在说你吗呢，会报错你就多报几句，是不是把你妈杀了你也只能呜咽着说出你缺少total_fee？真的憨批一样</p>
 <p>package传的也带了<code>prepay_id=</code>，后端生成随机数+签名用的是微信JavaSDK的工具类，签名字段大小写也没问题</p>
-<p>发现后端生成签名时，工具类会自动拼上key=AppSecret，而我手动在map里加了一个key……也就是现在的签名内容有问题。。</p>
+<p>发现后端生成签名时，工具类会自动拼上<code>key=key</code>，而我手动在map里加了一个key……也就是现在的签名内容有问题。。</p>
 <p>改掉之后还是报错，看到微信开放社区里<a href="https://developers.weixin.qq.com/community/pay/doc/0006805d6e87405eaee74e4c15b400" target="_blank" rel="noopener">一个帖子</a> 说即使报错也受到了微信支付的成功通知，又看到segmentfault里的<a href="https://segmentfault.com/q/1010000014709128" target="_blank" rel="noopener">一个帖子</a> 说<strong>沙箱就是这样。。</strong></p>
 <p>我真是艹了</p>
-<h3 id="接受回调"><a href="#接受回调" class="headerlink" title="接受回调"></a>接受回调</h3><p>坑点：微信SDK送了一个判断支付结果通知中的sign是否有效的方法<code>isPayResultNotifySignatureValid()</code>，这方法默认没有传入签名类型的时候，选的是MD5</p>
-<p>当时不知道从哪看到的线上必须使用HMAC加密prepay_id（也可能是试出来的），虽然隔壁NATIVE下单是可以用MD5的……</p>
+<h3 id="接受回调"><a href="#接受回调" class="headerlink" title="接受回调"></a>接受回调</h3><p>坑点：微信SDK送了一个判断支付结果通知中的sign是否有效的方法<code>isPayResultNotifySignatureValid()</code>，这方法默认没有传入签名类型的时候，选的是MD5.</p>
+<p>但是微信支付主工具类 初始化签名方式时，根据传入是否沙箱来切换加密方式和URL，此时加密方式是HMAC！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public WXPay(final WXPayConfig config, final String notifyUrl, final boolean autoReport, final boolean useSandbox) throws Exception &#123;</span><br><span class="line">        this.config = config;</span><br><span class="line">        this.notifyUrl = notifyUrl;</span><br><span class="line">        this.autoReport = autoReport;</span><br><span class="line">        this.useSandbox = useSandbox;</span><br><span class="line">        if (useSandbox) &#123;</span><br><span class="line">            this.signType = SignType.MD5; // 沙箱环境</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            this.signType = SignType.HMACSHA256;</span><br><span class="line">        &#125;</span><br><span class="line">        this.wxPayRequest = new WXPayRequest(config);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <p>于是支付回调返回的sign也当然是HMAC，但是支付回调是没有写明签名类型的……这里一定做处理，比较优雅的做法是接受回调时读取配置加入签名类型。。不过我当时是直接改了微信的SDK……</p>
 <p>然后是支付回调里没有trade_state，只有result_code，因为只推送成功结果，这点要和主动拉取支付结果做区分。</p>
 <h3 id="退款回调"><a href="#退款回调" class="headerlink" title="退款回调"></a>退款回调</h3><p>发起退款的流程和发起支付类似，略过不表</p>

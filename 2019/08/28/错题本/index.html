@@ -7,12 +7,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>
-    白菜日记6 | Mother Ship的笔记
+    Banner图模块错题本 | Mother Ship的笔记
   </title>
   <meta name="description" content>
   
   <meta name="keywords" content="
-  Java,白菜
+  错题本
   ">
   
   <meta name="author" content="Mother Ship">
@@ -122,16 +122,50 @@
     <i class="fa fa-user-o"></i>
     Mother Ship
 
-    <span class="post-date float-right" title="{{moment(1522639121000).format('MMM DD, YYYY, h:mm:ss A')}}">
+    <span class="post-date float-right" title="{{moment(1566962286000).format('MMM DD, YYYY, h:mm:ss A')}}">
       <i class="fa fa-pencil-square-o"></i>
-      {{moment(1522639121000).fromNow()}}
+      {{moment(1566962286000).fromNow()}}
     </span>
   </h3>
 
   <article class="post-content">
-    <h1>白菜日记6</h1>
-    <p>快半年了，白菜的功能也发生了很多变化。<br>加入了对接osu search接口，可以提供搜索词来找到自己在某个图的成绩。<br>加入了其他三个模式的支持（懒得从其他语言移植其他模式的PP计算）。<br>另外还有cost和bounspp的计算……<br>记不太清这五个月做了什么了，现在有了AOP的异常通知、参数拦截，redis缓存……<br>现在说起来好像挺简单，不过实现的时候还是挺开心的。</p>
-<p>比赛分析也改成了用命令增删玩家、谱面……</p>
+    <h1>Banner图模块错题本</h1>
+    <p>……尝试治一下自己的毛病</p>
+<p>大致就是，写代码的时候做出许多假设，测试的时候发现假设并不总是成立。。</p>
+<p>很多都是非常细小的问题，交付一个模块的时候记一下，不要再犯就是了</p>
+<p>2019-9-16<br>从前往后</p>
+<p>标签模块</p>
+<ul>
+<li>表名先用了复数，手写sql没改过来</li>
+<li>没考虑添加商品时没有带标签的情况</li>
+<li>删除接口Controller的请求方法写错</li>
+<li>TagDTO用于传输公司id，使用BeanUtils.copy时将公司id复制过去，导致返回结果多出公司id来</li>
+<li>根据标签名搜索商品时 标签名与商品名条件应用OR排列，标签id应用and排列</li>
+</ul>
+<p>2019-9-11 打脸</p>
+<ul>
+<li><p>商品列表我认为是空列表，但是没有再swagger里写清楚，前端不知是传空数组还是不传<br>包括活动页Banner的必传性我也没有写清楚<br>而我后台做了许多没有判null就进行的操作</p>
+</li>
+<li><p>是否需要主标题为空的校验写错了类型，写到了个人中心页的Banner</p>
+</li>
+<li><p>手动把模块表的某条记录从逻辑删除恢复，然后忘了恢复图片。。导致这个类型的模块拿不到，手动修了数据</p>
+</li>
+<li><p>哎呦，吐了，设计出现重大问题<br>之前做小程序banner一对多是按图片id做group，因为不想改原有数据结构<br>现在出现问题了，用两张相同的图片发现商品id被group到一个图片里去了</p>
+</li>
+</ul>
+<p>得改改，用json字符串存这个图片-商品一对多好了</p>
+<hr>
+<ul>
+<li>关联查询时，由于习惯Mybatis Plus的自动过滤逻辑删除特性，自己撰写SQL时没有过滤关联查询表的已经逻辑删除的记录、以及子表中不存在的记录<br>代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Select</span>(<span class="string">"select m.id as module_id,m.is_required,m.title,m.subtitle,m.type,i.file_id,i.product_id,i.pno "</span> +</span><br><span class="line">            <span class="string">"from wsc_pc_banner_module m left join wsc_pc_banner_image i on i.module_id = m.id "</span> +</span><br><span class="line">            <span class="string">"$&#123;ew.customSqlSegment&#125; and (i.is_deleted is NULL or i.is_deleted = 0) and m.is_deleted = 0 order by m.id"</span>)</span><br><span class="line">    <span class="function">List&lt;WscPcBannerDO&gt; <span class="title">selectBanner</span><span class="params">(@Param(Constants.WRAPPER)</span> Wrapper wrapper)</span>;</span><br></pre></td></tr></table></figure>
+<p>重点在于<code>and (i.is_deleted is NULL or i.is_deleted = 0)</code></p>
+<ul>
+<li>根据类型筛选Banner图，前端应该这么传值：</li>
+</ul>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET &#123;&#123;adminHost&#125;&#125;/microManage/pcBanner?type=0&amp;type=3&amp;type=4&amp;type=5</span><br><span class="line"><span class="attribute">Content-Type</span>: application/json</span><br><span class="line"><span class="attribute">Authorization</span>: &#123;&#123;adminToken&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>后端应该这么接受：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/pcBanner"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> JsonResult <span class="title">pcBanner</span><span class="params">(@RequestParam(required = <span class="keyword">false</span>)</span> Integer[] type) </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>前端直接用[0,3,4,5]这样的后端是接收不到的。。后端也不能用List<integer>来接受。。感觉这个设计有一点丑，但又不想额外写代码转换。。</integer></p>
 
   </article>
 </div>
