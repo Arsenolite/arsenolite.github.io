@@ -1,5 +1,5 @@
 @echo off
-start hexo g
+call hexo g
 start hexo d
 git add .
 git commit -m "add blog"
