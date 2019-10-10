@@ -147,10 +147,10 @@
     <li class>
       <a href="/">Overview</a></li>
     <li class>
-      <a href="/archives">Posts <span class="counter">47</span></a>
+      <a href="/archives">Posts <span class="counter">48</span></a>
     </li>
     <li class>
-      <a href="/categories">Categories <span class="counter">16</span></a></li>
+      <a href="/categories">Categories <span class="counter">17</span></a></li>
     <li class="selected">
       <a href="/tags">Tags <span class="counter">44</span></a></li>
   </ul>
@@ -158,6 +158,28 @@
 
     <div class="body-secondary">
       <ul class="archive-list">
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/09/24/简单的聚合支付网关设计/">简单的聚合支付网关设计</a></h2>
+          <p>
+             由于不是很熟悉旧业务，在写完微商城项目后 本打算重构公司原有的“支付模块”，结果要顾及原有项目和它的对接，一时间竟无从下手。 
+ 恰逢手上活不多，着手设计一个聚合支付网关，由于之前对接了微信支付，因此这个网关也能看到一些微信支付的影子，例如使用随机字符串+HMAC256验证签名，而不是用支付宝的R...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <a class="category-link" href="/categories/2019-09/"><i class="fa fa-folder-open"></i> 2019-09</a>
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 1 </span>
+            <span>Published {{moment(1569289175000).fromNow()}}</span>
+          </div>
+        </li>
         
         <li class="archive-list-item">
           <h2><a href="/2019/07/18/记一次本人代码提交丢失事故/">记一次本人代码提交丢失事故</a></h2>
@@ -232,9 +254,12 @@
         <li class="archive-list-item">
           <h2><a href="/2019/05/20/微信小程序支付对接开发笔记/">微信小程序支付对接开发笔记</a></h2>
           <p>
-             新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。 
-   下载微信SDK，编写后端代码  ……随便吐槽一下，微信SDK被人挖出来漏洞之后就不放github了，只能从微信官网下载，然后阿里规约扫描报了一大堆错……也没法改，万一后续SDK更新了呢 
- 2019-8...
+             2019-9-23更新 试了一下支付宝 
+ 发现支付宝网页有个收银台，PC网站下单完事之后会给一个自动提交的form，然后302跳转到另一个URL 
+ 感觉实际对接的时候可以把那个URL返回给前端 
+ 
+ 新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。 
+ ...
           </p>
           <ul class="tag-list clearfix">
             
@@ -371,11 +396,11 @@
             
             <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
-            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
-            
             <li class="tag-list-item"><a href="/tags/类加载器/">类加载器</a></li>
             
             <li class="tag-list-item"><a href="/tags/双亲委派/">双亲委派</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
             
           </ul>
           <div class="post-info">
@@ -398,11 +423,11 @@
             
             <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
             
+            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
+            
             <li class="tag-list-item"><a href="/tags/单例模式/">单例模式</a></li>
             
             <li class="tag-list-item"><a href="/tags/volatile/">volatile</a></li>
-            
-            <li class="tag-list-item"><a href="/tags/面经读后感/">面经读后感</a></li>
             
           </ul>
           <div class="post-info">

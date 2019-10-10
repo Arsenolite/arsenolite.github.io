@@ -86,7 +86,7 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 47 </a>
+        <a href="/archives" class="header-toolbar-right"> 48 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
@@ -94,7 +94,7 @@
       </li>
       <li>
         <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
-        <a href="/categories" class="header-toolbar-right"> 16 </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
       </li>
     </ul>
     <h2 class="header-title">
@@ -130,7 +130,11 @@
 
   <article class="post-content">
     <h1>微信小程序支付对接开发笔记</h1>
-    <p>新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。</p>
+    <p>2019-9-23更新<br>试了一下支付宝</p>
+<p>发现支付宝网页有个收银台，PC网站下单完事之后会给一个自动提交的form，然后302跳转到另一个URL</p>
+<p>感觉实际对接的时候可以把那个URL返回给前端</p>
+<hr>
+<p>新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。</p>
 <h2 id="下载微信SDK，编写后端代码"><a href="#下载微信SDK，编写后端代码" class="headerlink" title="下载微信SDK，编写后端代码"></a>下载微信SDK，编写后端代码</h2><p>……随便吐槽一下，微信SDK被人挖出来漏洞之后就不放github了，只能从微信官网下载，然后阿里规约扫描报了一大堆错……也没法改，万一后续SDK更新了呢</p>
 <p>2019-8-28更新：<br>我真是认识鹅厂微信支付Java SDK作者的美，你弄个<code>WxPayConfig</code>的抽象类给我们扩展，然后<code>getAppId()</code>这种方法的访问权限是<code>default</code>，用<code>Maven</code>等依赖管理引入之后，根本没法扩展，因为必须得在同一个包下。。</p>
 <p>然后其他<code>WxPay</code>之类的类又必须依赖这个类的子类才能干活。。 难怪官方都只给源码下载，而不是托管到什么依赖仓库。。</p>
