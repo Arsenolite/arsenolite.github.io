@@ -50,3 +50,4 @@ Parameter 0 of method setObjectMapper in com.XXX.common.service.impl.XXXServiceI
 2019-8-28更新
 
 最后的解决方案是不在Common模块里写测试用例……
+
