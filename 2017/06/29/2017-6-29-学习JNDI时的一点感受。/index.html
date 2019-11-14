@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    学习JNDI时的一点感受。 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1498712784000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1498712784000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>学习JNDI时的一点感受。</h1>
+    <p>关于JNDI，较为学术向的解释：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">J2EE 规范要求所有 J2EE 容器都要提供 JNDI 规范的实现。</span><br><span class="line">JNDI 在 J2EE 中的角色就是“交换机” —— J2EE 组件在运行时间接地查找其他组件、资源或服务的通用机制。</span><br><span class="line">在多数情况下，提供 JNDI 供应者的容器可以充当有限的数据存储，这样管理员就可以设置应用程序的执行属性，并让其他应用程序引用这些属性。</span><br><span class="line">在 J2EE 中，JNDI 是把 J2EE 应用程序合在一起的粘合剂，但还没有紧到无法让人很容易地把它们分开并重新装配。</span><br></pre></td></tr></table></figure></p>
+<p>在IBM DeveloperWork我看到了这样一个例子：<br><a href="https://www.ibm.com/developerworks/cn/java/j-jndi/index.html" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/java/j-jndi/index.html</a></p>
+<p>大致的内容就是，Dolly在编写JDBC程序时，将数据库驱动、连接池的数量等写死在程序中。<br>实际部署时，情况发生了变化，但是程序却很难修改。</p>
+<p>文章中还提到，J2EE 规范把职责委托给多个开发角色：编写程序的人，打包为程序包的人，部署人员和运维人员。<br>（实际开发中，1、2的活经常一个人干，3、4则另一个人干， 就是我们熟悉的程序员和运维。）</p>
+<p>J2EE中定义了JNDI规范，它的一个最简单的实例，上述例子中也有给出：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;resource-ref&gt;</span><br><span class="line">  &lt;description&gt;Dollys DataSource&lt;/description&gt;</span><br><span class="line">  &lt;res-ref-name&gt;jdbc/mydatasource&lt;/res-ref-name&gt;</span><br><span class="line">  &lt;res-ref-type&gt;javax.sql.DataSource&lt;/res-ref-type&gt;</span><br><span class="line">  &lt;res-auth&gt;Container&lt;/res-auth&gt;</span><br><span class="line">&lt;/resource-ref&gt;</span><br></pre></td></tr></table></figure>
+<p>这是一段写在web.xml中的代码，它的作用是构建一个数据源：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java:comp/env/jdbc/mydatasource</span><br></pre></td></tr></table></figure></p>
+<p>以便在稍后的编码中使用它。</p>
+<p>在查找参考资料时，我见到过一些早期的加载Spring框架的applicationcontext.xml的办法，就是在web.xml中用类似手段定义好一个资源，初始化Spring时，把它作为参数传入进去。</p>
+<p>在培训班学习时，我一度认为J2EE是简陋的、原生的、被淘汰的技术。<br>在我的了解中，现在没有人直接用JSP、Servlet、JDBC开发Web应用，取而代之的是SpringMVC，分层开发，开源框架。<br>web.xml的作用仅仅是配置拦截器，以及初始化Spring容器，而JDBC和JPA早已不见踪影，EJB也仅仅存在于各种数年前的文档中。</p>
+<p>在看完<a href="https://www.ibm.com/developerworks/cn/java/j-lo-openjpa1/" title="这篇文章" target="_blank" rel="noopener">这篇文章</a>后，我发现之前的认识过于浅薄。<br>J2EE并不是只有Servlet和JSP，EJB实际上是一套类似Spring的IOC/DI容器，它甚至也有AOP的功能。<br>JNDI接口就是一个用于解耦的规范，将部署人员和运维人员才需要配置的东西独立出去。上文中1和2只需要在程序内定义JNDI格式的数据源，而3和4根据文档配置这个数据源就能使用了。</p>
+<p>那么问题来了，为什么Java会有同人逼死官方的现象出现呢……</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

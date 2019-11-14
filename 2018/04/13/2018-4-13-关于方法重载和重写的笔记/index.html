@@ -86,11 +86,11 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 48 </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
-        <a href="/tags" class="header-toolbar-right"> 44 </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
       </li>
       <li>
         <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
@@ -131,11 +131,11 @@
   <article class="post-content">
     <h1>关于方法重载和覆盖的笔记</h1>
     <p>最近做笔试题总是遇到覆盖重写，总是记不住，干脆写个笔记辅助记忆。<br>（不知是我太菜了还是黑皮书的翻译太拗口，本来想着Java语言规范这本书即使看不下去，拿来做工具书查也是好的，结果当工具书也看不懂x）</p>
-<p>@Override<br>方法覆盖存在于子类和父类（接口）之间，遵循以下原则：<br>方法名字：必须相同<br>参数列表：必须相同</p>
+<p><code>@Override</code><br>方法覆盖存在于子类和父类（接口）之间，遵循以下原则：<br>方法名字：必须相同<br>参数列表：必须相同</p>
 <p>抛出异常：子类必须&lt;=父类（子类抛出的异常类，必须与父类相同，或者是父类抛出的异常类的子类）<br>返回类型：子类必须&lt;=父类（子类的返回类型，必须与父类相同，必须是父类的返回类型的子类）</p>
 <p>访问权限：子类必须&gt;=父类（例如public不能覆盖为protected）</p>
 <p>俗称两同两小一大原则</p>
-<p>Overload<br>方法重写：在一个类中定义多个重名的方法，遵循以下原则：<br>方法名字：必须相同<br>参数列表：必须不同，如果参数个数相同，必须保证参数的类型或者顺序不同。<br>返回类型、访问权限、没有要求。</p>
+<p><code>Overload</code><br>方法重写：在一个类中定义多个重名的方法，遵循以下原则：<br>方法名字：必须相同<br>参数列表：必须不同，如果参数个数相同，必须保证参数的类型或者顺序不同。<br>返回类型、访问权限、没有要求。</p>
 
   </article>
 </div>

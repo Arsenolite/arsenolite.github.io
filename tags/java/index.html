@@ -147,12 +147,12 @@
     <li class>
       <a href="/">Overview</a></li>
     <li class>
-      <a href="/archives">Posts <span class="counter">48</span></a>
+      <a href="/archives">Posts <span class="counter">50</span></a>
     </li>
     <li class>
       <a href="/categories">Categories <span class="counter">17</span></a></li>
     <li class="selected">
-      <a href="/tags">Tags <span class="counter">44</span></a></li>
+      <a href="/tags">Tags <span class="counter">46</span></a></li>
   </ul>
 </nav>
 
@@ -160,7 +160,32 @@
       <ul class="archive-list">
         
         <li class="archive-list-item">
-          <h2><a href="/2019/09/24/简单的聚合支付网关设计/">简单的聚合支付网关设计</a></h2>
+          <h2><a href="/2019/11/14/2019-11-14-白菜日记7/">白菜日记7</a></h2>
+          <p>
+             最近又又又打算重构白菜，缘由则是因为经常出现图片上传失败的情况，加上之前的丑陋代码实在不堪入目。。 
+ 当时用两天赶出来的所有命令的拦截器，事实证明根本没法维护，把所有参数语义化是一个原因，把所有命令放在一起拦截则是另一个更重要的原因，为了满足“通用逻辑”做了很多匪夷所思的around。。 
+ 大...
+          </p>
+          <ul class="tag-list clearfix">
+            
+            <li class="tag-list-item"><a href="/tags/Java/">Java</a></li>
+            
+            <li class="tag-list-item"><a href="/tags/HTTP/">HTTP</a></li>
+            
+          </ul>
+          <div class="post-info">
+            <span>
+              
+              <i class="fa fa-folder-open"></i> Uncategorized
+              
+            </span>
+            <span><i class="fa fa-tag"></i> 2 </span>
+            <span>Published {{moment(1573660800000).fromNow()}}</span>
+          </div>
+        </li>
+        
+        <li class="archive-list-item">
+          <h2><a href="/2019/09/24/2019-09-24-简单的聚合支付网关设计/">简单的聚合支付网关设计</a></h2>
           <p>
              由于不是很熟悉旧业务，在写完微商城项目后 本打算重构公司原有的“支付模块”，结果要顾及原有项目和它的对接，一时间竟无从下手。 
  恰逢手上活不多，着手设计一个聚合支付网关，由于之前对接了微信支付，因此这个网关也能看到一些微信支付的影子，例如使用随机字符串+HMAC256验证签名，而不是用支付宝的R...
@@ -182,7 +207,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2019/07/18/记一次本人代码提交丢失事故/">记一次本人代码提交丢失事故</a></h2>
+          <h2><a href="/2019/07/18/2019-07-18-记一次本人代码提交丢失事故/">记一次本人代码提交丢失事故</a></h2>
           <p>
              前情提要： 公司代码提交规范是Merge Request，平时push在自己fork的远程仓库，开发完成后用Merge Request合并到上游仓库。 
  之前我负责的功能是在 wsc 分支上工作的，push到了自己的远程仓库，并且发起Merge Request，然后被后续可能切换分支为理由打回。...
@@ -206,7 +231,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2019/05/29/关于单测目的的学习/">关于单测的笔记</a></h2>
+          <h2><a href="/2019/05/29/2019-05-29-关于单测的笔记/">关于单测的笔记</a></h2>
           <p>
              之前没有写单元测试的意识，把测试框架看成不用启动项目的带Spring框架的类。。 
  后来项目有了单元测试覆盖率要求，于是开始根据数据库的现有数据写用例 
@@ -230,7 +255,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2019/05/21/灵异事件二则/">灵异事件二则</a></h2>
+          <h2><a href="/2019/05/21/2019-05-21-灵异事件二则/">灵异事件二则</a></h2>
           <p>
              ……调微信支付的时候碰到两个灵异事件 
  首先是按 Spring文档  添加了如下依赖：       1   2   3       dependencies &amp;#123;   	annotationProcessor  &#34;org.springframework.boot:spring-boot-...
@@ -252,7 +277,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2019/05/20/微信小程序支付对接开发笔记/">微信小程序支付对接开发笔记</a></h2>
+          <h2><a href="/2019/05/20/2019-05-20-微信小程序支付对接开发笔记/">微信小程序支付对接开发笔记</a></h2>
           <p>
              2019-9-23更新 试了一下支付宝 
  发现支付宝网页有个收银台，PC网站下单完事之后会给一个自动提交的form，然后302跳转到另一个URL 
@@ -278,7 +303,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2019/05/15/Spring-Boot项目公用模块单元测试踩坑/">Spring Boot项目公用模块单元测试踩坑</a></h2>
+          <h2><a href="/2019/05/15/2019-05-15-Spring-Boot项目公用模块单元测试踩坑/">Spring Boot项目公用模块单元测试踩坑</a></h2>
           <p>
              现在手头的项目分为几个子模块，前台一个，后台一个，计划任务一个，Service、bo、dao等放在common模块里，而common模块作为其他几个模块的依赖存在。 
  在加入Spring环境的单元测试时报了错：       1       java.lang.IllegalStateExcept...
@@ -574,7 +599,7 @@
           <h2><a href="/2018/04/13/2018-4-13-关于方法重载和重写的笔记/">关于方法重载和覆盖的笔记</a></h2>
           <p>
              最近做笔试题总是遇到覆盖重写，总是记不住，干脆写个笔记辅助记忆。 （不知是我太菜了还是黑皮书的翻译太拗口，本来想着Java语言规范这本书即使看不下去，拿来做工具书查也是好的，结果当工具书也看不懂x） 
- @Override 方法覆盖存在于子类和父类（接口）之间，遵循以下原则： 方法名字：必须相同 ...
+  @Override  方法覆盖存在于子类和父类（接口）之间，遵循以下原则： 方法名字：必须相...
           </p>
           <ul class="tag-list clearfix">
             
@@ -901,7 +926,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2017/06/29/2017-6-29-2/">记一次在CentOS 7上部署Java测试环境的过程</a></h2>
+          <h2><a href="/2017/06/29/2017-6-29-记一次在CentOS 7上部署Java测试环境的过程/">记一次在CentOS 7上部署Java测试环境的过程</a></h2>
           <p>
              将之前配置LNMJ测试环境的过程归个档，方便日后查阅。 
    1） JDK环境    下载并安装       1   2       cd usr   mkdir java       
@@ -930,7 +955,7 @@
         </li>
         
         <li class="archive-list-item">
-          <h2><a href="/2017/06/29/2017-6-29/">学习JNDI时的一点感受。</a></h2>
+          <h2><a href="/2017/06/29/2017-6-29-学习JNDI时的一点感受。/">学习JNDI时的一点感受。</a></h2>
           <p>
              关于JNDI，较为学术向的解释：       1   2   3   4       J2EE 规范要求所有 J2EE 容器都要提供 JNDI 规范的实现。   JNDI 在 J2EE 中的角色就是“交换机” —— J2EE 组件在运行时间接地查找其他组件、资源或服务的通用机制。   在多数情况下...
           </p>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    错题本 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  错题本
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1566962286000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1566962286000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>错题本</h1>
+    <p>……尝试治一下自己的毛病</p>
+<p>大致就是，写代码的时候做出许多假设，测试的时候发现假设并不总是成立。。</p>
+<p>很多都是非常细小的问题，交付一个模块的时候记一下，不要再犯就是了</p>
+<h3 id="2019-11-14"><a href="#2019-11-14" class="headerlink" title="2019-11-14"></a>2019-11-14</h3><p>微商城斑马二期用户分组、花型</p>
+<ul>
+<li><p>MyBatis Plus默认不更新为null字段，导致无法将面料修改为花型</p>
+</li>
+<li><p>重构商品校验Service时，取错集合，拼错字符串，导致花型无法设置为前10商品时报错文案错误</p>
+</li>
+<li><p>商品占库业务没有考虑到库存可以为空，订单业务应该是花型订单才不占库，写反了</p>
+</li>
+<li><p>JRebel会导致修改Spring配置文件的配置项后不生效</p>
+</li>
+<li><p>审核订单需要计算幅宽克重，没有跳过</p>
+</li>
+<li><p>销售系统创建订单会根据类来推断订单类型，还有一个强行将生产数量置0的设定</p>
+</li>
+<li><p>管理后端商品详情应该写sql 用嵌套查询查出子表内的完整记录，然后返回id和名称给前端</p>
+</li>
+<li><p>商品详情没有返回折扣价，而且从登录Token信息取用户组id不一定是最新的</p>
+</li>
+</ul>
+<p>解决方案：</p>
+<ul>
+<li>单个用户认证并且变更所在用户组的时候，需要踢出该用户</li>
+<li>删除整个用户组时，需要踢出该用户组所有用户</li>
+<li>商品详情使用用户组id从数据库获取并返回当前用户的折扣信息，由前端计算实时的商品价格/价格配置价格</li>
+<li>订单详情的花型订单需要返回单品的单价</li>
+<li>商品列表也需要返回折扣</li>
+</ul>
+<p>购物车展示折扣价</p>
+<h3 id="2019-9-16"><a href="#2019-9-16" class="headerlink" title="2019-9-16"></a>2019-9-16</h3><p>从前往后</p>
+<p>标签模块</p>
+<ul>
+<li>表名先用了复数，手写sql没改过来</li>
+<li>没考虑添加商品时没有带标签的情况</li>
+<li>删除接口Controller的请求方法写错</li>
+<li>TagDTO用于传输公司id，使用BeanUtils.copy时将公司id复制过去，导致返回结果多出公司id来</li>
+<li>根据标签名搜索商品时 标签名与商品名条件应用OR排列，标签id应用and排列</li>
+</ul>
+<h3 id="2019-9-11"><a href="#2019-9-11" class="headerlink" title="2019-9-11"></a>2019-9-11</h3><ul>
+<li><p>商品列表我认为是空列表，但是没有再swagger里写清楚，前端不知是传空数组还是不传<br>包括活动页Banner的必传性我也没有写清楚<br>而我后台做了许多没有判null就进行的操作</p>
+</li>
+<li><p>是否需要主标题为空的校验写错了类型，写到了个人中心页的Banner</p>
+</li>
+<li><p>手动把模块表的某条记录从逻辑删除恢复，然后忘了恢复图片。。导致这个类型的模块拿不到，手动修了数据</p>
+</li>
+<li><p>哎呦，吐了，设计出现重大问题<br>之前做小程序banner一对多是按图片id做group，因为不想改原有数据结构<br>现在出现问题了，用两张相同的图片发现商品id被group到一个图片里去了</p>
+</li>
+</ul>
+<p>得改改，用json字符串存这个图片-商品一对多好了</p>
+<h3 id="2019-08-28"><a href="#2019-08-28" class="headerlink" title="2019-08-28"></a>2019-08-28</h3><p>Banner图模块</p>
+<ul>
+<li>关联查询时，由于习惯Mybatis Plus的自动过滤逻辑删除特性，自己撰写SQL时没有过滤关联查询表的已经逻辑删除的记录、以及子表中不存在的记录<br>代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Select</span>(<span class="string">"select m.id as module_id,m.is_required,m.title,m.subtitle,m.type,i.file_id,i.product_id,i.pno "</span> +</span><br><span class="line">            <span class="string">"from wsc_pc_banner_module m left join wsc_pc_banner_image i on i.module_id = m.id "</span> +</span><br><span class="line">            <span class="string">"$&#123;ew.customSqlSegment&#125; and (i.is_deleted is NULL or i.is_deleted = 0) and m.is_deleted = 0 order by m.id"</span>)</span><br><span class="line">    <span class="function">List&lt;WscPcBannerDO&gt; <span class="title">selectBanner</span><span class="params">(@Param(Constants.WRAPPER)</span> Wrapper wrapper)</span>;</span><br></pre></td></tr></table></figure>
+<p>重点在于<code>and (i.is_deleted is NULL or i.is_deleted = 0)</code></p>
+<ul>
+<li>根据类型筛选Banner图，前端应该这么传值：</li>
+</ul>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">GET &#123;&#123;adminHost&#125;&#125;/microManage/pcBanner?type=0&amp;type=3&amp;type=4&amp;type=5</span><br><span class="line"><span class="attribute">Content-Type</span>: application/json</span><br><span class="line"><span class="attribute">Authorization</span>: &#123;&#123;adminToken&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>后端应该这么接受：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping</span>(<span class="string">"/pcBanner"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> JsonResult <span class="title">pcBanner</span><span class="params">(@RequestParam(required = <span class="keyword">false</span>)</span> Integer[] type) </span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>前端直接用[0,3,4,5]这样的后端是接收不到的。。后端也不能用List<integer>来接受。。感觉这个设计有一点丑，但又不想额外写代码转换。。</integer></p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

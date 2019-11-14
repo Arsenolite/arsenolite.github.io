@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于shiro在SSM环境下的整合(1) | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  shiro,java,spring,springmvc,mybatis
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1500609116000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1500609116000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于shiro在SSM环境下的整合(1)</h1>
+    <h3 id="1-无状态场景下的shiro整合。"><a href="#1-无状态场景下的shiro整合。" class="headerlink" title="1.无状态场景下的shiro整合。"></a>1.无状态场景下的shiro整合。</h3><p>这是自己练手的产物，github：<a href="https://github.com/Arsenolite/com.qhs.blog" target="_blank" rel="noopener">https://github.com/Arsenolite/com.qhs.blog</a></p>
+<h4 id="分析思路："><a href="#分析思路：" class="headerlink" title="分析思路："></a>分析思路：</h4><ul>
+<li>由于是无状态API，只有带Token访问，因此把session相关的全部禁用。</li>
+<li>而Realm起到的是userService的作用，也禁用掉，毕竟我不可能每次用户请求API就去查数据库吧。</li>
+<li>再加上当时使用了JWT作为Token规范，因此业务需求就成了检验JWT有效性。</li>
+<li>Filter中直接注入redisDAO和tokenService，对URL中的Token参数检验，有效就放行。</li>
+</ul>
+<h4 id="具体写法："><a href="#具体写法：" class="headerlink" title="具体写法："></a>具体写法：</h4><h5 id="首先我们要有一个maven-ssm的环境，并且导入shiro-web，shiro-core和shiro-spring三个依赖。"><a href="#首先我们要有一个maven-ssm的环境，并且导入shiro-web，shiro-core和shiro-spring三个依赖。" class="headerlink" title="首先我们要有一个maven+ssm的环境，并且导入shiro-web，shiro-core和shiro-spring三个依赖。"></a>首先我们要有一个maven+ssm的环境，并且导入shiro-web，shiro-core和shiro-spring三个依赖。</h5><h5 id="由于我们需要将shiro纳入Spring的管理周期，在Web-xml中这么写："><a href="#由于我们需要将shiro纳入Spring的管理周期，在Web-xml中这么写：" class="headerlink" title="由于我们需要将shiro纳入Spring的管理周期，在Web.xml中这么写："></a>由于我们需要将shiro纳入Spring的管理周期，在Web.xml中这么写：</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- shiro --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- The filter-name matches name of a 'shiroFilter' bean inside applicationContext.xml --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>shiroFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>targetFilterLifecycle<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>true<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>shiroFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里因为要和Spring集成，所以具体Filter的代码不是写在这里，这里只是将shiro的Filter纳入Spring的Filter链。</p>
+<h5 id="接下来是重头戏：Spring配置文件，既然有SSM环境，肯定有一份或者多份xml。"><a href="#接下来是重头戏：Spring配置文件，既然有SSM环境，肯定有一份或者多份xml。" class="headerlink" title="接下来是重头戏：Spring配置文件，既然有SSM环境，肯定有一份或者多份xml。"></a>接下来是重头戏：Spring配置文件，既然有SSM环境，肯定有一份或者多份xml。</h5><h6 id="定义Filter，每一个都指向具体的类（稍后在后文贴出）"><a href="#定义Filter，每一个都指向具体的类（稍后在后文贴出）" class="headerlink" title="定义Filter，每一个都指向具体的类（稍后在后文贴出）"></a>定义Filter，每一个都指向具体的类（稍后在后文贴出）</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--验证码Filter--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"mailFilter"</span> <span class="attr">class</span>=<span class="string">"com.qhs.blog.util.shiro.filter.mailFilter"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"captchaFilter"</span> <span class="attr">class</span>=<span class="string">"com.qhs.blog.util.shiro.filter.captchaFilter"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!--认证Filter--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"loginFilter"</span> <span class="attr">class</span>=<span class="string">"com.qhs.blog.util.shiro.filter.loginFilter"</span>/&gt;</span></span><br><span class="line"><span class="comment">&lt;!--授权Filter--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"adminFilter"</span> <span class="attr">class</span>=<span class="string">"com.qhs.blog.util.shiro.filter.adminFilter"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h6 id="组装Filter工厂，之前web-xml中的shiroFilter实际上是一个Filter工厂。"><a href="#组装Filter工厂，之前web-xml中的shiroFilter实际上是一个Filter工厂。" class="headerlink" title="组装Filter工厂，之前web.xml中的shiroFilter实际上是一个Filter工厂。"></a>组装Filter工厂，之前web.xml中的shiroFilter实际上是一个Filter工厂。</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- shiroFilter工厂 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"shiroFilter"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.spring.web.ShiroFilterFactoryBean"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 构建securityManager环境 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"securityManager"</span> <span class="attr">ref</span>=<span class="string">"securityManager"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"filters"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">util:map</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"mail"</span> <span class="attr">value-ref</span>=<span class="string">"mailFilter"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"captcha"</span> <span class="attr">value-ref</span>=<span class="string">"captchaFilter"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"admin"</span> <span class="attr">value-ref</span>=<span class="string">"adminFilter"</span>/&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">entry</span> <span class="attr">key</span>=<span class="string">"login"</span> <span class="attr">value-ref</span>=<span class="string">"loginFilter"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">util:map</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 设计哪些URL用哪个过滤器 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--由于具体用户权限还没细化成接口，先定义两个验证码的过滤器--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"filterChainDefinitions"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">value</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 邮箱验证码要求网页验证码认证通过 --&gt;</span></span><br><span class="line">            /api/captcha/** = noSessionCreation,anon</span><br><span class="line">            /api/mail/** = noSessionCreation,captcha</span><br><span class="line">            <span class="comment">&lt;!-- 用户模块 --&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h6 id="接下来将shiro的会话相关功能全部禁用掉，StatelessDefaultSubjectFactory需要手动撰写。"><a href="#接下来将shiro的会话相关功能全部禁用掉，StatelessDefaultSubjectFactory需要手动撰写。" class="headerlink" title="接下来将shiro的会话相关功能全部禁用掉，StatelessDefaultSubjectFactory需要手动撰写。"></a>接下来将shiro的会话相关功能全部禁用掉，StatelessDefaultSubjectFactory需要手动撰写。</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- Subject工厂，写一个禁用会话的subjectFactory --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"subjectFactory"</span> <span class="attr">class</span>=<span class="string">"com.qhs.blog.util.shiro.StatelessDefaultSubjectFactory"</span>/&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 禁用掉会话调度器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sessionManager"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.session.mgt.DefaultSessionManager"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sessionValidationSchedulerEnabled"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--解决报错，组装默认的subjectDAO--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"subjectDAO"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.mgt.DefaultSubjectDAO"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sessionStorageEvaluator"</span> <span class="attr">ref</span>=<span class="string">"sessionStorageEvaluator"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"sessionStorageEvaluator"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.mgt.DefaultSessionStorageEvaluator"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sessionStorageEnabled"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h6 id="将配置为禁用Session的subjectDAO、subjectFactory和sessionManager注入安全管理器。"><a href="#将配置为禁用Session的subjectDAO、subjectFactory和sessionManager注入安全管理器。" class="headerlink" title="将配置为禁用Session的subjectDAO、subjectFactory和sessionManager注入安全管理器。"></a>将配置为禁用Session的subjectDAO、subjectFactory和sessionManager注入安全管理器。</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 安全管理器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"securityManager"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.web.mgt.DefaultWebSecurityManager"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--&lt;property name="realm" ref="userRealm"/&gt;--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"subjectDAO"</span> <span class="attr">ref</span>=<span class="string">"subjectDAO"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"subjectFactory"</span> <span class="attr">ref</span>=<span class="string">"subjectFactory"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"sessionManager"</span> <span class="attr">ref</span>=<span class="string">"sessionManager"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 相当于调用SecurityUtils.setSecurityManager(securityManager) --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.beans.factory.config.MethodInvokingFactoryBean"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"staticMethod"</span></span></span><br><span class="line"><span class="tag">              <span class="attr">value</span>=<span class="string">"org.apache.shiro.SecurityUtils.setSecurityManager"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"arguments"</span> <span class="attr">ref</span>=<span class="string">"securityManager"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h6 id="最后构建一个迭代7次的SHA-512-Hash服务，用来在类里调用。"><a href="#最后构建一个迭代7次的SHA-512-Hash服务，用来在类里调用。" class="headerlink" title="最后构建一个迭代7次的SHA-512 Hash服务，用来在类里调用。"></a>最后构建一个迭代7次的SHA-512 Hash服务，用来在类里调用。</h6><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--构建一个Hash服务，在此指定叠加方式和采用的算法--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"defaultHashService"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.crypto.hash.DefaultHashService"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hashAlgorithmName"</span> <span class="attr">value</span>=<span class="string">"SHA-512"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"hashIterations"</span> <span class="attr">value</span>=<span class="string">"7"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="前文提到的StatelessDefaultSubjectFactory："><a href="#前文提到的StatelessDefaultSubjectFactory：" class="headerlink" title="前文提到的StatelessDefaultSubjectFactory："></a>前文提到的StatelessDefaultSubjectFactory：</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qhs.blog.util.shiro;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.Subject;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.SubjectContext;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.web.mgt.DefaultWebSubjectFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StatelessDefaultSubjectFactory</span> <span class="keyword">extends</span> <span class="title">DefaultWebSubjectFactory</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> Subject <span class="title">createSubject</span><span class="params">(SubjectContext context)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//不创建session</span></span><br><span class="line">        context.setSessionCreationEnabled(<span class="keyword">false</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.createSubject(context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="接下来就是编写具体Filter了。"><a href="#接下来就是编写具体Filter了。" class="headerlink" title="接下来就是编写具体Filter了。"></a>接下来就是编写具体Filter了。</h5><p>先贴一段代码，逐步讲解作用。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qhs.blog.util.shiro.filter;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qhs.blog.serviceImpl.tokenServiceImpl;</span><br><span class="line"><span class="keyword">import</span> net.minidev.json.JSONObject;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.web.filter.AccessControlFilter;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.web.util.WebUtils;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;</span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by QHS on 2017/5/31.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">captchaFilter</span> <span class="keyword">extends</span> <span class="title">AccessControlFilter</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> tokenServiceImpl tokenService;</span><br><span class="line"></span><br><span class="line">    JSONObject resp = <span class="keyword">new</span> JSONObject();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">isAccessAllowed</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse, Object o)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line">        HttpServletRequest req = WebUtils.toHttp(servletRequest);</span><br><span class="line">        String token = req.getParameter(<span class="string">"token"</span>);</span><br><span class="line">        Map&lt;String, Object&gt; resultMap = tokenService.validToken(token);</span><br><span class="line">        <span class="keyword">switch</span> ((String) resultMap.get(<span class="string">"state"</span>)) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"EXPIRED"</span>:</span><br><span class="line">                resp.put(<span class="string">"warning"</span>, <span class="string">"授权已过期"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"VALID"</span>:</span><br><span class="line">                JSONObject jo = (JSONObject) resultMap.get(<span class="string">"data"</span>);</span><br><span class="line">                String value = (String) jo.get(<span class="string">"value"</span>);</span><br><span class="line">                <span class="keyword">if</span> (value.equals(<span class="string">"captchaAuthed"</span>) &amp;&amp; value.equals(<span class="string">"getMailCode"</span>)) &#123;</span><br><span class="line">                    flag = <span class="keyword">true</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="string">"INVALID"</span>:</span><br><span class="line">                resp.put(<span class="string">"msg"</span>, <span class="string">"请输入验证码"</span>);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> flag;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">boolean</span> <span class="title">onAccessDenied</span><span class="params">(ServletRequest servletRequest, ServletResponse servletResponse)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">        servletResponse.setCharacterEncoding(<span class="string">"UTF-8"</span>);</span><br><span class="line">        servletResponse.setContentType(<span class="string">"application/json; charset=utf-8"</span>);</span><br><span class="line">        servletResponse.getWriter().write(resp.toJSONString());</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这个Filter继承了AccessControllFilter，shiro有几个内置Filter，有的用于认证，有的用于鉴权。而在这里，我只需要一个验证码，没必要处理用户登录，因此直接用了AccessControllFilter。</p>
+<p>继承了类就需要继承方法，AccessControllFilter带了isAccessAllowed和onAccessdenied方法。</p>
+<p>前者如果return了True，就允许用户访问Filter保护下的url，如果return False，那就会进入后面的方法，如果后面的方法Return True也允许用户访问（意义不明啊）。</p>
+<p>因此我在类里定义变量JSONObject，在isAccessAllowed方法中对传入Token进行验证，验证不通过则在JSONObject内写入相应的错误信息并返回false。</p>
+<p>进入onAccessDenied方法，在方法体内将JSONObject写入Servlet流输出到网页上，这样就完成了一个基本的无状态应用集成。<br>（其实我的做法和手写Filter差不多，只是引入shiro作为练手，和后续功能扩展。）</p>
+<h3 id="2-普通Web应用中使用shiro"><a href="#2-普通Web应用中使用shiro" class="headerlink" title="2.普通Web应用中使用shiro"></a>2.普通Web应用中使用shiro</h3><h4 id="分析思路：-1"><a href="#分析思路：-1" class="headerlink" title="分析思路："></a>分析思路：</h4><p>现在在单位做的项目，计划中是一个由服务端渲染JSP的项目，因此可以使用Session和Cookie。</p>
+<p>这时候引入shiro，就可以使用realm的相关特性，将userService注入realm中，由shiro接管用户认证、授权的成功/失败后的场景。可以说是充分发挥了功能。<br>Web.xml内容不变，Spring配置中去掉那些关于Session的设置，并且也不用写StatelessDefaultSubjectFactory。</p>
+<h4 id="具体写法：-1"><a href="#具体写法：-1" class="headerlink" title="具体写法："></a>具体写法：</h4><h5 id="修改XML配置"><a href="#修改XML配置" class="headerlink" title="修改XML配置"></a>修改XML配置</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"securityManager"</span> <span class="attr">class</span>=<span class="string">"org.apache.shiro.web.mgt.DefaultWebSecurityManager"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"realm"</span> <span class="attr">ref</span>=<span class="string">"userRealm"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"userRealm"</span> <span class="attr">class</span>=<span class="string">"com.shengting.store.util.shiro.realm.userRealm"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"cachingEnabled"</span> <span class="attr">value</span>=<span class="string">"false"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h5 id="新建userRealm"><a href="#新建userRealm" class="headerlink" title="新建userRealm"></a>新建userRealm</h5><p>由于这个Realm类需要同时完成认证/鉴权工作（认证（Authc）指的是判断用户是否能登录，而鉴权（Authz）指的是用户有没有权限执行某项操作。），我们让它继承AuthorizingRealm类。</p>
+<p>继承了类就要继承方法，我们的类看起来是这样子的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">userRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken authenticationToken)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principalCollection)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>后面的大体思路，就是调用userMapper在数据库中查找信息（也可以使用封装好的userService）<br>由于工作进度问题，Controller还没有写完，暂时先更新到这里;w;</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

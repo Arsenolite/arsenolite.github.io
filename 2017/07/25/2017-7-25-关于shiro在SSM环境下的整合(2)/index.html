@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    关于shiro在SSM环境下的整合(2) | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  shiro,java,spring,springmvc,mybatis
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1500951696000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1500951696000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>关于shiro在SSM环境下的整合(2)</h1>
+    <h2 id="接上文"><a href="#接上文" class="headerlink" title="接上文"></a>接上文</h2><p>（题外话：好像hexo对Markdown里Java的渲染不是很好，注解会嵌到其他行去？）</p>
+<h5 id="编写Controller"><a href="#编写Controller" class="headerlink" title="编写Controller"></a>编写Controller</h5><p>做用户认证，首先得有一个Controller，生成一个User对象。由于研究对象是shiro，先不写实际页面，用一个简单的表单向Controller提交对象。</p>
+<p>直接上Controller部分代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="comment">//省略具体URL路径代码</span></span><br><span class="line"><span class="comment">//此处直接传入表单，或者JSON也可以，总之要绑定User对象。</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">login</span><span class="params">(User user, BindingResult result, Model model, HttpServletRequest request)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">//获取一个Subject，Subject在Shiro框架中是主体，一般场景中就是登陆的用户。</span></span><br><span class="line">            Subject subject = SecurityUtils.getSubject();</span><br><span class="line">            <span class="comment">//如果是已经登录的（Session中有相应会话），跳转到上一个访问的页面</span></span><br><span class="line">            <span class="keyword">if</span> (subject.isAuthenticated()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"redirect:/"</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//如果传入参数不正确，例如密码是空的</span></span><br><span class="line">            <span class="keyword">if</span> (result.hasErrors()) &#123;</span><br><span class="line">                model.addAttribute(<span class="string">"error"</span>, <span class="string">"参数错误！"</span>);</span><br><span class="line">                <span class="keyword">return</span> <span class="string">"login"</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//            将表单传入的email和密码存为Shiro的Token</span></span><br><span class="line">            UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(user.getEmail(), user.getPwd());</span><br><span class="line">			<span class="comment">//并且提交Realm验证</span></span><br><span class="line">            subject.login(token);</span><br><span class="line">			<span class="comment">//如果认证通过，没有抛出异常</span></span><br><span class="line">            <span class="keyword">final</span> User authUserInfo = um.getUserByEmail(user.getEmail());</span><br><span class="line">            request.getSession().setAttribute(<span class="string">"userInfo"</span>, authUserInfo);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AuthenticationException e) &#123;</span><br><span class="line">            <span class="comment">// 身份验证失败</span></span><br><span class="line">            model.addAttribute(<span class="string">"error"</span>, <span class="string">"用户名或密码错误 ！"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"login"</span>;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>先实例化一个subject，校验后调用.login()方法，并传入包含用户名（可以是能用来登陆的其他东西）和密码。<br>之前在Spring配置中将Realm注入到SecurityManager，因此会跳转到Realm处理。</p>
+<p>（出于业务需求的原因，本文暂时不涉及多个Realm的情况，可以参考<a href="http://blog.csdn.net/xiangwanpeng/article/details/54802509" target="_blank" rel="noopener">http://blog.csdn.net/xiangwanpeng/article/details/54802509</a> ）</p>
+<h5 id="编写Realm具体方法之认证"><a href="#编写Realm具体方法之认证" class="headerlink" title="编写Realm具体方法之认证"></a>编写Realm具体方法之认证</h5><p>跳转之后，首先进入doGetAuthenticationInfo方法，示例代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line">        String email = String.valueOf(token.getPrincipal());</span><br><span class="line">        String password = <span class="keyword">new</span> String((<span class="keyword">char</span>[]) token.getCredentials());</span><br><span class="line">	<span class="comment">//获取参数，并使用参数在数据库中验证，此处um即为Spring注入的UserMapper</span></span><br><span class="line">        <span class="keyword">final</span> User authc = um.getIdPwdByEmail(email);</span><br><span class="line">	<span class="comment">//接下来的逻辑可以自由发挥，总之登录失败就要抛出异常，并且由Controller捕捉</span></span><br><span class="line">        <span class="keyword">if</span> (password.equals(authc.getPwd()))&#123;</span><br><span class="line">            <span class="comment">//此处getname是获取该类的名字</span></span><br><span class="line">            SimpleAuthenticationInfo authenticationInfo = <span class="keyword">new</span> SimpleAuthenticationInfo(email, password, getName());</span><br><span class="line">            <span class="keyword">return</span> authenticationInfo;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> AuthenticationException(<span class="string">"用户名或密码错误."</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里使用了userMapper在数据库中取验证信息，当然也可以使用userService封装好的方法，随意发挥。</p>
+<p>如果登陆失败，可以自己抛出并处理各种异常，shiro自带用户锁定、同IP尝试次数过多等非常丰富的异常。由于是小系统，不做复杂处理。</p>
+<p>假如这个方法通过了，我们会return一个包含了用户名（确切讲是用户标识，根据业务场景不同而不同），密码（其他授权信息也可以）以及当前类名的authcInfo对象。</p>
+<p>这个对象这里我们没有使用，但是可以用在JSP标签中，参考此文：<a href="http://www.sojson.com/blog/144.html" target="_blank" rel="noopener">http://www.sojson.com/blog/144.html</a></p>
+<h5 id="编写Realm具体方法之授权"><a href="#编写Realm具体方法之授权" class="headerlink" title="编写Realm具体方法之授权"></a>编写Realm具体方法之授权</h5><p>如果上一个方法没有抛出异常，会进入doGetAuthorizationInfo方法，传入对象则是一个principalCollection。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line">       SimpleAuthorizationInfo authorizationInfo = <span class="keyword">new</span> SimpleAuthorizationInfo();</span><br><span class="line">       String email = String.valueOf(principals.getPrimaryPrincipal());</span><br><span class="line">       <span class="keyword">final</span> User user = um.getUserByEmail(email);</span><br><span class="line">       Set set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">       <span class="keyword">if</span> (user.getAdmin() == <span class="number">1</span>)&#123;</span><br><span class="line">           set.add(<span class="string">"Admin"</span>);</span><br><span class="line">       &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">           set.add(<span class="string">"User"</span>);</span><br><span class="line">       &#125;</span><br><span class="line">       authorizationInfo.setRoles(set);</span><br><span class="line">       <span class="keyword">return</span> authorizationInfo;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法的作用，是从数据源中，根据用户标识（邮箱），取出所对应的权限（无论是以字段形式存在于用户实体，或者是另起一张表，都只是形式，目的是要取出权限）。</p>
+<p>并且以字符串的set形式，存入authzInfo对象中并且return，return的这个对象稍后可以在JSP中以tag形式调用。也可以直接在Spring配置中写上/admin = authz，使用shiro自带的Filter进行过滤。</p>
+<p>至此，使用Shiro在SSM应用中的认证、授权已经完成。这里实现了最简单的功能，系统只有两个角色（用户、管理员），管理员能访问后台系统，用户不能访问，仅此而已。</p>
+<p>事实上shiro的功能远远不止这些，多用户、多权限，甚至多数据源、多Realm都可以做到。甚至还提供了密码加盐存储的工具类，而这一切都能和Spring 完美整合。</p>
+<p>使用shiro的目的，首先是无需手写Filter拦截每一个没有权限的请求，其次是不必手写代码去判断用户权限，不必手写代码实现每个权限能做的事，也不必手动处理登陆失败的情景，节省大量工作量。</p>
+<hr>
+<h5 id="题外话"><a href="#题外话" class="headerlink" title="题外话"></a>题外话</h5><p>在之前的学习过程中，我看到的demo为了实现全部功能，将用户、权限全部实现，起了五张表，分别存储用户、权限、角色，用户-角色关系，角色-权限关系。</p>
+<p>更丧心病狂的是，权限表还有roleSign，roleName，roleDescription三个字段，而实际上放进authzInfo的只有roleSign一个字符串。</p>
+<p>我尝试直接阅读代码，一个Realm三个Service三个实体，让我对功能一头雾水，今早突然醒悟，既然源码都开放了，我何必苦苦猜测功能，直接git clone 打breakpoint debug，模拟一次登录，终于豁然开朗。</p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

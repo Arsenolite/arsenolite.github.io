@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    x86汇编学习笔记 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  汇编
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1572848820000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1572848820000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>x86汇编学习笔记</h1>
+    <p>追一下小时候的梦，学习一下逆向工程。</p>
+<p>找了一些书籍推荐，最终决定从RE4B（安天翻译的版本）开始。</p>
+<p>上册基本是一些C语言基础的汇编实现，暂且忽略掉ARM、Thumb和ARM64平台（篇幅过大），专注看一看x86下的AT&amp;T和Intel语法汇编，开一篇文章记载一下学习汇编指令的过程。</p>
+<p>[TOC]</p>
+<h2 id="1-环境搭建"><a href="#1-环境搭建" class="headerlink" title="1. 环境搭建"></a>1. 环境搭建</h2><p>由于书中所用的编译器是MSVC2010/2012和GCC4.x，略显过时，特此自己搭了一套GCC 8.1.0（MinGW）和MSVC2019的环境。</p>
+<ol>
+<li>安装VS2019 社区版，并勾选<strong>使用C++的桌面开发</strong>。</li>
+<li>从SourceForge下载MinGW-w64的离线安装包，需要X86和X64两个版本。</li>
+<li>安装CLion，以利用其对C语言和<strong>AT&amp;T语体汇编语言的有限</strong>支持。</li>
+</ol>
+<p>为免去配置VS的头文件和库文件环境变量的麻烦，可以利用VS自带的环境变量批处理，因此编写如下批处理文件以生成各种架构下不同语体的汇编文件：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">call <span class="string">"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsamd64_x86.bat"</span></span><br><span class="line"><span class="string">"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x86\cl.exe"</span> main.c /Famain_msvc_86.asm</span><br><span class="line">call <span class="string">"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"</span></span><br><span class="line"><span class="string">"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64\cl.exe"</span> main.c /Famain_msvc_64.asm</span><br><span class="line"><span class="string">"E:\MinGW\mingw32\bin\gcc.exe"</span> main.c -S -o main_gcc_at_t_86.asm -fno-asynchronous-unwind-tables</span><br><span class="line"><span class="string">"E:\MinGW\mingw\bin\gcc.exe"</span> main.c -S -o main_gcc_at_t_64.asm -fno-asynchronous-unwind-tables</span><br><span class="line"><span class="string">"E:\MinGW\mingw32\bin\gcc.exe"</span> main.c -S -o main_gcc_intel_86.asm -masm=intel -fno-asynchronous-unwind-tables</span><br><span class="line"><span class="string">"E:\MinGW\mingw\bin\gcc.exe"</span> main.c -S -o main_gcc_intel_64.asm -masm=intel -fno-asynchronous-unwind-tables</span><br></pre></td></tr></table></figure>
+<p>其中GCC的<code>-fno-asynchronous-unwind-tables</code>参数是为了忽略一些不必要的宏。</p>
+<p>最终编译结果有时会与书本上不完全一致，因此本书将作为提纲挈领之用，我将根据书中目录顺序亲手进行汇编，尽力找出不一致的原因，加以拓展学习。</p>
+<h2 id="2-最简函数"><a href="#2-最简函数" class="headerlink" title="2. 最简函数"></a>2. 最简函数</h2><h3 id="C"><a href="#C" class="headerlink" title="C"></a>C</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">123</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><h4 id="GCC-AT-amp-T"><a href="#GCC-AT-amp-T" class="headerlink" title="GCC AT&amp;T"></a>GCC AT&amp;T</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	.file	&quot;main.c&quot;</span><br><span class="line">	.text</span><br><span class="line">	.globl	_f</span><br><span class="line">	.def	_f;	.scl	2;	.type	32;	.endef</span><br><span class="line">_f:</span><br><span class="line">	movl	$123, %eax</span><br><span class="line">	ret</span><br><span class="line">	.ident	&quot;GCC: (i686-win32-sjlj-rev0, Built by MinGW-W64 project) 8.1.0&quot;</span><br></pre></td></tr></table></figure>
+<p>x64的结果几乎一样，除了函数名少了下划线，以及.ident的编译器信息不一样。尽管是x64的汇编，寄存器也只用了EAX。</p>
+<p>其中的.file之类的是指示，记录了数据段的开始（.data）、实际程序代码的开始（.text）、字符串常量（书上和某文章说是.string，但实际汇编出来的是.ascii）等。还有一系列.cfi开头的指示，可以记录堆栈信息，在GCC生成汇编指令时可以用<code>-fno-asynchronous-unwind-tables</code>参数忽略。</p>
+<h4 id="GCC-Intel"><a href="#GCC-Intel" class="headerlink" title="GCC Intel"></a>GCC Intel</h4><p>Intel语体采用了另一个指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f:</span><br><span class="line">	mov	eax, 123</span><br><span class="line">	ret</span><br></pre></td></tr></table></figure>
+<h4 id="MSVC-x86"><a href="#MSVC-x86" class="headerlink" title="MSVC x86"></a>MSVC x86</h4><p>MSVC的情况稍复杂一些， 首先它贴心的标记了行号，其次在x86平台生成的汇编语句中出现了函数调用标志，只不过栈顶没有动而已。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">; Listing generated by Microsoft (R) Optimizing Compiler Version 19.22.27905.0 </span><br><span class="line"></span><br><span class="line">include listing.inc</span><br><span class="line"></span><br><span class="line">INCLUDELIB LIBCMT</span><br><span class="line">INCLUDELIB OLDNAMES</span><br><span class="line"></span><br><span class="line">PUBLIC	f</span><br><span class="line">; Function compile flags: /Odtp</span><br><span class="line">_TEXT	SEGMENT</span><br><span class="line">_f	PROC</span><br><span class="line">; File C:\Users\QHS\CLionProjects\untitled1\2.min_function\main.c</span><br><span class="line">; Line 3</span><br><span class="line">	push	ebp</span><br><span class="line">	mov	ebp, esp</span><br><span class="line">; Line 4</span><br><span class="line">	mov	eax, 123				; 0000007bH</span><br><span class="line">; Line 5</span><br><span class="line">	pop	ebp</span><br><span class="line">	ret	0</span><br><span class="line">_f	ENDP</span><br><span class="line">_TEXT	ENDS</span><br><span class="line">END</span><br></pre></td></tr></table></figure>
+<h4 id="MSVC-x64"><a href="#MSVC-x64" class="headerlink" title="MSVC x64"></a>MSVC x64</h4><p>和GCC表现完全一致。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">f	PROC</span><br><span class="line">; File C:\Users\QHS\CLionProjects\untitled1\2.min_function\main.c</span><br><span class="line">; Line 4</span><br><span class="line">	mov	eax, 123				; 0000007bH</span><br><span class="line">; Line 5</span><br><span class="line">	ret	0</span><br><span class="line">f	ENDP</span><br></pre></td></tr></table></figure>
+<h3 id="拓展：栈内存"><a href="#拓展：栈内存" class="headerlink" title="拓展：栈内存"></a>拓展：栈内存</h3><p>栈内存在内存中自顶向下，添加元素时会使栈底减少。而PUSH就是汇编的入栈指令，其作用是先将栈底减4（32位平台）或8（64位平台），然后将要写入的数写到栈底指向的位置。</p>
+<p>例如<code>push ebp</code>等价于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sub esp, 4</span><br><span class="line">mov [esp], ebp</span><br></pre></td></tr></table></figure>
+<p>POP则是逆向操作，会将内存中的值赋给某寄存器。<code>pop ebp</code>等价于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov ebp, [esp]</span><br><span class="line">add esp, 4</span><br></pre></td></tr></table></figure>
+<h3 id="拓展：-函数序言和尾声"><a href="#拓展：-函数序言和尾声" class="headerlink" title="拓展： 函数序言和尾声"></a>拓展： 函数序言和尾声</h3><p>函数序言：</p>
+<p>将EBP寄存器的值压入栈</p>
+<p>将ESP寄存器的值赋值给EBP（将函数开始前的栈底保存到EBP，此时ESP和EBP是该函数的<strong>局部变量、参数</strong>的<strong>基准值</strong>）。</p>
+<p>修改ESP，以给函数局部变量分配空间。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">push	ebp</span><br><span class="line">mov	ebp, esp</span><br><span class="line">sub esp, X</span><br></pre></td></tr></table></figure>
+<p>函数尾声：</p>
+<p>做函数序言的逆操作</p>
+<p>将EBP的值复制到ESP（将ESP的值恢复到函数开始前）</p>
+<p>从栈内存中读取EBP的值。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mov	esp, ebp</span><br><span class="line">pop	ebp</span><br></pre></td></tr></table></figure>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>AT&amp;T语体中，MOV采取从左向右赋值的语法，而Intel与C类似，从右向左赋值。其他运算表达式也类似，源和目标相反。</li>
+<li>AT&amp;T语体使用圆括号取值，而Intel使用方括号。</li>
+<li>AT&amp;T语体会使用%符号标志寄存器，用$符号标志立即数（暂且理解为常量）。</li>
+<li>AT&amp;T语体会指定操作数据类型，-q是64位（quad），-l是32位long，-w是16位word，-b是8位byte</li>
+<li>函数调用结束后会把返回值放在EAX寄存器，调用者会从该寄存器取值。</li>
+<li>某个函数调用开始时，EBP为此时栈顶，ESP随着局部变量声明而变化。函数结束时，将EBP复制到ESP，恢复栈顶为调用开始时的值，再从栈内存中取出原有EBP。</li>
+</ul>
+<h2 id="3-Hello-World"><a href="#3-Hello-World" class="headerlink" title="3. Hello World"></a>3. Hello World</h2><h3 id="C-1"><a href="#C-1" class="headerlink" title="C"></a>C</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;    </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Hello, World!\n"</span>);    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="汇编-1"><a href="#汇编-1" class="headerlink" title="汇编"></a>汇编</h3><h4 id="GCC-x86"><a href="#GCC-x86" class="headerlink" title="GCC x86"></a>GCC x86</h4><p>AT&amp;T ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">	.file	&quot;main.c&quot;</span><br><span class="line">	.text</span><br><span class="line">	.def	___main;	.scl	2;	.type	32;	.endef</span><br><span class="line">	.section .rdata,&quot;dr&quot;</span><br><span class="line">LC0:</span><br><span class="line">	.ascii &quot;Hello, World!\0&quot;</span><br><span class="line">	.text</span><br><span class="line">	.globl	_main</span><br><span class="line">	.def	_main;	.scl	2;	.type	32;	.endef</span><br><span class="line">_main:</span><br><span class="line">	pushl	%ebp</span><br><span class="line">	movl	%esp, %ebp</span><br><span class="line">	andl	$-16, %esp</span><br><span class="line">	subl	$16, %esp</span><br><span class="line">	call	___main</span><br><span class="line">	movl	$LC0, (%esp)</span><br><span class="line">	call	_puts</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	leave</span><br><span class="line">	ret</span><br><span class="line">	.ident	&quot;GCC: (i686-win32-sjlj-rev0, Built by MinGW-W64 project) 8.1.0&quot;</span><br><span class="line">	.def	_puts;	.scl	2;	.type	32;	.endef</span><br></pre></td></tr></table></figure>
+<p><code>andl</code>指令将ESP的值指定为16的整数倍，这是一种x86/x64的编译规范。</p>
+<p>subl指令将栈顶向下拉了16字节，本来4字节就够了，但是由于被对齐所以分配了16字节。</p>
+<p>接下来，LC0是一个全局变量，相当于<code>const char* LC0[] = &quot;Hello, World!&quot;</code>。在此，该变量的指针地址被复制到ESP寄存器，以便printf函数从ESP寄存器中取值。</p>
+<p>该函数比最简函数多一个对<code>printf</code>函数的调用，该函数在GCC中被优化为了<code>puts</code>。</p>
+<p>最后将0放入EAX中，表示主函数返回值。</p>
+<p>Intel语体的MOV指令略有不同：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mov	DWORD PTR [esp], OFFSET FLAT:LC0</span><br></pre></td></tr></table></figure>
+<h4 id="GCC-x64"><a href="#GCC-x64" class="headerlink" title="GCC x64"></a>GCC x64</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">main:</span><br><span class="line">	pushq	%rbp</span><br><span class="line">	movq	%rsp, %rbp</span><br><span class="line">	subq	$32, %rsp</span><br><span class="line">	call	__main</span><br><span class="line">	leaq	.LC0(%rip), %rcx</span><br><span class="line">	call	puts</span><br><span class="line">	movl	$0, %eax</span><br><span class="line">	leave</span><br><span class="line">	ret</span><br><span class="line">	.ident	&quot;GCC: (GNU) 8.1.0&quot;</span><br><span class="line">	.def	puts;	.scl	2;	.type	32;	.endef</span><br></pre></td></tr></table></figure>
+<p>LC0的代码没有变化，故省略。</p>
+<p>可以看出x64跳过了对齐步骤，而数据类型变成64位导致指令最后的l全部变成了q。</p>
+<p>r开头的寄存器是e开头寄存器的扩展，以RAX举例：AL占用第0字节，AH占用第一字节，AX占用0和1字节，EAX占用0、1、2、3字节，而RAX占用0-7这8个字节。</p>
+<p>传参的方式也发生了变化，不再使用栈内存，而是直接使用寄存器。与书中不一样的是，此处使用了rcx寄存器而不是edi寄存器进行传参，参数值也多了一个(%rip)，查阅资料后得知是指令指针寄存器，暂时不明用途。</p>
+<p>LEA命令意为<code>Load Effective Address</code>，暂时可以理解为与MOV等价。</p>
+<p>而C编译器为了兼容性会返回32位的0，也就意味着<strong>程序结束时EAX为0，RAX不一定为0。</strong></p>
+<h4 id="MSVC-x86-1"><a href="#MSVC-x86-1" class="headerlink" title="MSVC x86"></a>MSVC x86</h4><p>而MSVC产生的汇编很长，似乎将Windows Kits的stdio.h中printf部分也汇编到了同一个文件。</p>
+<p>推测可能是某种优化，但是我也没有开启任何优化选项……</p>
+<p>摘取main函数的部分如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">_DATA	SEGMENT</span><br><span class="line">$SG8163	DB	&apos;Hello, World!&apos;, 0aH, 00H</span><br><span class="line">_DATA	ENDS</span><br><span class="line">; Function compile flags: /Odtp</span><br><span class="line">_TEXT	SEGMENT</span><br><span class="line">_main	PROC</span><br><span class="line">; File C:\Users\QHS\CLionProjects\untitled1\3.helloworld\main.c</span><br><span class="line">; Line 3</span><br><span class="line">	push	ebp</span><br><span class="line">	mov	ebp, esp</span><br><span class="line">; Line 4</span><br><span class="line">	push	OFFSET $SG8163</span><br><span class="line">	call	_printf</span><br><span class="line">	add	esp, 4</span><br><span class="line">; Line 5</span><br><span class="line">	xor	eax, eax</span><br><span class="line">; Line 6</span><br><span class="line">	pop	ebp</span><br><span class="line">	ret	0</span><br><span class="line">_main	ENDP</span><br><span class="line">_TEXT	ENDS</span><br></pre></td></tr></table></figure>
+<p>与书中MSVC2010的表现不同，2019用_DATA段取代了CONST段.</p>
+<p>与GCC不一样，MSVC使用<code>xor eax eax</code>来置0.</p>
+<h4 id="MSVC-x64-1"><a href="#MSVC-x64-1" class="headerlink" title="MSVC x64"></a>MSVC x64</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">main	PROC</span><br><span class="line">; File C:\Users\QHS\CLionProjects\untitled1\3.helloworld\main.c</span><br><span class="line">; Line 3</span><br><span class="line">$LN3:</span><br><span class="line">	sub	rsp, 40					; 00000028H</span><br><span class="line">; Line 4</span><br><span class="line">	lea	rcx, OFFSET FLAT:$SG7907</span><br><span class="line">	call	printf</span><br><span class="line">; Line 5</span><br><span class="line">	xor	eax, eax</span><br><span class="line">; Line 6</span><br><span class="line">	add	rsp, 40					; 00000028H</span><br><span class="line">	ret	0</span><br><span class="line">main	ENDP</span><br></pre></td></tr></table></figure>
+<p>64位MSVC的行为让我有些费解，为什么会将栈顶减小又增加40字节呢。也没有看到将寄存器内容保存到栈里的语句。</p>
+<p>其余和书上基本一致，使用rcx寄存器进行传参。</p>
+<h4 id="小结-1"><a href="#小结-1" class="headerlink" title="小结"></a>小结</h4><ul>
+<li>汇编中的括号类似于C中的取地址操作符。</li>
+<li>32位平台用栈传参，64位用寄存器传前几个参数。</li>
+<li>64位系统中程序结束时EAX为0不代表RAX为0。</li>
+<li>GCC可能会把printf优化为puts，而MSVC会使用<code>XOR</code>对EAX寄存器置0。</li>
+</ul>
+<p>### </p>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>
+    微信小程序支付对接开发笔记 | Mother Ship的笔记
+  </title>
+  <meta name="description" content>
+  
+  <meta name="keywords" content="
+  Java
+  ">
+  
+  <meta name="author" content="Mother Ship">
+
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="theme-color" content="#1e2327">
+  <link rel="apple-touch-icon" href="https://github.githubassets.com/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://github.githubassets.com/apple-touch-icon-180x180.png">
+
+  <link rel="icon" type="image/x-icon" href="https://www.mothership.top/favicon.ico">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+  
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25-csp/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+</head>
+
+<body id="replica-app">
+
+<nav class="navbar-wrapper">
+  <div class="navbar">
+    <div class="container clearfix">
+      <a href="/" class="navbar-logo"><i class="fa fa-github"></i></a>
+
+      <div class="navbar-search float-left desktop-only">
+        <div class="navbar-search-form">
+          <label for="gsc-i-id1">This website</label>
+          <div id="google-search">
+            <gcse:search></gcse:search>
+          </div>
+        </div>
+      </div>
+
+      <ul class="navbar-nav float-left">
+        
+        <li><a href="/archives">Archives</a></li>
+        
+        
+        <li><a href="/categories">Categories</a></li>
+        
+        
+        <li><a href="/tags">Tags</a></li>
+        
+        
+        <li class="desktop-only"><a href="/atom.xml" target="_blank">RSS</a></li>
+        
+      </ul>
+
+      <ul class="navbar-nav user-nav float-right desktop-only">
+        <li class="user-nav-notification">
+          <a><span class="user-nav-unread"></span><i class="fa fa-bell"></i></a>
+        </li>
+        <li>
+          <a><i class="fa fa-plus"></i> <i class="fa fa-caret-down"></i></a>
+        </li>
+        <li class="user-nav-logo">
+          <a><img src="https://a.ppy.sh/2545898_.png"> <i class="fa fa-caret-down"></i></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="main-container">
+  <header class="header-wrapper desktop-only">
+  <div class="container header-site-detail">
+    <ul class="header-toolbar">
+      <li class="clearfix">
+        <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
+        <a href="/archives" class="header-toolbar-right"> 50 </a>
+      </li>
+      <li>
+        <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
+        <a href="/tags" class="header-toolbar-right"> 46 </a>
+      </li>
+      <li>
+        <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
+        <a href="/categories" class="header-toolbar-right"> 17 </a>
+      </li>
+    </ul>
+    <h2 class="header-title">
+      <i class="fa fa-book text-muted"></i>
+      <a href="/">Mother Ship的笔记</a>
+      
+      
+    </h2>
+  </div>
+
+  <div class="container">
+    <div class="header-tab-wrapper clearfix">
+      <span class="header-tab header-tab-selected"><i class="fa fa-thumbs-o-up"></i> Like</span>
+      <span class="header-tab"><i class="fa fa-share-alt"></i> Share</span>
+      <span class="header-tab"><i class="fa fa-comments-o"></i> Discussion</span>
+      <span class="header-tab"><i class="fa fa-bookmark-o"></i> Bookmark </span>
+      <span class="header-tab"><i class="fa fa-smile-o"></i> Smile <i class="fa fa-caret-down"></i></span>
+    </div>
+  </div>
+</header>
+
+
+<div class="post-container container">
+  <h3>
+    <i class="fa fa-user-o"></i>
+    Mother Ship
+
+    <span class="post-date float-right" title="{{moment(1558322343000).format('MMM DD, YYYY, h:mm:ss A')}}">
+      <i class="fa fa-pencil-square-o"></i>
+      {{moment(1558322343000).fromNow()}}
+    </span>
+  </h3>
+
+  <article class="post-content">
+    <h1>微信小程序支付对接开发笔记</h1>
+    <p>2019-9-23更新<br>试了一下支付宝</p>
+<p>发现支付宝网页有个收银台，PC网站下单完事之后会给一个自动提交的form，然后302跳转到另一个URL</p>
+<p>感觉实际对接的时候可以把那个URL返回给前端</p>
+<hr>
+<p>新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。</p>
+<h2 id="下载微信SDK，编写后端代码"><a href="#下载微信SDK，编写后端代码" class="headerlink" title="下载微信SDK，编写后端代码"></a>下载微信SDK，编写后端代码</h2><p>……随便吐槽一下，微信SDK被人挖出来漏洞之后就不放github了，只能从微信官网下载，然后阿里规约扫描报了一大堆错……也没法改，万一后续SDK更新了呢</p>
+<p>2019-8-28更新：<br>我真是认识鹅厂微信支付Java SDK作者的美，你弄个<code>WxPayConfig</code>的抽象类给我们扩展，然后<code>getAppId()</code>这种方法的访问权限是<code>default</code>，用<code>Maven</code>等依赖管理引入之后，根本没法扩展，因为必须得在同一个包下。。</p>
+<p>然后其他<code>WxPay</code>之类的类又必须依赖这个类的子类才能干活。。 难怪官方都只给源码下载，而不是托管到什么依赖仓库。。</p>
+<h3 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h3><p>首先创建一个SDK内<code>WxPayConfig</code>类的实现类，由于项目名是微商城，取名叫<code>WscWxConfig</code>。</p>
+<p>使用<code>Spring</code>配置读取的方式，在类里声明<code>AppId</code>、<code>MchId</code>（商户号），<code>Key</code>，证书内容（字节数组）几个成员变量，然后<code>AppId MchId key</code>的<code>getter</code>直接用<code>lombok</code>生成。</p>
+<p><code>getCertStream</code>这个方法需要重写为<code>return new ByteArrayInputStream(this.certData);</code>的形式，<code>getWxPayDomain</code>更麻烦：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">IWXPayDomain <span class="title">getWXPayDomain</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> IWXPayDomain() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">report</span><span class="params">(String domain, <span class="keyword">long</span> elapsedTimeMillis, Exception ex)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> DomainInfo <span class="title">getDomain</span><span class="params">(WXPayConfig config)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> DomainInfo(WXPayConstants.DOMAIN_API, <span class="keyword">true</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>2019-8-28更新：<br>后续改成按公司独立设置微信支付参数，所以用了ThreadLocal维护这些东西。。支付退款证书也放在了OSS上，反正是流，无所谓……</p>
+<p>顺带给<code>WxPay</code>类做一个单例，声明一个<code>WxPay</code>类型的变量，然后用<code>@PostConstruct</code>注解初始化方法：<br><strong>注意这里的构造函数传参第三个参数，表示使用沙箱环境</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initWxPay</span><span class="params">()</span></span>&#123;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="keyword">this</span>.wxPay = <span class="keyword">new</span> WXPay(<span class="keyword">this</span>, <span class="keyword">false</span>, <span class="keyword">true</span>);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">           log.error(<span class="string">"inital wxpay failed "</span>, e);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样配置类就写完了。</p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>微信SDK给了轻度封装，至少使用<code>Map&lt;String, String&gt;</code>就可以完成参数填写了</p>
+<h4 id="统一下单"><a href="#统一下单" class="headerlink" title="统一下单"></a>统一下单</h4><p>由于负责用户模块的同事的设计是不存储OpenId，因此该方法直接接受code，订单号，金额，公司名（用于微信订单描述）作为参数。</p>
+<p>接下来是调用微信SDK发送请求，并且将拿到的prepay_id返回前端。</p>
+<h4 id="接受支付通知"><a href="#接受支付通知" class="headerlink" title="接受支付通知"></a>接受支付通知</h4><p>一定要校验签名和金额！！！！</p>
+<p>幂等性处理后，将接收到的支付信息持久化一份到数据库，并且根据业务结果+支付金额调订单Service。</p>
+<p>扯一下我们的幂等性方案吧，防重入一开始打算用悲观锁锁住订单号对应的行，但是怕应用意外崩溃然后锁无法释放，最后用的是redis的setnx。防重入之后就做一下状态判断就行了。</p>
+<h4 id="退款"><a href="#退款" class="headerlink" title="退款"></a>退款</h4><p>这回是由商户服务器发起请求，所以不用OpenId了，指定订单号、金额、退款金额、售后单号即可</p>
+<h4 id="接受退款通知"><a href="#接受退款通知" class="headerlink" title="接受退款通知"></a>接受退款通知</h4><p>类似支付通知的幂等性处理，持久化一份到数据库，并根据业务结果调售后Service。</p>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>主要是两个接收通知的接口，以及退款接口信息的解密方法。</p>
+<p>先从<code>request.getInputStream()</code>中获取XML，然后用微信SDK转成Map，再用微信SDK做签名校验。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>后端码狗自测微信小程序支付接口简直要人命……居然没找到描述全流程的博文<br><strong>调个微信支付和玩tmd解谜RPG一样，到处找线索</strong></p>
+<p>小程序支付交付需要在沙箱模拟过一遍之后向微信提交验收通过申请，当然如果已经有通过微信支付验收的小程序就不必走一遍沙箱流程了。</p>
+<p>写完代码自己测试时，一般还是直接用一个能用的小程序支付参数，而不是沙箱，理由后面讲。。</p>
+<h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><h4 id="AppId"><a href="#AppId" class="headerlink" title="AppId"></a>AppId</h4><p>小程序所属的公司账号将开发者的微信号加入小程序开发者后，开发者使用微信扫码登录微信小程序后台即可看到。</p>
+<h4 id="AppSecret"><a href="#AppSecret" class="headerlink" title="AppSecret"></a>AppSecret</h4><p>需要超级管理员在小程序后台开发设置生成，用于小程序Code换OpenId用。。</p>
+<h4 id="MchId"><a href="#MchId" class="headerlink" title="MchId"></a>MchId</h4><p>在商户后台将开发者账号加入商户的员工账号后，员工账号会收到包含MchId的通知。</p>
+<h4 id="Key"><a href="#Key" class="headerlink" title="Key"></a>Key</h4><p>商户后台API安全处填写，需要超级管理员验证，需要商户账号开通操作密码<br>其中沙箱开发要用到SignKey，使用Key请求微信的API生成。</p>
+<p>解析退款信息时使用。</p>
+<h4 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h4><p>商户后台API安全处可以<strong>重设</strong>，最好能找到第一次申请的证书文件。<br>解析退款信息时使用。</p>
+<h3 id="内网穿透"><a href="#内网穿透" class="headerlink" title="内网穿透"></a>内网穿透</h3><p>本地请求支付的接口需要一个<strong>带https的内网穿透</strong>给<code>wx.request</code>用，即使有CI/CD，也懒得改一行代码提一个pr……图省事直接买了NATAPP。</p>
+<p>吐槽一下，要调试小程序需要买他的国内隧道+二级域名，15元一年的域名+9元一个月的隧道；</p>
+<p>倒是可以选择用自己的域名，但是我域名没备案……而阿里云买的域名要备案需要配阿里云的实例……</p>
+<p>还有香港流量包月的隧道，买完才发现这个不能开https……香港流量不包月的倒是可以配自己域名，但是自己域名443端口必须空着，我域名有个开了https的小网盘跑着……</p>
+<p>幸好微信的支付通知回调可以不用https，就用免费隧道顶上。</p>
+<p>2019-8-28更新：<br>后续在自己的服务器上搭了个ngrok，不用额外付冤枉钱了。。</p>
+<h3 id="统一下单-1"><a href="#统一下单-1" class="headerlink" title="统一下单"></a>统一下单</h3><p>在微信开发者工具中新建一个小程序，修改AppId为公司小程序的AppId（也可以直接调公司小程序的代码，但是单独测一个支付我还是选择新起一个小程序）。</p>
+<p>加一个按钮，测试支付，绑定一个函数，把返回的<code>requestPayment</code>用的数据打印出来，顺带请求支付：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">testPay: <span class="function"><span class="keyword">function</span> (<span class="params">e</span>) </span>&#123;</span><br><span class="line">    wx.login(&#123;</span><br><span class="line">      success(res) &#123;</span><br><span class="line">        <span class="keyword">if</span> (res.code) &#123;</span><br><span class="line">          <span class="comment">// 发起网络请求</span></span><br><span class="line">          wx.request(&#123;</span><br><span class="line">            url: <span class="string">'https://qxkjwxpay.mynatapp.cc/micro/order/payOrder'</span>,</span><br><span class="line">			header: &#123;</span><br><span class="line">              <span class="string">'Authorization'</span>: <span class="string">'登录接口生成的JWT内容'</span></span><br><span class="line">            &#125;,</span><br><span class="line">            method: <span class="string">'POST'</span>,</span><br><span class="line">            data: &#123;</span><br><span class="line">              code: res.code,</span><br><span class="line">              amount: <span class="string">'1.01'</span>,</span><br><span class="line">              orderNum: <span class="string">'2'</span>,</span><br><span class="line">              paymentType: <span class="number">10</span></span><br><span class="line">            &#125;,</span><br><span class="line">            success(res) &#123;</span><br><span class="line">              <span class="built_in">console</span>.log(res);</span><br><span class="line">              wx.requestPayment(</span><br><span class="line">                &#123;</span><br><span class="line">                  <span class="string">'timeStamp'</span>: res.data.data.timestamp,</span><br><span class="line">                  <span class="string">'nonceStr'</span>: res.data.data.nonceStr,</span><br><span class="line">                  <span class="string">'package'</span>: res.data.data.prepayId,</span><br><span class="line">                  <span class="string">'signType'</span>: <span class="string">'MD5'</span>,</span><br><span class="line">                  <span class="string">'paySign'</span>: res.data.data.sign,</span><br><span class="line">                  <span class="string">'success'</span>: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123; &#125;,</span><br><span class="line">                  <span class="string">'fail'</span>: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123; &#125;,</span><br><span class="line">                  <span class="string">'complete'</span>: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123; &#125;</span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">'登录失败！'</span> + res.errMsg)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">code:200</span><br><span class="line">data:&#123;</span><br><span class="line">nonceStr:&quot;klrv5kgx5dJdc7ILG9Uj9k70hUKzXbF8&quot;</span><br><span class="line">prepayId:&quot;prepay_id=wx20190522095426670409&quot;</span><br><span class="line">sign:&quot;A118797887A33C961594D149285EDCEE&quot;</span><br><span class="line">timestamp:1558490065</span><br><span class="line">&#125;</span><br><span class="line">msg:&quot;成功&quot;</span><br><span class="line">subCode:null</span><br></pre></td></tr></table></figure></p>
+<h3 id="调起支付"><a href="#调起支付" class="headerlink" title="调起支付"></a>调起支付</h3><p>果↓然↑啊，扫描开发者工具给的二维码时提示错误：<strong>调用支付JSAPI缺少参数:total_fee</strong></p>
+<p>我寻思统一下单都成功了你在说你吗呢，会报错你就多报几句，是不是把你妈杀了你也只能呜咽着说出你缺少total_fee？真的憨批一样</p>
+<p>package传的也带了<code>prepay_id=</code>，后端生成随机数+签名用的是微信JavaSDK的工具类，签名字段大小写也没问题</p>
+<p>发现后端生成签名时，工具类会自动拼上<code>key=key</code>，而我手动在map里加了一个key……也就是现在的签名内容有问题。。</p>
+<p>改掉之后还是报错，看到微信开放社区里<a href="https://developers.weixin.qq.com/community/pay/doc/0006805d6e87405eaee74e4c15b400" target="_blank" rel="noopener">一个帖子</a> 说即使报错也受到了微信支付的成功通知，又看到segmentfault里的<a href="https://segmentfault.com/q/1010000014709128" target="_blank" rel="noopener">一个帖子</a> 说<strong>沙箱就是这样。。</strong></p>
+<p>我真是艹了</p>
+<h3 id="接受回调"><a href="#接受回调" class="headerlink" title="接受回调"></a>接受回调</h3><p>坑点：微信SDK送了一个判断支付结果通知中的sign是否有效的方法<code>isPayResultNotifySignatureValid()</code>，这方法默认没有传入签名类型的时候，选的是MD5.</p>
+<p>但是微信支付主工具类 初始化签名方式时，根据传入是否沙箱来切换加密方式和URL，此时加密方式是HMAC！！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public WXPay(final WXPayConfig config, final String notifyUrl, final boolean autoReport, final boolean useSandbox) throws Exception &#123;</span><br><span class="line">        this.config = config;</span><br><span class="line">        this.notifyUrl = notifyUrl;</span><br><span class="line">        this.autoReport = autoReport;</span><br><span class="line">        this.useSandbox = useSandbox;</span><br><span class="line">        if (useSandbox) &#123;</span><br><span class="line">            this.signType = SignType.MD5; // 沙箱环境</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            this.signType = SignType.HMACSHA256;</span><br><span class="line">        &#125;</span><br><span class="line">        this.wxPayRequest = new WXPayRequest(config);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>于是支付回调返回的sign也当然是HMAC，但是支付回调是没有写明签名类型的……这里一定做处理，比较优雅的做法是接受回调时读取配置加入签名类型。。不过我当时是直接改了微信的SDK……</p>
+<p>然后是支付回调里没有trade_state，只有result_code，因为只推送成功结果，这点要和主动拉取支付结果做区分。</p>
+<h3 id="退款回调"><a href="#退款回调" class="headerlink" title="退款回调"></a>退款回调</h3><p>发起退款的流程和发起支付类似，略过不表</p>
+<p>退款回调没有sign字段，而且需要JDK装密钥长度无限<a href="https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html" target="_blank" rel="noopener">扩展包 </a> 。</p>
+<p>直接解密req_info字段即可，解密过程有几个坑，MD5哈希之后要转成小写，算法名是<code>AES/ECB/PKCS7Padding</code>不能写错，如果抛出需要IV的异常就是算法名写错了……</p>
+<p>解密代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">decrypt</span><span class="params">(String reqInfo)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//     （1）对加密串A做base64解码，得到加密串B</span></span><br><span class="line">        <span class="keyword">byte</span>[] encryptB = Base64.getDecoder().decode(reqInfo);</span><br><span class="line"><span class="comment">//     （2）对商户key做md5，得到32位小写key* ( key设置路径：微信商户平台(pay.weixin.qq.com)--&gt;账户设置--&gt;API安全--&gt;密钥设置 )</span></span><br><span class="line">        StringBuilder hexString = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        MessageDigest md = MessageDigest.getInstance(<span class="string">"MD5"</span>);</span><br><span class="line">        md.update(wscWxConfig.getKey().getBytes());</span><br><span class="line">        <span class="keyword">byte</span>[] hash = md.digest();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">byte</span> b : hash) &#123;</span><br><span class="line">            <span class="keyword">if</span> ((<span class="number">0xff</span> &amp; b) &lt; <span class="number">0x10</span>) &#123;</span><br><span class="line">                hexString.append(<span class="string">"0"</span>).append(Integer.toHexString((<span class="number">0xFF</span> &amp; b)));</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                hexString.append(Integer.toHexString(<span class="number">0xFF</span> &amp; b));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        String md5Key = hexString.toString().toLowerCase();</span><br><span class="line"><span class="comment">//       (3）用key*对加密串B做AES-256-ECB解密（PKCS7Padding）</span></span><br><span class="line"><span class="comment">//       需要JDK中添加JCE：https://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</span></span><br><span class="line">        Security.addProvider(<span class="keyword">new</span> BouncyCastleProvider());</span><br><span class="line">        Cipher cipher = Cipher.getInstance(<span class="string">"AES/ECB/PKCS7Padding"</span>);</span><br><span class="line">        Key sKeySpec = <span class="keyword">new</span> SecretKeySpec(md5Key.getBytes(StandardCharsets.UTF_8), <span class="string">"AES"</span>);</span><br><span class="line">        cipher.init(Cipher.DECRYPT_MODE, sKeySpec);</span><br><span class="line">        <span class="keyword">byte</span>[] result = cipher.doFinal(encryptB);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(result);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+  </article>
+</div>
+
+
+    
+
+
+
+
+</div>
+
+<div class="footer-wrapper container">
+  <footer class="footer clearfix">
+    <div class="clearfix">
+    <a href="http://blog.mothership.top" class="footer-logo">
+      <i class="fa fa-github"></i>
+    </a>
+    <ul class="footer-social-link">
+      <li>© 2019 Mother Ship</li>
+      <li><a href="http://blog.mothership.top">Home</a></li>
+      
+      <li><a href="https://github.com/Mother-Ship">Github</a></li>
+      
+    </ul>
+    <div class="footer-theme-info">
+      Theme <a href="//github.com/sabrinaluo/hexo-theme-replica">Replica</a>
+      by <a href="//github.com/sabrinaluo">Hiitea</a> ❤ Powered by Hexo
+    </div>
+    </div>
+    
+  </footer>
+</div>
+
+
+
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>
