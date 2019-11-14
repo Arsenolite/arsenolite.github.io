@@ -1,4 +1,5 @@
 @echo off
+cd /d d:\blog
 call hexo g
 start hexo d
 git add .
