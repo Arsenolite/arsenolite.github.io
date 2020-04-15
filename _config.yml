@@ -76,6 +76,9 @@ pagination_dir: page
 ## Themes: https://hexo.io/themes/
 theme: replica
 
+disqus: mother-ship # DISQUS ID
+gcs: 015302745202112709039:d2rq52htkfe
+
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
