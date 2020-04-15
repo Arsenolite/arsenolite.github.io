@@ -86,15 +86,15 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 51 </a>
+        <a href="/archives" class="header-toolbar-right"> 53 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
-        <a href="/tags" class="header-toolbar-right"> 46 </a>
+        <a href="/tags" class="header-toolbar-right"> 48 </a>
       </li>
       <li>
         <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
-        <a href="/categories" class="header-toolbar-right"> 17 </a>
+        <a href="/categories" class="header-toolbar-right"> 20 </a>
       </li>
     </ul>
     <h2 class="header-title">
@@ -135,7 +135,7 @@
 <p>感觉实际对接的时候可以把那个URL返回给前端</p>
 <hr>
 <p>新单位新项目，微信小程序对接微信支付+退款，由于开发测试是真的繁琐，在此记录一下笔记。</p>
-<h2 id="下载微信SDK，编写后端代码"><a href="#下载微信SDK，编写后端代码" class="headerlink" title="下载微信SDK，编写后端代码"></a>下载微信SDK，编写后端代码</h2><p>……随便吐槽一下，微信SDK被人挖出来漏洞之后就不放github了，只能从微信官网下载，然后阿里规约扫描报了一大堆错……也没法改，万一后续SDK更新了呢</p>
+<h3 id="下载微信SDK，编写后端代码"><a href="#下载微信SDK，编写后端代码" class="headerlink" title="下载微信SDK，编写后端代码"></a>下载微信SDK，编写后端代码</h3><p>……随便吐槽一下，微信SDK被人挖出来漏洞之后就不放github了，只能从微信官网下载，然后阿里规约扫描报了一大堆错……也没法改，万一后续SDK更新了呢</p>
 <p>2019-8-28更新：<br>我真是认识鹅厂微信支付Java SDK作者的美，你弄个<code>WxPayConfig</code>的抽象类给我们扩展，然后<code>getAppId()</code>这种方法的访问权限是<code>default</code>，用<code>Maven</code>等依赖管理引入之后，根本没法扩展，因为必须得在同一个包下。。</p>
 <p>然后其他<code>WxPay</code>之类的类又必须依赖这个类的子类才能干活。。 难怪官方都只给源码下载，而不是托管到什么依赖仓库。。</p>
 <h3 id="配置类"><a href="#配置类" class="headerlink" title="配置类"></a>配置类</h3><p>首先创建一个SDK内<code>WxPayConfig</code>类的实现类，由于项目名是微商城，取名叫<code>WscWxConfig</code>。</p>
@@ -155,7 +155,7 @@
 <h4 id="接受退款通知"><a href="#接受退款通知" class="headerlink" title="接受退款通知"></a>接受退款通知</h4><p>类似支付通知的幂等性处理，持久化一份到数据库，并根据业务结果调售后Service。</p>
 <h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>主要是两个接收通知的接口，以及退款接口信息的解密方法。</p>
 <p>先从<code>request.getInputStream()</code>中获取XML，然后用微信SDK转成Map，再用微信SDK做签名校验。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>后端码狗自测微信小程序支付接口简直要人命……居然没找到描述全流程的博文<br><strong>调个微信支付和玩tmd解谜RPG一样，到处找线索</strong></p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>后端码狗自测微信小程序支付接口简直要人命……居然没找到描述全流程的博文<br><strong>调个微信支付和玩tmd解谜RPG一样，到处找线索</strong></p>
 <p>小程序支付交付需要在沙箱模拟过一遍之后向微信提交验收通过申请，当然如果已经有通过微信支付验收的小程序就不必走一遍沙箱流程了。</p>
 <p>写完代码自己测试时，一般还是直接用一个能用的小程序支付参数，而不是沙箱，理由后面讲。。</p>
 <h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><h4 id="AppId"><a href="#AppId" class="headerlink" title="AppId"></a>AppId</h4><p>小程序所属的公司账号将开发者的微信号加入小程序开发者后，开发者使用微信扫码登录微信小程序后台即可看到。</p>
@@ -195,6 +195,24 @@
 
 
     
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://blog.mothership.top/2019/05/20/2019-05-20-微信小程序支付对接开发笔记/";
+    this.page.identifier = 1558322343;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://mother-ship.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
 
 
 
@@ -223,6 +241,19 @@
   </footer>
 </div>
 
+
+<script>
+  (function() {
+    var cx = '015302745202112709039:d2rq52htkfe';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
 
 
 

@@ -86,15 +86,15 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 51 </a>
+        <a href="/archives" class="header-toolbar-right"> 53 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
-        <a href="/tags" class="header-toolbar-right"> 46 </a>
+        <a href="/tags" class="header-toolbar-right"> 48 </a>
       </li>
       <li>
         <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
-        <a href="/categories" class="header-toolbar-right"> 17 </a>
+        <a href="/categories" class="header-toolbar-right"> 20 </a>
       </li>
     </ul>
     <h2 class="header-title">
@@ -130,7 +130,7 @@
 
   <article class="post-content">
     <h1>x86汇编学习笔记</h1>
-    <p>追一下小时候的梦，学习一下逆向工程。</p>
+    <p>追一下小时候的梦，稍微学习一下逆向工程。</p>
 <p>找了一些书籍推荐，最终决定从RE4B（安天翻译的版本）开始。</p>
 <p>上册基本是一些C语言基础的汇编实现，暂且忽略掉ARM、Thumb和ARM64平台（篇幅过大），专注看一看x86下的AT&amp;T和Intel语法汇编，开一篇文章记载一下学习汇编指令的过程。</p>
 <p>[TOC]</p>
@@ -209,13 +209,30 @@
 <li>64位系统中程序结束时EAX为0不代表RAX为0。</li>
 <li>GCC可能会把printf优化为puts，而MSVC会使用<code>XOR</code>对EAX寄存器置0。</li>
 </ul>
-<p>### </p>
 
   </article>
 </div>
 
 
     
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://blog.mothership.top/2019/11/04/2019-11-3-x86汇编学习笔记/";
+    this.page.identifier = 1572848820;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://mother-ship.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
 
 
 
@@ -244,6 +261,19 @@
   </footer>
 </div>
 
+
+<script>
+  (function() {
+    var cx = '015302745202112709039:d2rq52htkfe';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
 
 
 

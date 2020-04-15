@@ -86,15 +86,15 @@
     <ul class="header-toolbar">
       <li class="clearfix">
         <a href="/archives" class="header-toolbar-left"><i class="fa fa-file-text"></i> Posts </a>
-        <a href="/archives" class="header-toolbar-right"> 51 </a>
+        <a href="/archives" class="header-toolbar-right"> 53 </a>
       </li>
       <li>
         <a href="/tags" class="header-toolbar-left"><i class="fa fa-tags"></i> Tags </a>
-        <a href="/tags" class="header-toolbar-right"> 46 </a>
+        <a href="/tags" class="header-toolbar-right"> 48 </a>
       </li>
       <li>
         <a href="/categories" class="header-toolbar-left"><i class="fa fa-folder-open"></i> Categories </a>
-        <a href="/categories" class="header-toolbar-right"> 17 </a>
+        <a href="/categories" class="header-toolbar-right"> 20 </a>
       </li>
     </ul>
     <h2 class="header-title">
@@ -134,8 +134,9 @@
 <p>同时还有一个定时任务用来定时将所有1小时前的订单标记为交易超时</p>
 <p>编写单元测试，模拟支付回调通知，结果出了异常，更新记录时出现死锁</p>
 <p>大致SQL如下：</p>
-<p>事务A<br>Update pay_log SET tradeState = 2 WHERE tradeState=0 AND createTime &lt; ‘2019-08-20 15:23:04.167’</p>
-<p>事务B<br>INSERT pay_log VALUES(NULL,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?)<br>Update pay_log SET tradeState =? WHERE outTradeNo = ? AND tradeState = ? AND payType = ? </p>
+<p>事务A </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">Update</span> pay_log <span class="keyword">SET</span> tradeState = <span class="number">2</span> <span class="keyword">WHERE</span> tradeState=<span class="number">0</span> <span class="keyword">AND</span> createTime &lt; <span class="string">'2019-08-20 15:23:04.167'</span></span><br></pre></td></tr></table></figure>
+<p>事务B<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> pay_log <span class="keyword">VALUES</span>(<span class="literal">NULL</span>,?,<span class="keyword">NOW</span>(),?,?,?,?,?,?,?,?,?,?,?,?) </span><br><span class="line"><span class="keyword">Update</span> pay_log <span class="keyword">SET</span> tradeState =? <span class="keyword">WHERE</span> outTradeNo = ? <span class="keyword">AND</span> tradeState = ? <span class="keyword">AND</span> payType = ?</span><br></pre></td></tr></table></figure></p>
 <p>然后事务B被回滚了</p>
 <p>解决方案：要么禁用定时任务，要么去掉单元测试的事务手动回滚，要么单元测试不要打断点调试（定时任务设置了项目启动后10秒后启动）</p>
 <p>附上MySQL死锁日志，其实这玩意只能大致的定位故障，因为可以看出事务2的SQL只有最后执行的那一条</p>
@@ -146,6 +147,24 @@
 
 
     
+<div class="container disqus-container">
+  <div id="disqus_thread"></div>
+</div>
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://blog.mothership.top/2019/08/20/2019-08-20-记一次死锁/";
+    this.page.identifier = 1566292701;
+  };
+
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://mother-ship.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+
 
 
 
@@ -174,6 +193,19 @@
   </footer>
 </div>
 
+
+<script>
+  (function() {
+    var cx = '015302745202112709039:d2rq52htkfe';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+      '//cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
 
 
 
